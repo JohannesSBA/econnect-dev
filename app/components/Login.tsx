@@ -1,10 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link} from "@nextui-org/react";
-import {AiOutlineMail, AiFillLock} from 'react-icons/ai';
+import {AiOutlineMail, AiFillLock, AiOutlineGithub} from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc'
+import { signIn } from "next-auth/react";
 
-export default function App() {
+export default function Login() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    async function loginWithGoogle() {
+        setIsLoading(true);
+        try {
+            await signIn("google");
+        } catch (error) {
+            // display error message to user
+            console.error("Something went wrong with your login.");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function loginWithGitHub() {
+        setIsLoading(true);
+        try {
+            await signIn("github");
+        } catch (error) {
+            // display error message to user
+            console.error("Something went wrong with your login.");
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
   return (
     <>
@@ -49,10 +76,6 @@ export default function App() {
                     Forgot password?
                   </Link>
                 </div>
-                <Button color="primary" variant="bordered" onPress={onClose}>
-                <FcGoogle />
-                  Sign In With Google
-                </Button>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
@@ -61,7 +84,19 @@ export default function App() {
                 <Button color="primary" onPress={onClose}>
                   Sign in
                 </Button>
+                
               </ModalFooter>
+              <div className="px-4 pb-4 flex flex-col gap-2">
+              <Button color="primary" variant="bordered" onPress={loginWithGoogle}>
+                <FcGoogle />
+                  Sign In With Google
+                </Button>
+                <Button color="primary" variant="bordered" onPress={loginWithGitHub}>
+                <AiOutlineGithub />
+                  Sign In With Github
+                </Button>
+              </div>
+              
             </>
           )}
         </ModalContent>

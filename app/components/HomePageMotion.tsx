@@ -1,14 +1,5 @@
 import { motion } from "framer-motion";
 
-
-
-// .box {
-//     width: 200px;
-//     height: 200px;
-//     background: var(--accent);
-//   }
-
-
 export default function App() {
   return (
     <motion.div

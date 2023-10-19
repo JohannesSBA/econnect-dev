@@ -1,11 +1,10 @@
 'use client'
 import { NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider } from 'next-themes'
-import  Navbar  from '../components/Navbar'
-import Image from 'next/image'
-import Main from '../components/Main'
-import About from '../components/About'
-import Progress from '../components/Progress'
+import  Navbar  from './components/Navbar'
+import Main from './components/Main'
+import About from './components/About'
+import Progress from './components/Progress'
 
 export default function Home() {
   return (
