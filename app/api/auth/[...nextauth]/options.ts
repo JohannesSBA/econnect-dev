@@ -44,4 +44,11 @@ export const options: NextAuthOptions = {
             clientSecret: getGithubCredentials().clientSecret,
         })
     ],
+    callbacks: {
+        redirect() {
+            return '/dashboard'
+        }
+        
+    }
+    
 }

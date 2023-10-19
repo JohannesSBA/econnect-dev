@@ -24,7 +24,7 @@ export default withAuth(
         }
 
         if (!isAuth && isAccessingSesnsitiveRoute) {
-            return NextResponse.redirect(new URL("/page", req.url));
+            return NextResponse.redirect(new URL("/", req.url));
         }
 
         if (pathname === "/") {

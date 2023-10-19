@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import { ButtonHTMLAttributes, FC, useState } from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
+import { redirect } from "next/navigation";
 
 interface SignOutButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -14,9 +15,9 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
                 try{
                     await signOut();
                 } catch (error){
-                    console.log('there was an errer')
+                    console.log('there was an error');
                 } finally {
-                    setIsSigningOut(false)
+                    setIsSigningOut(false);
                 }
             }}>SignOut</Button>
     );
