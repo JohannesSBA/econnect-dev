@@ -1,6 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from 'next-auth/providers/github'
+import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 function getGoogleCredentials() {
@@ -33,24 +33,27 @@ function getGithubCredentials() {
     return { clientId, clientSecret };
 }
 
-
 export const options: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-              username: { },
-              password: { }
+                username: {},
+                password: {},
             },
             async authorize(credentials, req) {
-              const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
-              if (user) {
-                return user
-              } else {
-                return null
-              }
-            }
-          }),
+                const user = {
+                    id: "1",
+                    name: "J Smith",
+                    email: "jsmith@example.com",
+                };
+                if (user) {
+                    return user;
+                } else {
+                    return null;
+                }
+            },
+        }),
         GoogleProvider({
             clientId: getGoogleCredentials().clientId,
             clientSecret: getGoogleCredentials().clientSecret,
@@ -62,9 +65,7 @@ export const options: NextAuthOptions = {
     ],
     callbacks: {
         redirect() {
-            return '/dashboard'
-        }
-        
-    }
-    
-}
+            return "/dashboard";
+        },
+    },
+};
