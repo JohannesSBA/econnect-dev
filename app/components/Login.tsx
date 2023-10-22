@@ -33,6 +33,10 @@ export default function Login() {
         }
     }
 
+    async function Register(){
+      
+    }
+
   return (
     <>
       <Button onPress={onOpen} color="primary">Login</Button>

@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from 'next-auth/providers/github'
+import CredentialsProvider from "next-auth/providers/credentials";
 
 function getGoogleCredentials() {
     const clientId = process.env.GOOGLE_ID;
@@ -35,6 +36,21 @@ function getGithubCredentials() {
 
 export const options: NextAuthOptions = {
     providers: [
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+              username: { },
+              password: { }
+            },
+            async authorize(credentials, req) {
+              const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+              if (user) {
+                return user
+              } else {
+                return null
+              }
+            }
+          }),
         GoogleProvider({
             clientId: getGoogleCredentials().clientId,
             clientSecret: getGoogleCredentials().clientSecret,
@@ -42,7 +58,7 @@ export const options: NextAuthOptions = {
         GithubProvider({
             clientId: getGithubCredentials().clientId,
             clientSecret: getGithubCredentials().clientSecret,
-        })
+        }),
     ],
     callbacks: {
         redirect() {
