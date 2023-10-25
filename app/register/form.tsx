@@ -15,11 +15,20 @@ export default function Form() {
         console.log(response);
     };
     return (
-        <div className="flex ">
-            <form onSubmit={handleSubmit}>
-                <input type="email" placeholder="email" />
-                <input type="password" placeholder="password" />
-                <button type="submit">Register</button>
+        <div className="flex">
+            <form
+                onSubmit={handleSubmit}
+                className="text-black flex flex-col justify-between align-middle h-screen w-full"
+            >
+                <input type="email" placeholder="email" className="w-72 flex" />
+                <input
+                    type="password"
+                    placeholder="password"
+                    className="w-72"
+                />
+                <button type="submit" className="text-white">
+                    Register
+                </button>
             </form>
         </div>
     );

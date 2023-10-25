@@ -20,7 +20,8 @@ import { AiOutlineMail, AiFillLock, AiOutlineGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 
-interface formValues {
+interface regValues {
+    name: string;
     email: string;
     password: string;
 }
@@ -29,6 +30,8 @@ export default function Login() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [password, setPassword] = useState<string>();
     const [email, setEmail] = useState<string>();
+    const [confirmPassword, setConfirmPassword] = useState<string>();
+    const [name, setName] = useState<string>();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -58,32 +61,37 @@ export default function Login() {
 
     async function handleSubmit(e: SyntheticEvent) {
         e.preventDefault();
-        let userData: formValues = {
-            email: email as string,
-            password: password as string,
-        };
-
-        // Make call to backend to create user
-        const res = await fetch("http://localhost:3000/lib/login", {
-            method: "POST",
-            body: JSON.stringify(userData),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (res.ok) {
-            const data = await res.json();
-
-            // registration success
+        if (password !== confirmPassword) {
+            throw new Error("bad pass");
         } else {
-            //registration faled
+            let userData: regValues = {
+                name: name as string,
+                email: email as string,
+                password: password as string,
+            };
+
+            // Make call to backend to create user
+            const res = await fetch("http://localhost:3000/lib/register", {
+                method: "POST",
+                body: JSON.stringify(userData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+
+                // registration success
+            } else {
+                //registration faled
+            }
         }
     }
     return (
         <>
-            <Button onPress={onOpen} color="primary">
-                Login
+            <Button onPress={onOpen} color="primary" variant="flat">
+                Sign Up
             </Button>
             <Modal
                 isOpen={isOpen}
@@ -96,9 +104,17 @@ export default function Login() {
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">
-                                Log in
+                                Sign Up
                             </ModalHeader>
                             <ModalBody>
+                                <Input
+                                    label="text"
+                                    placeholder="Enter your Name"
+                                    variant="bordered"
+                                    onChange={(e) => {
+                                        setName(e.target.value);
+                                    }}
+                                />
                                 <Input
                                     endContent={<AiOutlineMail />}
                                     label="Email"
@@ -116,6 +132,16 @@ export default function Login() {
                                     variant="bordered"
                                     onChange={(e) => {
                                         setPassword(e.target.value);
+                                    }}
+                                />
+                                <Input
+                                    endContent={<AiFillLock />}
+                                    label="Confirm"
+                                    placeholder="Confirm your password"
+                                    type="password"
+                                    variant="bordered"
+                                    onChange={(e) => {
+                                        setConfirmPassword(e.target.value);
                                     }}
                                 />
                                 <div className="flex py-2 px-1 justify-between">

@@ -11,6 +11,7 @@ import { GiWaterDrop } from "react-icons/gi";
 import Login from "./Login";
 import { getSession, useSession } from "next-auth/react";
 import { IconContext } from "react-icons";
+import SingUp from "./SingUp";
 
 export default function App() {
     // const { data, status } = useSession();
@@ -50,9 +51,7 @@ export default function App() {
                     <Login />
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
-                        Sign Up
-                    </Button>
+                    <SingUp />
                 </NavbarItem>
             </NavbarContent>
         </Navbar>

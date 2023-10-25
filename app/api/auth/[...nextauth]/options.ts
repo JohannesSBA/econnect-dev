@@ -3,7 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/app/lib/prisma";
+import { fetchDb, prisma } from "@/app/lib/prisma";
+import { compare } from "bcryptjs";
 
 function getGoogleCredentials() {
     const clientId = process.env.GOOGLE_ID;
@@ -38,22 +39,25 @@ function getGithubCredentials() {
 export const options: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            name: "Credentials",
             credentials: {
-                username: {},
-                password: {},
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" },
             },
-            async authorize(credentials, req) {
-                const user = {
-                    id: "1",
-                    name: "J Smith",
-                    email: "jsmith@example.com",
-                };
-                if (user) {
-                    return user;
-                } else {
-                    return null;
+            async authorize(credentials) {
+                const { email, password } = credentials ?? {};
+                if (!email || !password) {
+                    throw new Error("Missing username or password");
                 }
+                const user = await prisma.user.findUnique({
+                    where: {
+                        email,
+                    },
+                });
+                // if user doesn't exist or password doesn't match
+                if (!user || !(await compare(password, user.password))) {
+                    throw new Error("Invalid username or password");
+                }
+                return user;
             },
         }),
         GoogleProvider({
@@ -66,7 +70,20 @@ export const options: NextAuthOptions = {
         }),
     ],
     adapter: PrismaAdapter(prisma),
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+    },
     callbacks: {
+        async session({ session, user, token }) {
+            if (user !== null) {
+                session.user = user;
+            }
+            return session;
+        },
+        async jwt({ token, user }) {
+            return await token;
+        },
         redirect() {
             return "/dashboard";
         },

@@ -26,6 +26,7 @@ async function createUserHandler(req: NextApiRequest, res: NextApiResponse) {
             name: name,
             phoneNumber: phoneNumber,
             password: await hashedPass,
+            id,
         },
     });
 }
