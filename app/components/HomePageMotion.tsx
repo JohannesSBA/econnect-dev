@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function App() {
     return (
         <motion.div
-            className="w-96 h-96 bg-transparent border-2 border-black dark:border-white"
+            className="w-72 h-72 bg-transparent border-2 border-black dark:border-white"
             animate={{
                 scale: [0.7, 1.2, 1.2, 0.7, 0.7],
                 rotate: [0, 0, 180, 180, 0],

@@ -9,21 +9,24 @@ import {
 } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
 import Login from "./Login";
-import { getServerSession } from "next-auth";
-import { options } from "../api/auth/[...nextauth]/options";
-import { notFound } from "next/navigation";
-
-// async function isLoggedIn() {
-//     const session = await getServerSession(options);
-//     console.log(session);
-// }
+import { getSession, useSession } from "next-auth/react";
+import { IconContext } from "react-icons";
 
 export default function App() {
+    // const { data, status } = useSession();
     return (
-        <Navbar position="static">
-            <NavbarBrand>
-                <GiWaterDrop />
+        <Navbar position="sticky">
+            <NavbarBrand className="flex gap-4">
+                <IconContext.Provider
+                    value={{
+                        className: "global-class-name hidden md:flex",
+                        size: "2em",
+                    }}
+                >
+                    <GiWaterDrop />
+                </IconContext.Provider>
                 <p className="font-bold text-inherit">Econnect</p>
+                {/* <p>{status}</p> */}
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-8" justify="center">
                 <NavbarItem>
