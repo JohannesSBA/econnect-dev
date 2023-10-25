@@ -2,6 +2,8 @@ import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@/app/lib/prisma";
 
 function getGoogleCredentials() {
     const clientId = process.env.GOOGLE_ID;
@@ -63,6 +65,7 @@ export const options: NextAuthOptions = {
             clientSecret: getGithubCredentials().clientSecret,
         }),
     ],
+    adapter: PrismaAdapter(prisma),
     callbacks: {
         redirect() {
             return "/dashboard";
