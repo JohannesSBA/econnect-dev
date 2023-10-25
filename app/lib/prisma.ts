@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 
 export { prisma };
 
-export async function fetchDb(userId: string) {
+export async function fetchDb(userEmail: string) {
     const response = await prisma.user.findUnique({
         where: {
-            id: userId,
+            email: userEmail,
         },
     });
     return response;

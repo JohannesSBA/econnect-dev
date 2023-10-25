@@ -18,10 +18,15 @@
 //     };
 // };
 
+import SignOutButton from "@/app/components/SignOutButton";
 import React from "react";
 
 const page = () => {
-    return <div>page</div>;
+    return (
+        <div>
+            <SignOutButton />
+        </div>
+    );
 };
 
 export default page;

@@ -56,7 +56,7 @@ export default function Login() {
         }
     }
 
-    async function handleSubmit(e: SyntheticEvent) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         let userData: formValues = {
             email: email as string,
@@ -64,7 +64,7 @@ export default function Login() {
         };
 
         // Make call to backend to create user
-        const res = await fetch("http://localhost:3000/lib/login", {
+        const res = await fetch("http://localhost:3000/api/user/login", {
             method: "POST",
             body: JSON.stringify(userData),
             headers: {
@@ -82,87 +82,112 @@ export default function Login() {
     }
     return (
         <>
-            <Button onPress={onOpen} color="primary">
-                Login
-            </Button>
-            <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                placement="top-center"
-                backdrop="blur"
-                onSubmit={handleSubmit}
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">
-                                Log in
-                            </ModalHeader>
-                            <ModalBody>
-                                <Input
-                                    endContent={<AiOutlineMail />}
-                                    label="Email"
-                                    placeholder="Enter your email"
-                                    variant="bordered"
-                                    onChange={(e) => {
-                                        setEmail(e.target.value);
-                                    }}
-                                />
-                                <Input
-                                    endContent={<AiFillLock />}
-                                    label="Password"
-                                    placeholder="Enter your password"
-                                    type="password"
-                                    variant="bordered"
-                                    onChange={(e) => {
-                                        setPassword(e.target.value);
-                                    }}
-                                />
-                                <div className="flex py-2 px-1 justify-between">
-                                    <Checkbox
-                                        classNames={{
-                                            label: "text-small",
-                                        }}
-                                    >
-                                        Remember me
-                                    </Checkbox>
-                                    <Link color="primary" href="#" size="sm">
-                                        Forgot password?
-                                    </Link>
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button
-                                    color="danger"
-                                    variant="flat"
-                                    onPress={onClose}
-                                >
-                                    Close
-                                </Button>
-                                <Button color="primary">Sign in</Button>
-                            </ModalFooter>
-                            <div className="px-4 pb-4 flex flex-col gap-2">
-                                <Button
-                                    color="primary"
-                                    variant="bordered"
-                                    onPress={loginWithGoogle}
-                                >
-                                    <FcGoogle />
-                                    Sign In With Google
-                                </Button>
-                                <Button
-                                    color="primary"
-                                    variant="bordered"
-                                    onPress={loginWithGitHub}
-                                >
-                                    <AiOutlineGithub />
-                                    Sign In With Github
-                                </Button>
-                            </div>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="name"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                />
+                <input
+                    type="password"
+                    placeholder="password"
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                    }}
+                />
+                <Button type="submit">si</Button>
+            </form>
         </>
     );
 }
+
+// <Button onPress={onOpen} color="primary">
+// Login
+// </Button>
+// <form onSubmit={handleSubmit}>
+//     <Modal
+//         isOpen={isOpen}
+//         onOpenChange={onOpenChange}
+//         placement="top-center"
+//         backdrop="blur"
+//     >
+//         <ModalContent>
+//             {(onClose) => (
+//                 <>
+//                     <ModalHeader className="flex flex-col gap-1">
+//                         Log in
+//                     </ModalHeader>
+//                     <ModalBody>
+//                         <Input
+//                             endContent={<AiOutlineMail />}
+//                             label="Email"
+//                             placeholder="Enter your email"
+//                             variant="bordered"
+//                             onChange={(e) => {
+//                                 setEmail(e.target.value);
+//                             }}
+//                         />
+//                         <Input
+//                             endContent={<AiFillLock />}
+//                             label="Password"
+//                             placeholder="Enter your password"
+//                             type="password"
+//                             variant="bordered"
+//                             onChange={(e) => {
+//                                 setPassword(e.target.value);
+//                             }}
+//                         />
+//                         <div className="flex py-2 px-1 justify-between">
+//                             <Checkbox
+//                                 classNames={{
+//                                     label: "text-small",
+//                                 }}
+//                             >
+//                                 Remember me
+//                             </Checkbox>
+//                             <Link
+//                                 color="primary"
+//                                 href="#"
+//                                 size="sm"
+//                             >
+//                                 Forgot password?
+//                             </Link>
+//                         </div>
+//                     </ModalBody>
+//                     <ModalFooter>
+//                         <Button
+//                             color="danger"
+//                             variant="flat"
+//                             onPress={onClose}
+//                         >
+//                             Close
+//                         </Button>
+//                         <Button color="primary" type="submit">
+//                             Sign in
+//                         </Button>
+//                     </ModalFooter>
+//                     <div className="px-4 pb-4 flex flex-col gap-2">
+//                         <Button
+//                             color="primary"
+//                             variant="bordered"
+//                             onPress={loginWithGoogle}
+//                         >
+//                             <FcGoogle />
+//                             Sign In With Google
+//                         </Button>
+//                         <Button
+//                             color="primary"
+//                             variant="bordered"
+//                             onPress={loginWithGitHub}
+//                         >
+//                             <AiOutlineGithub />
+//                             Sign In With Github
+//                         </Button>
+//                     </div>
+//                 </>
+//             )}
+//         </ModalContent>
+//     </Modal>
+// </form>

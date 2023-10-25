@@ -165,7 +165,9 @@ export default function Login() {
                                 >
                                     Close
                                 </Button>
-                                <Button color="primary">Sign in</Button>
+                                <Button type="submit" color="primary">
+                                    Sign up
+                                </Button>
                             </ModalFooter>
                             <div className="px-4 pb-4 flex flex-col gap-2">
                                 <Button
@@ -174,7 +176,7 @@ export default function Login() {
                                     onPress={loginWithGoogle}
                                 >
                                     <FcGoogle />
-                                    Sign In With Google
+                                    Sign Up With Google
                                 </Button>
                                 <Button
                                     color="primary"
@@ -182,7 +184,7 @@ export default function Login() {
                                     onPress={loginWithGitHub}
                                 >
                                     <AiOutlineGithub />
-                                    Sign In With Github
+                                    Sign Up With Github
                                 </Button>
                             </div>
                         </>

@@ -39,6 +39,8 @@ function getGithubCredentials() {
 export const options: NextAuthOptions = {
     providers: [
         CredentialsProvider({
+            id: "credentials",
+            name: "Credentials",
             credentials: {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
@@ -59,6 +61,33 @@ export const options: NextAuthOptions = {
                 }
                 return user;
             },
+
+            //         id: "credentials",
+            //   name: "Credentials",
+            //   async authorize(credentials, req) {
+            //     const userCredentials = {
+            //       email: credentials.email,
+            //       password: credentials.password,
+            //     };
+
+            //     const res = await fetch(
+            //       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user/login`,
+            //       {
+            //         method: "POST",
+            //         body: JSON.stringify(userCredentials),
+            //         headers: {
+            //           "Content-Type": "application/json",
+            //         },
+            //       }
+            //     );
+            //     const user = await res.json();
+
+            //     if (res.ok && user) {
+            //       return user;
+            //     } else {
+            //       return null;
+            //     }
+            //   },
         }),
         GoogleProvider({
             clientId: getGoogleCredentials().clientId,

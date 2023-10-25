@@ -3,7 +3,7 @@ import { prisma } from "@/app/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import type { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import hashPassword from "../helpers/hashPass";
+import hashPassword from "../../helpers/hashPass";
 
 export default async function handle(
     req: NextApiRequest,

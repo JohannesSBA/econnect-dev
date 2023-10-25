@@ -1,7 +1,8 @@
 // import prisma client
-import hashPassword from "../helpers/hashPass";
+import hashPassword from "../../helpers/hashPass";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "./prisma";
+import { prisma } from "../../lib/prisma";
+
 export default async function handle(
     req: NextApiRequest,
     res: NextApiResponse
