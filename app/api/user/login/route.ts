@@ -1,9 +1,10 @@
 // import prisma client
-import hashPassword from "../../helpers/hashPass";
-import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../lib/prisma";
 
-export default async function handle(
+import hashPassword from "@/app/helpers/hashPass";
+import { prisma } from "@/app/lib/prisma";
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default async function POST(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -33,6 +34,7 @@ async function loginUserHandler(req: NextApiRequest, res: NextApiResponse) {
             // exclude password from json response
             return res.status(200).json(exclude(user, ["password"]));
         } else {
+            console.log('invalid credentials')
             return res.status(401).json({ message: "invalid credentials" });
         }
     } catch (e) {
