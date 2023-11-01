@@ -1,9 +1,7 @@
 import bcrypt from "bcryptjs";
 
-export default function isSamePass(unHashPass: string, hashPass: string) {
-    return bcrypt
-        .compare(unHashPass, hashPass)
-        .then(function (result: boolean) {
-            return result;
-        });
+export default async function isSamePass(unHashPass: string, hashPass: string) {
+    const result = await bcrypt
+        .compare(unHashPass, hashPass);
+    return result;
 }

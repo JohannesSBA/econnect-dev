@@ -1,32 +1,18 @@
-// import SignOutButton from "@/app/components/SignOutButton";
-// import { prisma } from "@/app/lib/prisma";
-// import { GetStaticProps } from "next";
-// import { AppProps } from "next/app";
-
-// export const getStaticProps: GetStaticProps = async () => {
-//     const feed = await prisma.post.findMany({
-//         where: { published: true },
-//         include: {
-//             author: {
-//                 select: { name: true },
-//             },
-//         },
-//     });
-//     return {
-//         props: { feed },
-//         revalidate: 10,
-//     };
-// };
-
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import SignOutButton from "@/app/components/SignOutButton";
+import { getServerSession } from "next-auth";
 import React from "react";
+import NavBar from "@/app/components/authNavBar";
 
-const page = () => {
-    return (
-        <div>
-            <SignOutButton />
-        </div>
-    );
+const page = async () => {
+  const session = await getServerSession(options);
+  return (
+    <div>
+      <NavBar />
+      <h1>{session?.user.email}</h1>
+      <SignOutButton />
+    </div>
+  );
 };
 
 export default page;
