@@ -1,6 +1,4 @@
 import type { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/app/lib/prisma";
@@ -42,6 +40,7 @@ export const options: NextAuthOptions = {
           email: user.email,
           name: user.name || "DefaultName", // Set a default value if name is null
           password: user.password,
+          bio: user.bio as string,
         };
       },
     }),
@@ -54,9 +53,9 @@ export const options: NextAuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (token) {
+        session.user.email = token.email;
         session.user.id = token.id;
         session.user.name = token.name;
-        session.user.email = token.email;
         session.user.image = token.picture;
       }
 

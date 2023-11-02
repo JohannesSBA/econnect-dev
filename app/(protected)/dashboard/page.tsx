@@ -1,8 +1,8 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import SignOutButton from "@/app/components/SignOutButton";
+import SignOutButton from "@/app/components/(protected)/SignOutButton";
+import NavBar from "@/app/components/(protected)/authNavBar";
 import { getServerSession } from "next-auth";
 import React from "react";
-import NavBar from "@/app/components/authNavBar";
 
 const page = async () => {
   const session = await getServerSession(options);

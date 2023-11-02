@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Image } from "@nextui-org/react";
 import { Session, getServerSession } from "next-auth";
-import { options } from "../api/auth/[...nextauth]/options";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 const UserCard = async () => {
   const session = await getServerSession(options);

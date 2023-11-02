@@ -35,41 +35,6 @@ export default function SignUp() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  async function loginWithGoogle() {
-    setIsLoading(true);
-    try {
-      await signIn("google");
-    } catch (error) {
-      // display error message to user
-      console.error("Something went wrong with your login.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function loginWithCredentials() {
-    setIsLoading(true);
-    try {
-      await signIn("credentials");
-      handleSubmit;
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function loginWithGitHub() {
-    setIsLoading(true);
-    try {
-      await signIn("github");
-    } catch (error) {
-      // display error message to user
-      console.error("Something went wrong with your login.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   function passWordMatch(password: string, confirmedPassword: string) {
     if (password === confirmedPassword) {
       return true;
@@ -104,7 +69,7 @@ export default function SignUp() {
             toast.error("Email is Already in use");
           }
         } else {
-          //registration failed
+          toast(res.data);
         }
       }
     }
@@ -199,7 +164,7 @@ export default function SignUp() {
                 </form>
               </ModalBody>
               <ModalFooter></ModalFooter>
-              <div className="px-4 pb-4 flex flex-col gap-2">
+              {/* <div className="px-4 pb-4 flex flex-col gap-2">
                 <Button
                   color="primary"
                   variant="bordered"
@@ -216,7 +181,7 @@ export default function SignUp() {
                   <AiOutlineGithub />
                   Sign Up With Github
                 </Button>
-              </div>
+              </div> */}
             </>
           )}
         </ModalContent>
