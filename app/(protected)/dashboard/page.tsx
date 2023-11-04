@@ -6,6 +6,7 @@ import React from "react";
 
 const page = async () => {
   const session = await getServerSession(options);
+  console.log(session);
   return (
     <div>
       <NavBar />

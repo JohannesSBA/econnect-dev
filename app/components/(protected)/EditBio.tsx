@@ -23,15 +23,36 @@ export default function App({ userBio }: BioProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const session = await getServerSession(options);
-    const email = session?.user.email as string;
-    const res = await axios.put("/api/user/bio", {
-      email: email,
-      bio: bio,
-    });
-    if (res.status) {
-      const data = await res.data;
-    } else {
-      toast(res.data);
+
+    if (!session) {
+      // Handle the case where the user is not authenticated
+      return;
+    }
+
+    const email = session.user.email as string;
+
+    try {
+      const res = await axios.put(
+        "/api/user/bio",
+        {
+          email: email,
+          bio: bio,
+        }
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${authToken}`,
+        //   },
+        // }
+      );
+
+      if (res.status) {
+        const data = res.data;
+        // Handle the response data as needed
+      } else {
+        toast(res.data);
+      }
+    } catch (error) {
+      // Handle any error that may occur during the API request
     }
   };
 

@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/app/lib/prisma";
 import { compare } from "bcryptjs";
+import { User, Account, Profile } from "next-auth";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -35,12 +36,11 @@ export const options: NextAuthOptions = {
         if (!(await compare(password, user.password))) {
           throw new Error("Password is Incorrect");
         }
+
         return {
-          id: user.id,
+          id: user.userId,
           email: user.email,
           name: user.name || "DefaultName", // Set a default value if name is null
-          password: user.password,
-          bio: user.bio as string,
         };
       },
     }),
@@ -64,6 +64,7 @@ export const options: NextAuthOptions = {
     async jwt({ token, user }) {
       return token;
     },
+
     async redirect({ url, baseUrl }) {
       return url.startsWith(baseUrl) ? url : baseUrl + "/dashboard";
     },
