@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/app/lib/prisma";
 import { compare } from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { User, Account, Profile } from "next-auth";
 
 export const options: NextAuthOptions = {
@@ -37,10 +38,18 @@ export const options: NextAuthOptions = {
           throw new Error("Password is Incorrect");
         }
 
+        const accessToken = jwt.sign(
+          { userId: user.userId, email: user.email, name: user.name },
+          process.env.NEXTAUTH_SECRET as string, // Use your secret key
+          {
+            expiresIn: "1d", // Set the expiration time as needed
+          }
+        );
+
         return {
           id: user.userId,
           email: user.email,
-          name: user.name || "DefaultName", // Set a default value if name is null
+          name: user.name || "DefaultName",
         };
       },
     }),
@@ -61,8 +70,33 @@ export const options: NextAuthOptions = {
 
       return session;
     },
+    // async jwt({ token, user }) {
+    //   return token;
+    // },
+
     async jwt({ token, user }) {
-      return token;
+      const dbUserResult = await prisma.user.findUnique({
+        where: {
+          email: token.email as string,
+        },
+      });
+
+      if (!dbUserResult) {
+        if (user) {
+          token.id = user!.id;
+        }
+
+        return token;
+      }
+
+      const dbUser = dbUserResult as unknown as User;
+
+      return {
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        picture: dbUser.image,
+      };
     },
 
     async redirect({ url, baseUrl }) {

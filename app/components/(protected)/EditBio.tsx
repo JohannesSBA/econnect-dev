@@ -11,10 +11,10 @@ import {
 } from "@nextui-org/react";
 import { BiPencil } from "react-icons/bi";
 import { toast } from "sonner";
-import { prisma } from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import axios from "axios";
+import { BioProps } from "@/app/types/db";
 
 export default function App({ userBio }: BioProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -22,6 +22,8 @@ export default function App({ userBio }: BioProps) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    toast.success("hellp");
+
     const session = await getServerSession(options);
 
     if (!session) {
@@ -37,12 +39,13 @@ export default function App({ userBio }: BioProps) {
         {
           email: email,
           bio: bio,
+        },
+        {
+          headers: {
+            Authorization: process.env.NEXTAUTH_SECRET as string,
+            "Content-Type": "application/json",
+          },
         }
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${authToken}`,
-        //   },
-        // }
       );
 
       if (res.status) {

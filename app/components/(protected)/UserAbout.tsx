@@ -8,6 +8,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import EditBio from "./EditBio";
+import { BioProps } from "@/app/types/db";
 
 export default function UserAbout({ userBio }: BioProps) {
   const [showMore, setShowMore] = useState<boolean>(false);

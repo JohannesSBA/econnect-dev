@@ -1,7 +1,6 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-
 import UserAbout from "@/app/components/(protected)/UserAbout";
 import Navbar from "@/app/components/Navbar";
 import UserCard from "@/app/components/(protected)/UserCard";

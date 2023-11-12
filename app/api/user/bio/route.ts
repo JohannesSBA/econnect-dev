@@ -1,5 +1,4 @@
 import { prisma } from "@/app/lib/prisma";
-import hashPassword from "@/app/helpers/hashPass";
 import { Axios, AxiosError } from "axios";
 
 export async function PUT(req: Request, res: Response) {
@@ -19,7 +18,7 @@ export async function PUT(req: Request, res: Response) {
       response = e.message;
     });
 
-  if (req.method !== "POST") {
+  if (req.method !== "PUT") {
     return new Response("Method not allowed", { status: 403 });
   }
   return new Response(response, { status: 200 });

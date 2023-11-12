@@ -1,6 +1,5 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import SignOutButton from "@/app/components/(protected)/SignOutButton";
-import NavBar from "@/app/components/(protected)/authNavBar";
 import { getServerSession } from "next-auth";
 import React from "react";
 
@@ -9,7 +8,7 @@ const page = async () => {
   console.log(session);
   return (
     <div>
-      <NavBar />
+      {/* <NavBar /> */}
       <h1>{session?.user.email}</h1>
       <SignOutButton />
     </div>
