@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma";
+import prisma from "@/app/lib/prisma";
 import { Axios, AxiosError } from "axios";
 
 export async function PUT(req: Request, res: Response) {

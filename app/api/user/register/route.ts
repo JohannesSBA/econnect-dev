@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma";
+import prisma from "@/app/lib/prisma";
 import hashPassword from "@/app/helpers/hashPass";
 import { Axios, AxiosError } from "axios";
 

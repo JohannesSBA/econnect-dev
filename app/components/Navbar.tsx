@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Navbar,
@@ -11,8 +10,33 @@ import { GiWaterDrop } from "react-icons/gi";
 import Login from "./Login";
 import { IconContext } from "react-icons";
 import SingUp from "./SingUp";
+import { getServerSession } from "next-auth/next";
+import { options } from "../api/auth/[...nextauth]/options";
 
-export default function App() {
+const Header: React.FC = async () => {
+  const session = await getServerSession(options);
+
+  let right;
+  if (session) {
+    right = (
+      <NavbarContent justify="end">
+        <NavbarItem className="hidden lg:flex">
+          <Login />
+        </NavbarItem>
+        <NavbarItem>
+          <SingUp />
+        </NavbarItem>
+      </NavbarContent>
+    );
+  } else {
+    right = (
+      <NavbarContent justify="end">
+        <NavbarItem className="hidden lg:flex">Logged In</NavbarItem>
+        <NavbarItem>Signed In</NavbarItem>
+      </NavbarContent>
+    );
+  }
+
   return (
     <Navbar position="sticky">
       <NavbarBrand className="flex gap-4">
@@ -27,31 +51,9 @@ export default function App() {
         <p className="font-bold text-inherit">Econnect</p>
         {/* <p>{status}</p> */}
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-8" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Find Jobs
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Post Jobs
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Browse Catagories
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Login />
-        </NavbarItem>
-        <NavbarItem>
-          <SingUp />
-        </NavbarItem>
-      </NavbarContent>
+      <NavbarContent justify="end">{right}</NavbarContent>
     </Navbar>
   );
-}
+};
+
+export default Header;

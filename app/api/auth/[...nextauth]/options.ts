@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/app/lib/prisma";
+import prisma from "@/app/lib/prisma";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User, Account, Profile } from "next-auth";
@@ -39,7 +39,7 @@ export const options: NextAuthOptions = {
         }
 
         const accessToken = jwt.sign(
-          { userId: user.userId, email: user.email, name: user.name },
+          { userId: user.id, email: user.email, name: user.name },
           process.env.NEXTAUTH_SECRET as string, // Use your secret key
           {
             expiresIn: "1d", // Set the expiration time as needed
@@ -47,7 +47,7 @@ export const options: NextAuthOptions = {
         );
 
         return {
-          id: user.userId,
+          id: user.id,
           email: user.email,
           name: user.name || "DefaultName",
         };

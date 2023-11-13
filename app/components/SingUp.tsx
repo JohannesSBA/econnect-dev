@@ -46,6 +46,8 @@ export default function SignUp() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // TODO Refresh page when User signs up
+
     if (!passWordMatch(password as string, ConfirmPassword as string)) {
       toast.error("Password Do not Match");
       return;

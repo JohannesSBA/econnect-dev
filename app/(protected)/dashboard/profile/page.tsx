@@ -1,12 +1,13 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import UserAbout from "@/app/components/(protected)/UserAbout";
+import UserAbout from "../../components/UserAbout";
 import Navbar from "@/app/components/Navbar";
-import UserCard from "@/app/components/(protected)/UserCard";
-import UserExperience from "@/app/components/(protected)/UserExperience";
+import UserCard from "../../components/UserCard";
 import { PrismaClient } from "@prisma/client";
-import { prisma } from "@/app/lib/prisma";
+import prisma from "@/app/lib/prisma";
+import UserExperience from "../../components/UserExperience";
+import Header from "@/app/components/Navbar";
 
 export const getUserBio = async () => {
   try {
@@ -37,7 +38,7 @@ const page = async () => {
 
   return (
     <div className="h-fit md:h-screen bg-slate-200">
-      <Navbar />
+      <Header />
       <div className="w-screen flex overflow-auto flex-col md:flex-row gap-2">
         <div className="w-full md:w-1/2 flex flex-col items-center bg-slate-200 pt-4 gap-2">
           <UserCard />

@@ -1,18 +1,9 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import SignOutButton from "@/app/components/(protected)/SignOutButton";
-import { getServerSession } from "next-auth";
-import React from "react";
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
+import SignOutButton from "../components/SignOutButton";
 
-const page = async () => {
-  const session = await getServerSession(options);
-  console.log(session);
-  return (
-    <div>
-      {/* <NavBar /> */}
-      <h1>{session?.user.email}</h1>
-      <SignOutButton />
-    </div>
-  );
+const App = ({ Component, pageProps }: AppProps) => {
+  return <SignOutButton />;
 };
 
-export default page;
+export default App;

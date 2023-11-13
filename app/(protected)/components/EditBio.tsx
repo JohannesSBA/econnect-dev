@@ -10,53 +10,14 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { BiPencil } from "react-icons/bi";
-import { toast } from "sonner";
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import axios from "axios";
 import { BioProps } from "@/app/types/db";
 
 export default function App({ userBio }: BioProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [bio, setBio] = useState<string>();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast.success("hellp");
-
-    const session = await getServerSession(options);
-
-    if (!session) {
-      // Handle the case where the user is not authenticated
-      return;
-    }
-
-    const email = session.user.email as string;
-
-    try {
-      const res = await axios.put(
-        "/api/user/bio",
-        {
-          email: email,
-          bio: bio,
-        },
-        {
-          headers: {
-            Authorization: process.env.NEXTAUTH_SECRET as string,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (res.status) {
-        const data = res.data;
-        // Handle the response data as needed
-      } else {
-        toast(res.data);
-      }
-    } catch (error) {
-      // Handle any error that may occur during the API request
-    }
+  const handleSubmit = async (e: FormEvent<HTMLElement>) => {
+    // TODO: IMPLEMENT THE SUBMIT FOR EDITING BIO
   };
 
   return (
