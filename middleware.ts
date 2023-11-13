@@ -8,7 +8,7 @@ export default withAuth(
 
     //Manage route protection
     const isAuth = await getToken({ req });
-    const isLoginPage = pathname.startsWith("/home");
+    const isLoginPage = pathname.startsWith("/login");
 
     const sensitiveRouter = ["/dashboard"];
     const isAccessingSesnsitiveRoute = sensitiveRouter.some((route) =>
@@ -41,5 +41,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/", "/home", "/dashboard/:path*"],
+  matcher: ["/", "/login", "/dashboard/:path*"],
 };

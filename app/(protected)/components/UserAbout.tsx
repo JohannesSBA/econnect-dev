@@ -12,6 +12,7 @@ import { BioProps } from "@/app/types/db";
 
 export default function UserAbout({ userBio }: BioProps) {
   const [showMore, setShowMore] = useState<boolean>(false);
+  // TODO : USE PUSHER TO UPDATE THE BIO AS SOON AS IT IS SUBMIT OR FORCE A REFRESH
 
   return (
     <Card className="w-80 md:w-[600px] bg-transparent ml-6">

@@ -1,11 +1,15 @@
 import { Session } from "next-auth";
 
 interface User {
-  name: string;
-  email: string;
+  id: string;
+  name: string | null;
+  email: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  phoneNumber: string | null;
   password: string;
-  id: number;
-  bio: string;
+  role: $Enums.Role;
+  bio: string | null;
 }
 
 interface BioProps {

@@ -11,6 +11,8 @@ import {
 } from "@nextui-org/react";
 import { BiPencil } from "react-icons/bi";
 import { BioProps } from "@/app/types/db";
+import { toast } from "sonner";
+import axios, { AxiosError } from "axios";
 
 export default function App({ userBio }: BioProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -18,6 +20,19 @@ export default function App({ userBio }: BioProps) {
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
     // TODO: IMPLEMENT THE SUBMIT FOR EDITING BIO
+    e.preventDefault();
+    await axios.put("/api/user/bio", {
+      bio: bio,
+    });
+    try {
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error("axios error");
+      }
+      toast.error(error as string);
+    } finally {
+      onclose;
+    }
   };
 
   return (

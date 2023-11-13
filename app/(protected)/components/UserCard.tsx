@@ -11,7 +11,7 @@ const UserCard = async () => {
       <Card className="w-80 md:w-[600px] bg-transparent ml-6 p-2 flex justify-center">
         <div className="w-full h-full rounded-md border-2 border-slate-300">
           <Image
-            src="https://nextui-docs-v2.vercel.app/images/album-cover.png"
+            src="/dale.png"
             alt="NextUI Album Cover"
             className="m-5 rounded-full border-2 border-white md:w-full w-1/2"
           />

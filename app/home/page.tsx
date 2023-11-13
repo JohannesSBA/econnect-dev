@@ -8,15 +8,15 @@ import About from "../components/About";
 import Progress from "../components/Progress";
 
 export default function home() {
-    return (
-        <div className="w-full dark:bg-blue-900 bg-indigo-400">
-            <NextUIProvider>
-                <ThemeProvider attribute="class">
-                    <Progress />
-                    <Navbar />
-                    <Main />
-                </ThemeProvider>
-            </NextUIProvider>
-        </div>
-    );
+  return (
+    <div className="w-full dark:bg-blue-900 bg-indigo-400">
+      <NextUIProvider>
+        <ThemeProvider attribute="class">
+          <Progress />
+          <Navbar />
+          <Main />
+        </ThemeProvider>
+      </NextUIProvider>
+    </div>
+  );
 }

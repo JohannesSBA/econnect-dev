@@ -60,6 +60,33 @@ export const options: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async jwt({ token, user }) {
+      if (token.email && token.id) {
+        const dbUserResult = await prisma.user.findUnique({
+          where: {
+            email: token.email,
+            id: token.id,
+          },
+        });
+
+        if (dbUserResult) {
+          const dbUser = dbUserResult as User;
+          return {
+            id: dbUser.id,
+            name: dbUser.name,
+            email: dbUser.email,
+            picture: dbUser.image,
+          };
+        }
+      }
+
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+
     async session({ session, token }) {
       if (token) {
         session.user.email = token.email;
@@ -69,34 +96,6 @@ export const options: NextAuthOptions = {
       }
 
       return session;
-    },
-    // async jwt({ token, user }) {
-    //   return token;
-    // },
-
-    async jwt({ token, user }) {
-      const dbUserResult = await prisma.user.findUnique({
-        where: {
-          email: token.email as string,
-        },
-      });
-
-      if (!dbUserResult) {
-        if (user) {
-          token.id = user!.id;
-        }
-
-        return token;
-      }
-
-      const dbUser = dbUserResult as unknown as User;
-
-      return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        picture: dbUser.image,
-      };
     },
 
     async redirect({ url, baseUrl }) {
