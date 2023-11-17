@@ -16,12 +16,12 @@ import SignOutButton from "../(protected)/components/SignOutButton";
 
 const Header: React.FC = async () => {
   const session = await getServerSession(options);
+
   return (
     <Navbar position="sticky">
       <NavbarBrand className="flex gap-4">
         <GiWaterDrop />
         <p className="font-bold text-inherit">Econnect</p>
-        {/* <p>{status}</p> */}
       </NavbarBrand>
       <NavbarContent justify="end">
         {!session ? (

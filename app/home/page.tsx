@@ -6,6 +6,9 @@ import Navbar from "../components/Navbar";
 import Main from "../components/Main";
 import About from "../components/About";
 import Progress from "../components/Progress";
+import dynamic from "next/dynamic";
+
+// const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 
 export default function home() {
   return (
@@ -13,7 +16,7 @@ export default function home() {
       <NextUIProvider>
         <ThemeProvider attribute="class">
           <Progress />
-          <Navbar />
+          {/* <Navbar /> */}
           <Main />
         </ThemeProvider>
       </NextUIProvider>

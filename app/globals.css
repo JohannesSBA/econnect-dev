@@ -29,3 +29,14 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.cs-background {
+  background-color: #5b5bf7;
+  opacity: 0.8;
+  background-image: repeating-radial-gradient(
+      circle at 0 0,
+      transparent 0,
+      #9393fe 31px
+    ),
+    repeating-linear-gradient(#0014a855, #0016a8);
+}
