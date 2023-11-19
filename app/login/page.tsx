@@ -6,6 +6,8 @@ import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
+import { GiWaterDrop } from "react-icons/gi";
+import { IconContext } from "react-icons";
 
 export default function Login() {
   const [password, setPassword] = useState<string>();
@@ -33,11 +35,16 @@ export default function Login() {
   return (
     <div className="w-screen h-screen flex">
       <div className="w-2/3  h-screen cs-background flex items-center">
-        <div className="p-24 bg-white backdrop-filter backdrop-blur-md bg-opacity-50 rounded-2xl text-center m-12 h-5/6">
-          <h1 className="text-white text-6xl font-bold w-80 text-left ">
-            Jobs are waiting for you. Login Now!
-          </h1>
-          <Image src="/poc.png" alt="NextUI Album Cover" className="" />
+        <div className="p-24  rounded-2xl text-center m-12 h-5/6 w-full flex justify-center align-middle">
+          <IconContext.Provider
+            value={{
+              className: "global-class-name hidden md:flex",
+              size: "38em",
+              color: "white",
+            }}
+          >
+            <GiWaterDrop />
+          </IconContext.Provider>
         </div>
       </div>
       <div className="w-1/3 flex flex-col justify-center align-middle p-12">

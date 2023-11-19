@@ -9,6 +9,7 @@ import { AppProps } from "next/app";
 import Navbar from "@/app/components/Navbar";
 import Messages from "../components/Messages";
 import MessagingBar from "../components/Messages";
+import NewPost from "../components/NewPost";
 
 interface LayoutProps {
   children: ReactNode;
@@ -29,7 +30,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <body className={inter.className}>
         <Navbar />
         <aside>{children}</aside>
-        <div className="fixed bottom-0 right-0 p-8">
+        <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
+          <NewPost />
           <MessagingBar />
         </div>
       </body>

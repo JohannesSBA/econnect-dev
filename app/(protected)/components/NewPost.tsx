@@ -1,3 +1,4 @@
+"use client";
 import React, { FormEvent, useState } from "react";
 import {
   Modal,
@@ -7,21 +8,27 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Checkbox,
+  Input,
+  Link,
   Textarea,
 } from "@nextui-org/react";
-import { BiPencil } from "react-icons/bi";
-import { BioProps } from "@/app/types/db";
-import { toast } from "sonner";
+import FriendBadge from "./FriendBadge";
+import { IoPencil } from "react-icons/io5";
+import { IconContext } from "react-icons";
 import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
 
-export default function App({ userBio }: BioProps) {
+export default function SignUp() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [bio, setBio] = useState<string>();
+  const [post, setPost] = useState<string>();
+  const [title, setTitle] = useState<string>();
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
-    await axios.put("/api/user/bio", {
-      bio: bio,
+    await axios.post("/api/user/post", {
+      title: title,
+      post: post,
     });
     try {
     } catch (error) {
@@ -36,28 +43,53 @@ export default function App({ userBio }: BioProps) {
 
   return (
     <>
-      <Button onPress={onOpen} color="primary">
-        <BiPencil />
+      <Button onPress={onOpen} color="primary" variant="light">
+        <IconContext.Provider
+          value={{
+            className: "global-class-name hidden md:flex",
+            size: "6em",
+            color: "black",
+          }}
+        >
+          <IoPencil />
+        </IconContext.Provider>
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="top"
+        size="3xl"
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-black">
-                Edit Bio
+                Create New Post
               </ModalHeader>
               <form onSubmit={handleSubmit}>
                 <ModalBody>
-                  <Textarea
+                  <Input
                     isRequired
-                    label="About"
+                    label="Title"
                     labelPlacement="outside"
-                    placeholder="Enter your description"
-                    defaultValue={userBio as string}
+                    placeholder="Enter Title"
+                    defaultValue={title as string}
                     className="w-full text-black h-full"
                     onChange={(e) => {
-                      setBio(e.target.value);
+                      setTitle(e.target.value);
                     }}
+                  />
+                  <Textarea
+                    isRequired
+                    label="Post"
+                    labelPlacement="outside"
+                    placeholder="Write your Post"
+                    defaultValue={post as string}
+                    className="w-full text-black h-full"
+                    onChange={(e) => {
+                      setPost(e.target.value);
+                    }}
+                    size="lg"
                   />
                   <div className="flex py-2 px-1 justify-between"></div>
                 </ModalBody>
