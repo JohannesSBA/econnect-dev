@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@/app/(protected)/components/Navbar";
 import Messages from "../components/Messages";
 import MessagingBar from "../components/Messages";
 import NewPost from "../components/NewPost";

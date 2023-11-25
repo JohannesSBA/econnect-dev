@@ -2,12 +2,12 @@ import React from "react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import UserAbout from "../../components/UserAbout";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@/app/(protected)/components/Navbar";
 import UserCard from "../../components/UserCard";
 import { PrismaClient } from "@prisma/client";
 import prisma from "@/app/lib/prisma";
 import UserExperience from "../../components/UserExperience";
-import Header from "@/app/components/Navbar";
+import Header from "@/app/(protected)/components/Navbar";
 
 export const getUserBio = async () => {
   try {

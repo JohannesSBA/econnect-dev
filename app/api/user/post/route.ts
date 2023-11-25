@@ -1,14 +1,15 @@
 import prisma from "@/app/lib/prisma";
 import hashPassword from "@/app/helpers/hashPass";
 import { Axios, AxiosError } from "axios";
-import { getServerSession } from "next-auth";
+import { Session, getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
-  const hashedPass = await hashPassword(body.password);
   let response = "Some data";
-  const session = await getServerSession(options);
+  const session = (await getServerSession(options)) as Session;
+  console.log(session);
+  console.log("here");
 
   console.log(body.title);
   console.log(body.post);
@@ -18,6 +19,7 @@ export async function POST(req: Request, res: Response) {
       data: {
         title: body.title,
         content: body.post,
+        authorId: session.user.id as string,
       },
     })
     .catch((e: AxiosError) => {

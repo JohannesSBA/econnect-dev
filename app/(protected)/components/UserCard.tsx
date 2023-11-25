@@ -9,11 +9,11 @@ const UserCard = async () => {
   return (
     <div className=" border-2 border-slate-200 rounded-md shadow-sm">
       <Card className="w-80 md:w-[600px] bg-transparent ml-6 p-2 flex justify-center">
-        <div className="w-full h-full rounded-md border-2 border-slate-300">
+        <div className="w-72 h-full rounded-md ">
           <Image
-            src="/dale.png"
+            src={session?.user.image as string}
             alt="NextUI Album Cover"
-            className="m-5 rounded-full border-2 border-white md:w-full w-1/2"
+            className="m-5 rounded-full border-2 border-white md:w-full w-1/4"
           />
         </div>
         <div className="ml-4 p-2">

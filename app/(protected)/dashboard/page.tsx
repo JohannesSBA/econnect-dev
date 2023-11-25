@@ -1,10 +1,7 @@
-import { SessionProvider } from "next-auth/react";
-import { AppProps } from "next/app";
-import SignOutButton from "../components/SignOutButton";
-import NewPost from "../components/NewPost";
+import React from "react";
 
-const App = ({ Component, pageProps }: AppProps) => {
-  return <div className="h-screen w-screen "></div>;
+const page = () => {
+  return <div>page</div>;
 };
 
-export default App;
+export default page;
