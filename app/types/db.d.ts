@@ -1,3 +1,4 @@
+import { stringList } from "aws-sdk/clients/datapipeline";
 import { Session } from "next-auth";
 
 interface User {
@@ -10,10 +11,20 @@ interface User {
   password: string;
   role: $Enums.Role;
   bio: string | null;
+  image: string;
+  title: string;
+  pronouns: string;
+  location: String;
 }
 
-interface BioProps {
-  userBio: String;
+interface userProps {
+  userBio: string;
+  userName: string;
+  userPronouns: stirng;
+  userLocation: string;
+  userEducation: stirng;
+  userCPosition: string;
+  userTitle: string;
 }
 
 interface CustomSession {

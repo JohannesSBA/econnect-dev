@@ -25,6 +25,12 @@ export async function PUT(req: Request, res: Response) {
       },
       data: {
         bio: body.bio,
+        name: body.name,
+        pronouns: body.pronouns,
+        location: body.location,
+        education: body.education,
+        currentPosition: body.currentPosition,
+        title: body.title,
       },
     });
   } catch (e) {

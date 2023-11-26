@@ -34,20 +34,10 @@ export default function Login() {
 
   return (
     <div className="w-screen h-screen flex">
-      <div className="w-2/3  h-screen cs-background flex items-center">
-        <div className="p-24  rounded-2xl text-center m-12 h-5/6 w-full flex justify-center align-middle">
-          <IconContext.Provider
-            value={{
-              className: "global-class-name hidden md:flex",
-              size: "38em",
-              color: "white",
-            }}
-          >
-            <GiWaterDrop />
-          </IconContext.Provider>
-        </div>
+      <div className="md:w-1/3 lg:w-2/3 h-screen cs-background hidden md:flex items-center">
+        <div className="p-24  rounded-2xl text-center m-12 h-5/6 w-full flex justify-center align-middle"></div>
       </div>
-      <div className="w-1/3 flex flex-col justify-center align-middle p-12">
+      <div className="sm:w-full md:w-2/3 lg:w-1/3 flex flex-col justify-center align-middle p-12">
         <h1 className="py-6 px-2 font-bold text-4xl">Login</h1>
         <form className="flex flex-col gap-3" onSubmit={loginWithCredentials}>
           <Input

@@ -20,6 +20,11 @@ model User {
   bio String?
   posts       Post[]
   image String?
+  title String?
+  pronouns String?
+  location String?
+  currentPosition String?
+  education String?
 }
 
 enum Role {

@@ -30,9 +30,11 @@ export async function GET(req: Request, res: Response) {
       select: {
         id: true,
         name: true,
+        title: true,
         email: true,
         bio: true,
         role: true,
+        image: true,
         posts: {
           select: {
             // Include only the necessary fields from the 'posts' relation

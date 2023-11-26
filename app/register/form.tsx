@@ -14,6 +14,7 @@ export default function Form() {
 
     const validated = validateCredentials(email as string, password as string);
     if (validated.success === true) {
+      console.log("p");
       await axios.post("/api/user/register", {
         email: email,
         name: name,

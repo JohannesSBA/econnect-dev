@@ -1,27 +1,22 @@
-import axios from "axios";
+import { User } from "@nextui-org/react";
 import React from "react";
 
 interface searchProps {
-  encodedSearchQuery: string;
-  searchQuery: string;
+  name: string;
+  pic: string;
 }
 
-const SearchResults = async ({
-  encodedSearchQuery,
-  searchQuery,
-}: searchProps) => {
-  const fetchUsers = async (url: string) => {
-    const response = await axios.get(`/api/search?q=${encodedSearchQuery}`);
-    if (!response) {
-      throw new Error("failed to fetch posts");
-    }
-    console.log("this the data", response.data);
-    return response;
-  };
-
-  const allUsers = await fetchUsers(searchQuery as string);
-
-  return <div>{allUsers.data.map()}</div>;
+const SearchResults = ({ name, pic }: searchProps) => {
+  return (
+    <User
+      name={name}
+      description="Product Designer"
+      isFocusable
+      avatarProps={{
+        src: pic,
+      }}
+    />
+  );
 };
 
 export default SearchResults;
