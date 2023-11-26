@@ -73,7 +73,7 @@ export default function App({
         onOpenChange={onOpenChange}
         placement="top-center"
         size="3xl"
-        className="py-24"
+        className=" m-2 h-screen"
       >
         <ModalContent>
           {(onClose) => (
