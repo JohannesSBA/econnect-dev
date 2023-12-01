@@ -1,7 +1,7 @@
 import React from "react";
 import { Section } from "../components/Section";
 import HomePageMotion from "./HomePageMotion";
-import { Button, Image, Spacer } from "@nextui-org/react";
+import { Button, Image, Link, Spacer } from "@nextui-org/react";
 import { CustomCard } from "./CustomCard";
 import { GiWaterDrop } from "react-icons/gi";
 import { IconContext } from "react-icons";
@@ -27,9 +27,9 @@ const Main = () => {
           <Section delay={1.2}>
             <div className="flex gap-2">
               <Button
-                // as={Link}
+                as={Link}
                 color="primary"
-                href="#"
+                href="/register"
                 variant="shadow"
               >
                 Sign Up

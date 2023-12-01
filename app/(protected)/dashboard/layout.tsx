@@ -31,8 +31,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
         <aside>{children}</aside>
         <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
-          <NewPost />
-          <MessagingBar />
+          {/* <NewPost />
+          <MessagingBar /> */}
         </div>
       </body>
     </html>

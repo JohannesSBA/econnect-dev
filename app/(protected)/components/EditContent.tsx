@@ -1,3 +1,4 @@
+"use client";
 import React, { FormEvent, useState } from "react";
 import {
   Modal,
@@ -45,7 +46,8 @@ export default function App({
     e.preventDefault();
     await axios.put("/api/user/update", {
       bio: bio,
-      name: fullName,
+      firstName: firstName,
+      lastName: lastName,
       pronouns: proNouns,
       location: location,
       education: education,
@@ -64,8 +66,14 @@ export default function App({
   };
 
   return (
-    <>
-      <Button onPress={onOpen} color="primary">
+    <div className="fixed top-0 right-0 mt-24 mr-12 z-50">
+      <Button
+        onPress={onOpen}
+        isIconOnly
+        color="primary"
+        variant="light"
+        className="text-black"
+      >
         <BiPencil />
       </Button>
       <Modal
@@ -73,7 +81,7 @@ export default function App({
         onOpenChange={onOpenChange}
         placement="top-center"
         size="3xl"
-        className=" m-2 h-screen"
+        className="m-2 h-screen overflow-scroll"
       >
         <ModalContent>
           {(onClose) => (
@@ -219,6 +227,6 @@ export default function App({
           )}
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 }

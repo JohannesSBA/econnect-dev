@@ -3,7 +3,8 @@ import { Session } from "next-auth";
 
 interface User {
   id: string;
-  name: string | null;
+  firstName: string | null;
+  lastName: string | null;
   email: string | null;
   createdAt: Date;
   updatedAt: Date;

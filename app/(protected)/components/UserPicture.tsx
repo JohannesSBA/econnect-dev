@@ -2,9 +2,10 @@ import React from "react";
 import { User, Link } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { getUserContent } from "@/app/helpers/getUser";
 
 export default async function App() {
-  const session = await getServerSession(options);
+  const userInfo = await getUserContent();
 
   return (
     <div className="flex items-center gap-4">
@@ -13,11 +14,11 @@ export default async function App() {
           as="button"
           avatarProps={{
             isBordered: true,
-            src: session?.user.image as string,
+            src: userInfo.image as string,
           }}
           className="transition-transform"
-          description={session?.user.email as string}
-          name={session?.user.name as string}
+          description={userInfo.email as string}
+          name={userInfo.fullName}
         />
       </Link>
     </div>

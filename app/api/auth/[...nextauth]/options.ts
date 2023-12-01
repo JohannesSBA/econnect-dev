@@ -4,7 +4,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/prisma";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { User, Account, Profile } from "next-auth";
+import { User } from "@/app/types/db";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -39,7 +39,12 @@ export const options: NextAuthOptions = {
         }
 
         const accessToken = jwt.sign(
-          { userId: user.id, email: user.email, name: user.name },
+          {
+            userId: user.id,
+            email: user.email,
+            name: user.firstName,
+            lastName: user.lastName,
+          },
           process.env.NEXTAUTH_SECRET as string, // Use your secret key
           {
             expiresIn: "1d", // Set the expiration time as needed
@@ -49,7 +54,18 @@ export const options: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          name: user.name || "DefaultName",
+          firstName: user.firstName || "DefaultName",
+          lastName: user.lastName,
+          bio: user.bio,
+          createdAt: user.createdAt,
+          image: user.image as string,
+          location: user.location as string,
+          password: "",
+          phoneNumber: user.phoneNumber,
+          updatedAt: user.updatedAt,
+          role: user.role,
+          title: user.title as string,
+          pronouns: user.pronouns as string,
         };
       },
     }),
@@ -73,9 +89,10 @@ export const options: NextAuthOptions = {
           const dbUser = dbUserResult as User;
           return {
             id: dbUser.id,
-            name: dbUser.name,
+            firstName: dbUser.firstName,
             email: dbUser.email,
             picture: dbUser.image,
+            lastName: dbUser.lastName,
           };
         }
       }
@@ -91,7 +108,6 @@ export const options: NextAuthOptions = {
       if (token) {
         session.user.email = token.email;
         session.user.id = token.id;
-        session.user.name = token.name;
         session.user.image = token.picture;
       }
 

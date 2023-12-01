@@ -14,7 +14,13 @@ export async function GET(req: Request, res: Response) {
       where: {
         OR: [
           {
-            name: {
+            firstName: {
+              contains: decodedQuery,
+              mode: "insensitive",
+            },
+          },
+          {
+            lastName: {
               contains: decodedQuery,
               mode: "insensitive",
             },
@@ -29,7 +35,8 @@ export async function GET(req: Request, res: Response) {
       },
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         title: true,
         email: true,
         bio: true,

@@ -4,11 +4,8 @@ import { getServerSession } from "next-auth/next";
 import { options } from "../../auth/[...nextauth]/options";
 
 export async function PUT(req: Request, res: Response) {
-  console.log("here");
   const body = await req.json();
   let response = "Some data";
-
-  console.log(body);
 
   const session = await getServerSession(options);
 
@@ -25,7 +22,8 @@ export async function PUT(req: Request, res: Response) {
       },
       data: {
         bio: body.bio,
-        name: body.name,
+        firstName: body.firstName,
+        lastName: body.lastName,
         pronouns: body.pronouns,
         location: body.location,
         education: body.education,
