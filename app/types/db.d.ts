@@ -16,6 +16,8 @@ interface User {
   title: string;
   pronouns: string;
   location: String;
+  friends: User[];
+  friendsOf: User[];
 }
 
 interface userProps {

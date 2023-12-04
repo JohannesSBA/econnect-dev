@@ -4,6 +4,7 @@ import UserCard from "../../components/UserCard";
 import UserExperience from "../../components/UserExperience";
 import EditContent from "../../components/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
+import AddFriendComponent from "../../components/AddFriendButton";
 
 const page = async () => {
   const userInfo = await getUserContent();
@@ -23,6 +24,7 @@ const page = async () => {
             userCPosition={userInfo.currentPosition as string}
             userTitle={userInfo.title as string}
           />
+          <AddFriendComponent id={userInfo.id as string} />
           <UserExperience />
         </div>
       </div>

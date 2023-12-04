@@ -2,7 +2,7 @@ import prisma from "@/app/lib/prisma";
 import hashPassword from "@/app/helpers/hashPass";
 import { Axios, AxiosError } from "axios";
 import { Session, getServerSession } from "next-auth";
-import { options } from "../../auth/[...nextauth]/options";
+import { options } from "../../../auth/[...nextauth]/options";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();

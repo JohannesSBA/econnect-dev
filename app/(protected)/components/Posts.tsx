@@ -1,33 +1,38 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
 
-export default async function App() {
-  const session = await getServerSession(options);
-
+export default function App() {
   interface PageProps {
     params: {
       posts: string;
     };
   }
 
-  async function getUserPosts() {
-    try {
-      const posts = await prisma.post.findMany({
-        where: {
-          author: { email: session?.user.email },
-        },
-      });
-      const stringified = JSON.stringify(posts);
-      return stringified;
-    } catch (error) {
-      console.log("from error " + error);
-    }
-  }
-  const postsStringified = await getUserPosts();
-  const posts = JSON.parse(postsStringified as string); // Parse the stringified JSON
+  // const session = await getServerSession(options);
+
+  const [posts, setPosts] = useState([]);
+  const [fromUser, setFromUser] = useState<string>("Johannes");
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get("/api/user/post/get", {
+          params: { author: fromUser },
+        });
+        setPosts(res.data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, [fromUser]);
 
   return (
     <div className="flex flex-col flex-wrap gap-4">
@@ -41,9 +46,7 @@ export default async function App() {
             <Card className="py-4">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                 <div className="flex justify-between w-full">
-                  <p className="text-tiny uppercase font-bold">
-                    {session?.user.name}
-                  </p>
+                  <p className="text-tiny uppercase font-bold"></p>
                   <p className="text-tiny uppercase mb-4">
                     {new Date(post.createdAt).toLocaleDateString("en-us", {
                       year: "numeric",

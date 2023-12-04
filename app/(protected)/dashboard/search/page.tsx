@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { User } from "@nextui-org/react";
+import AddFriendButton from "../../components/AddFriendButton";
 
 const SearchPage = () => {
   const search = useSearchParams();
@@ -31,7 +32,7 @@ const SearchPage = () => {
     <div className="w-screen h-screen flex justify-center align-middle">
       {users.map(
         (user: {
-          id: React.Key | null | undefined;
+          id: React.Key | string | null | undefined;
           firstName: any;
           lastName: any;
           bio: string;
@@ -47,6 +48,7 @@ const SearchPage = () => {
                 src: user.image,
               }}
             />
+            <AddFriendButton id={user.id as string} />
           </div>
         )
       )}

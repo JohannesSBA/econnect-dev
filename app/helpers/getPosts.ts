@@ -1,12 +1,13 @@
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
 import prisma from "../lib/prisma";
-import User from "@/app/types/db";
 
 export const getUserContent = async () => {
   try {
     const session = await getServerSession(options);
     const email = session?.user.email as string;
+
+    if (!session) return;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -30,6 +31,7 @@ export const getUserContent = async () => {
       currentPosition: user.currentPosition as string,
       title: user.title as string,
       image: user.image as string,
+      id: user.id as string,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.

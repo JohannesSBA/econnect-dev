@@ -1,15 +1,8 @@
 import type { Metadata } from "next";
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import { ReactNode } from "react";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
 import { Inter } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
-import { AppProps } from "next/app";
 import Navbar from "@/app/(protected)/components/Navbar";
 import Messages from "../components/Messages";
-import MessagingBar from "../components/Messages";
-import NewPost from "../components/NewPost";
 
 interface LayoutProps {
   children: ReactNode;
@@ -31,8 +24,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
         <aside>{children}</aside>
         <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
-          {/* <NewPost />
-          <MessagingBar /> */}
+          {/* <NewPost /> */}
+          <Messages />
         </div>
       </body>
     </html>
