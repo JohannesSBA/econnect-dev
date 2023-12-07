@@ -26,10 +26,49 @@ model User {
   location String?
   currentPosition String?
   education String?
+  emailVerified DateTime?
 
   friends  User[] @relation("friends")
   friendOf User[] @relation("friends")
+
+  conversationIds String[] 
+  conversaitions Conversation[]
+
+  seenMessageIds String[]
+  seenMessages Message[] 
 }
+
+
+
+model Conversation{
+  id String @id @default(dbgenerated()) @map("_id")
+  createdAt DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name String?
+  isGroup Boolean?
+
+  messageIds String[]
+  messages Message[]
+
+  userIds String[] 
+  users User[] 
+}
+
+model Message {
+  id String @default(dbgenerated()) @id @map("_id")
+  body String?
+  image String?
+  createdAt DateTime @default(now())
+
+  seenIds String[]
+
+  conversationId String
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
 
 enum Role {
   EMPLOYER
@@ -49,13 +88,6 @@ model Post {
   categories Category[]
 }
 
-model Message {
-  id         Int    @id
-  text       String
-  senderId   Int
-  receiverId Int
-
-}
 
 model Category {
   id    Int    @id @default(autoincrement())
@@ -64,3 +96,5 @@ model Category {
 }
 
 
+
+// Christina nguyen 10/27/04

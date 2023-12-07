@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -8,24 +8,19 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Checkbox,
-  Input,
-  Link,
-  Card,
-  CardHeader,
 } from "@nextui-org/react";
 import FriendBadge from "./FriendBadge";
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import axios from "axios";
-import { User } from "@/app/types/db";
 
-export default function Messages() {
+interface MessageProps {
+  userId: string;
+}
+
+export default function Messages({ userId }: MessageProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFriends = async () => {
@@ -35,15 +30,12 @@ export default function Messages() {
         console.log("from res data", res.data);
       } catch (error) {
         console.error("Error fetching friends:", error);
-        setError("Error fetching friends. Please try again.");
         setLoading(false);
       }
     };
 
     fetchFriends();
   }, []);
-
-  console.log("from friends", friends);
 
   return (
     <>
@@ -75,6 +67,8 @@ export default function Messages() {
                         firstName={friend.firstName}
                         lastName={friend.lastName}
                         pic={friend.image}
+                        friendId={friend.id as string}
+                        user={userId}
                       />
                     </div>
                   )
