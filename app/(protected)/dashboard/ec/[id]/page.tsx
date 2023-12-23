@@ -1,3 +1,4 @@
+import AddFriendButton from "@/app/(protected)/components/AddFriendButton";
 import EditContent from "@/app/(protected)/components/EditContent";
 import UserAbout from "@/app/(protected)/components/UserAbout";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -48,6 +49,7 @@ const page = async ({ params }: { params: { id: string } }) => {
                   {userInfo.location}
                 </h2>
               </div>
+              <AddFriendButton id={userInfo.id as string} />
             </Card>
           </div>
           {/* User About */}

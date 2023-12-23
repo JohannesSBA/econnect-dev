@@ -29,7 +29,7 @@ const SearchPage = () => {
   }, [encodedSearchQuery]);
 
   return (
-    <div className="w-screen h-screen flex justify-center align-middle">
+    <div className="w-screen h-screen flex flex-col items-center bg-white">
       {users.map(
         (user: {
           id: React.Key | string | null | undefined;
@@ -39,9 +39,9 @@ const SearchPage = () => {
           image: string;
           title: string;
         }) => (
-          <div key={user.id}>
+          <div key={user.id} className="flex w-96">
             <a
-              className="p-6 m-4 shadow-md bg-slate-100 rounded-md text-black hover:bg-slate-400 hover:text-slate-50"
+              className="w-full h-fit p-6 m-4 shadow-md bg-slate-100 rounded-md text-black hover:bg-slate-400 hover:text-slate-50"
               href={`/dashboard/ec/${user.id}`}
             >
               <User
@@ -52,7 +52,6 @@ const SearchPage = () => {
                   src: user.image,
                 }}
               />
-              <AddFriendButton id={user.id as string} />
             </a>
           </div>
         )
