@@ -40,15 +40,20 @@ const SearchPage = () => {
           title: string;
         }) => (
           <div key={user.id}>
-            <User
-              name={user.firstName + " " + user.lastName}
-              description={user.title}
-              isFocusable
-              avatarProps={{
-                src: user.image,
-              }}
-            />
-            <AddFriendButton id={user.id as string} />
+            <a
+              className="p-6 m-4 shadow-md bg-slate-100 rounded-md text-black hover:bg-slate-400 hover:text-slate-50"
+              href={`/dashboard/ec/${user.id}`}
+            >
+              <User
+                name={user.firstName + " " + user.lastName}
+                description={user.title}
+                isFocusable
+                avatarProps={{
+                  src: user.image,
+                }}
+              />
+              <AddFriendButton id={user.id as string} />
+            </a>
           </div>
         )
       )}
