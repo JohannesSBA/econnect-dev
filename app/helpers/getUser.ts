@@ -3,14 +3,14 @@ import { options } from "../api/auth/[...nextauth]/options";
 import prisma from "../lib/prisma";
 import User from "@/app/types/db";
 
-export const getUserContent = async (email: string) => {
+export const getUserContent = async (id: string) => {
   try {
     const session = await getServerSession(options);
-    const userEmail = session?.user.email as string;
+    const userId = session?.user.id as string;
 
     const user = await prisma.user.findUnique({
       where: {
-        email: email === "" ? userEmail : (email as string),
+        id: id === "" ? userId : (id as string),
       },
     });
 
