@@ -2,11 +2,9 @@
 
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider } from "next-themes";
-import Navbar from "../(protected)/components/Navbar";
 import Main from "../components/Main";
-import About from "../components/About";
 import Progress from "../components/Progress";
-import dynamic from "next/dynamic";
+import Nav from "../components/Nav";
 
 // const Navbar = dynamic(() => import("../components/Navbar"), { ssr: false });
 
@@ -16,7 +14,7 @@ export default function home() {
       <NextUIProvider>
         <ThemeProvider attribute="class">
           <Progress />
-          {/* <Navbar /> */}
+          <Nav />
           <Main />
         </ThemeProvider>
       </NextUIProvider>

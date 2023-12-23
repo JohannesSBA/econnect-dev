@@ -29,7 +29,6 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
         <aside>{children}</aside>
         <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
           {/* <NewPost /> */}
-          <Messages userId={session?.user.id as string} />
         </div>
       </body>
     </html>

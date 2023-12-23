@@ -1,8 +1,9 @@
+import Messages from "@/app/(protected)/components/Messages";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getUserContent } from "@/app/helpers/getPosts";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
-import { notFound, usePathname } from "next/navigation";
+import { notFound } from "next/navigation";
+import React from "react";
 
 interface PageProps {
   params: {
@@ -10,12 +11,38 @@ interface PageProps {
   };
 }
 
-const page = ({ params }: PageProps) => {
-  return (
-    <div className="flex w-screen h-screen bg-red-500 justify-center align-middle">
-      {}
-    </div>
-  );
+async function getChatMessages(chatId: string) {
+  try {
+    const session = await getServerSession(options);
+    const res = await prisma.conversation.findMany({
+      where: {
+        id: session?.user.id,
+      },
+      select: {
+        messages: true,
+      },
+    });
+  } catch (error) {
+    notFound();
+  }
+}
+
+const page = async ({ params }: { params: { chatid: string } }) => {
+  const { chatid } = params;
+  const session = await getServerSession(options);
+  if (!session) notFound();
+
+  const [friendId, userId] = chatid.split("--");
+
+  const { user } = session;
+
+  getChatMessages(userId);
+
+  if (user.id !== userId) {
+    notFound();
+  }
+
+  return <div className="w-screen h-screen bg-red-50 text-black">{userId}</div>;
 };
 
 export default page;

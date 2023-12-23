@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Badge, Avatar, Button } from "@nextui-org/react";
+import React, { useState } from "react";
+import { Avatar, Button } from "@nextui-org/react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getUserContent } from "@/app/helpers/getPosts";
 
 interface avatarProps {
   friendId: string;
