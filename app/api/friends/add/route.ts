@@ -13,7 +13,8 @@ export async function POST(req: Request, res: Response) {
       select: {
         id: true,
         friends: true,
-        friendOf: true,
+        frinedsOf: true,
+        sentFriendRequest: true,
       },
     });
 
@@ -35,25 +36,40 @@ export async function POST(req: Request, res: Response) {
       });
     }
 
-    // check if user is already added
-    // TODO: fix if friend is already added
-    const friendsStringified = JSON.stringify(idToAdd.friends);
-    const friendsOfStringified = JSON.stringify(idToAdd.friendOf);
-
-    if (
-      friendsStringified.includes(idToAdd.id) ||
-      friendsOfStringified.includes(idToAdd.id)
-    ) {
+    const isAlreadyFriend = idToAdd.friends.some(
+      (friend) => friend.id === session.user.id
+    );
+    if (isAlreadyFriend) {
       return new Response("Already added this user", {
         status: 400,
       });
     }
 
+    const isPending = idToAdd.sentFriendRequest.some(
+      (friend) => friend.id === session.user.id
+    );
+
+    if (isPending) {
+      return new Response("You have already sent a request", {
+        status: 208,
+      });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: idToAdd.id,
+      },
+      data: {
+        pendingFriendRequest: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+      },
+    });
+
     return new Response("OK.", { status: 200 });
   } catch (error) {
     return new Response("Invalid request.", { status: 400 });
   }
-
-  // The following line is unreachable, you might want to remove it
-  // return res.status(200).json({ message: response });
 }

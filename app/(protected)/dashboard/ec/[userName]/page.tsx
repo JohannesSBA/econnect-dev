@@ -49,7 +49,9 @@ const page = async ({ params }: { params: { id: string } }) => {
                   {userInfo.location}
                 </h2>
               </div>
-              <AddFriendButton id={userInfo.id as string} />
+              <div className="w-fit m-6 absolute right-0 bottom-0">
+                <AddFriendButton id={userInfo.id as string} />
+              </div>
             </Card>
           </div>
           {/* User About */}

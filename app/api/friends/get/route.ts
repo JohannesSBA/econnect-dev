@@ -13,7 +13,6 @@ export async function GET(req: Request, res: Response) {
         email: session.user.email as string,
       },
       select: {
-        friendOf: true,
         friends: true,
       },
     });
