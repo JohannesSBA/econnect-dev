@@ -1,12 +1,13 @@
 import React from "react";
-import FriendBadge from "./FriendBadge";
+import { FaCheckCircle } from "react-icons/fa";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
-import { Avatar } from "@nextui-org/react";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { Avatar, Button } from "@nextui-org/react";
+import { MdCancel } from "react-icons/md";
+import RequestHandler from "./RequestHandler";
 
-export default async function Messages() {
+export default async function FriendRequests() {
   const session = await getServerSession(options);
 
   if (!session) return;
@@ -22,13 +23,14 @@ export default async function Messages() {
 
   const pendingList = getPending[0].pendingFriendRequest;
 
-  console.log("this is get Friends", pendingList);
-  // setPending(getFriends);
-
   return (
     <>
-      <div className="text-black w-24 h-24 bg-red-50">
-        {pendingList.map(
+      <div className="text-black h-screen bg-red-50">
+        <RequestHandler
+          incomingFriendRequest={pendingList}
+          sessionEmail={session.user.email as string}
+        />
+        {/* {pendingList.map(
           (pFriends: {
             id: string;
             firstName: string | null;
@@ -46,11 +48,24 @@ export default async function Messages() {
                 </h1>
               </div>
               <div className="p-4 w-12 h-12 rounded-full bg-white group-hover:bg-blue-600 group-hover:text-white ">
-                <AiOutlineArrowRight />
+                <Button
+                  onClick={() =>
+                    acceptFriend(session.user.email as string, pFriends.id)
+                  }
+                >
+                  <FaCheckCircle />
+                </Button>
+                <Button
+                  onClick={() =>
+                    rejectFriend(session.user.email as string, pFriends.id)
+                  }
+                >
+                  <MdCancel />
+                </Button>
               </div>
             </div>
           )
-        )}
+        )} */}
       </div>
     </>
   );
