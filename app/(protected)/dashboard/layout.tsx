@@ -25,10 +25,12 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
     <html lang="en">
       {/* Your layout content */}
       <body className={inter.className}>
-        <Navbar />
-        <aside>{children}</aside>
-        <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
-          {/* <NewPost /> */}
+        <div className="h-screen w-screen overflow-clip">
+          <Navbar />
+          <aside>{children}</aside>
+          <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
+            {/* <NewPost /> */}
+          </div>
         </div>
       </body>
     </html>

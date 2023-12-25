@@ -3,6 +3,8 @@ import prisma from "@/app/lib/prisma";
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
 
+  console.log("we here");
+
   try {
     // Update the user's friends list by adding the accepted friend
     await prisma.user.update({

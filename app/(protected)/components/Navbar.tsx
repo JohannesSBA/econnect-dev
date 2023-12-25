@@ -1,47 +1,42 @@
-import React, { useEffect, useState } from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  button,
-  Avatar,
-} from "@nextui-org/react";
+import React from "react";
+import { Link } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
-import { IconContext } from "react-icons";
-import { getServerSession } from "next-auth/next";
-import { options } from "../../api/auth/[...nextauth]/options";
 import SignOutButton from "./SignOutButton";
 import UserPicture from "./UserPicture";
 import Search from "./Search";
-// import Login from "./Login";
+import { FaUserFriends } from "react-icons/fa";
+import { FaMessage } from "react-icons/fa6";
 
-const Header: React.FC = async () => {
-  const session = await getServerSession(options);
-
+const Header: React.FC = () => {
   return (
-    <Navbar position="sticky" className="bg-zinc-100">
-      <NavbarBrand className="flex gap-2">
+    <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
+      <div className="w-1/6 flex gap-2">
         <Link href={"/dashboard"} className="flex gap-4 text-blue-800">
           <GiWaterDrop />
-          <p className="font-bold text-inherit">Econnect</p>
+          <p className="hidden md:flex font-bold text-inherit">Econnect</p>
         </Link>
+      </div>
+      <div className="w-5/6 hidden md:flex gap-2 justify-end">
         <Search />
-      </NavbarBrand>
-      <NavbarContent justify="end">
-        {!session ? (
-          <button>
-            <Link href="/login"></Link>
-          </button>
-        ) : (
-          <>
-            <UserPicture />
-            <SignOutButton />
-          </>
-        )}
-      </NavbarContent>
-    </Navbar>
+        <Link
+          href="/dashboard/friend-requests"
+          className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200"
+        >
+          <FaUserFriends />
+          <p className="font-extralight text-xs">Requests</p>
+        </Link>
+        <Link
+          href="/dashboard/messages"
+          className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200 border-r-1"
+        >
+          <FaMessage />
+          <p className="font-extralight text-xs">Messages</p>
+        </Link>
+
+        <UserPicture />
+        <SignOutButton />
+      </div>
+    </div>
   );
 };
 
