@@ -1,15 +1,19 @@
 import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
-import { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
-import fs from "fs";
-import axios from "axios";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
-import prisma from "@/app/lib/prisma";
+import axios from "axios";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  const fileName = "dale.png"; // Change this to the actual file name in your public folder
-  const filePath = path.join(process.cwd(), "public", fileName);
+export async function POST(req: Request, res: Response) {
+  const session = await getServerSession(options);
+  const body = await req.formData();
+  const file = body.get("newImage");
+
+  if (!file) {
+    return new Response("File is required.", { status: 400 });
+  }
+
+  const key = `${session?.user.id}`;
+  const buffer = Buffer.from(await file.arrayBuffer());
 
   const s3 = new S3({
     region: "us-east-1",
@@ -19,17 +23,14 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  const key = `${fileName}--${Date.now()}`;
-
   const prismaKey = `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/${key}`;
 
   try {
-    const fileContent = fs.readFileSync(filePath);
     const fileParams = {
       Bucket: process.env.BUCKET_NAME,
       Key: key,
-      ContentType: "image",
-      Body: fileContent,
+      ContentType: "image/jpg",
+      Body: buffer,
     };
 
     const command = new PutObjectCommand(fileParams);

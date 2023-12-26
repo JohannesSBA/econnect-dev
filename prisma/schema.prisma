@@ -20,7 +20,6 @@ model User {
   role        Role    @default(EMPLOYEE)
   bio String?
   posts       Post[]
-  image String?
   title String?
   pronouns String?
   location String?

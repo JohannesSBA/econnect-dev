@@ -3,6 +3,7 @@ import UserAbout from "../../components/UserAbout";
 import EditContent from "../../components/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Card, Image } from "@nextui-org/react";
+import ProfileImage from "../../components/ProfileImage";
 
 const page = async () => {
   const userInfo = await getUserContent("");
@@ -15,12 +16,8 @@ const page = async () => {
           <div className="w-screen border-2 border-slate-200 rounded-md shadow-sm flex justify-center">
             <Card className="bg-transparent ml-6 p-2 flex justify-center w-4/6">
               <div className="w-full h-full rounded-md bg-no-repeat bg-[url(https://media.licdn.com/dms/image/D4E16AQFuAM3pbTcEDA/profile-displaybackgroundimage-shrink_350_1400/0/1679969544499?e=1706745600&v=beta&t=OdEcXq5uVWKSJwezbHOSpeS-XOzm9YfA_J7MkJqbXw0)] ">
-                <div className="w-48">
-                  <Image
-                    src={userInfo.image}
-                    alt="NextUI Album Cover"
-                    className="m-5 rounded-full border-4"
-                  />
+                <div className="w-48 m-4">
+                  <ProfileImage image={userInfo.image as string} />
                 </div>
               </div>
               <div className="ml-4 p-2">
