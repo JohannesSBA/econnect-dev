@@ -1,9 +1,10 @@
+import ChatInput from "@/app/(protected)/components/ChatInput";
 import Messages from "@/app/(protected)/components/Messages";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 interface PageProps {
   params: {
@@ -42,7 +43,11 @@ const page = async ({ params }: { params: { chatid: string } }) => {
     notFound();
   }
 
-  return <div className="w-screen h-screen bg-red-50 text-black">{userId}</div>;
+  return (
+    <div className="w-screen h-screen bg-red-50 text-black">
+      <ChatInput chatPartner={friendId} chatId={userId} />
+    </div>
+  );
 };
 
 export default page;
