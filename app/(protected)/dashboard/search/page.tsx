@@ -4,7 +4,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { User } from "@nextui-org/react";
-import AddFriendButton from "../../components/AddFriendButton";
 
 const SearchPage = () => {
   const search = useSearchParams();
@@ -32,14 +31,14 @@ const SearchPage = () => {
     <div className="w-screen h-screen flex flex-col items-center bg-white">
       {users.map(
         (user: {
-          id: React.Key | string | null | undefined;
+          key: React.Key | string | null | undefined;
+          id: string;
           firstName: any;
           lastName: any;
           bio: string;
-          image: string;
           title: string;
         }) => (
-          <div key={user.id} className="flex w-96">
+          <div key={user.key} className="flex w-96">
             <a
               className="w-full h-fit p-6 m-4 shadow-md bg-slate-100 rounded-md text-black hover:bg-slate-400 hover:text-slate-50"
               href={`/dashboard/ec/${user.id}`}
@@ -49,7 +48,8 @@ const SearchPage = () => {
                 description={user.title}
                 isFocusable
                 avatarProps={{
-                  src: user.image,
+                  src: `https://econnectbucket.s3.amazonaws.com/${user.id}%7D`,
+                  alt: `/user-avatar`,
                 }}
               />
             </a>

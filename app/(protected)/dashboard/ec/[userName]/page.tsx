@@ -1,5 +1,4 @@
 import AddFriendButton from "@/app/(protected)/components/AddFriendButton";
-import EditContent from "@/app/(protected)/components/EditContent";
 import UserAbout from "@/app/(protected)/components/UserAbout";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
@@ -8,16 +7,17 @@ import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({ params }: { params: { userName: string } }) => {
   const session = await getServerSession(options);
   if (!session) {
     notFound();
   }
-  if (session.user.id === params.id) {
+  if (session.user.id === params.userName) {
     redirect("/dashboard/profile");
   }
 
-  const userInfo = await getUserContent(params.id);
+  console.log("params id", params.userName);
+  const userInfo = await getUserContent(params.userName);
 
   return (
     <div className="h-fit md:h-screen bg-slate-200">

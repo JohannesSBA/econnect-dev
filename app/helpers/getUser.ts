@@ -6,31 +6,27 @@ import User from "@/app/types/db";
 export const getUserContent = async (id: string) => {
   try {
     const session = await getServerSession(options);
-    const userId = session?.user.id as string;
+    let userId = id;
 
     const user = await prisma.user.findUnique({
       where: {
-        id: id === "" ? userId : (id as string),
+        id: userId,
       },
     });
 
-    if (!user) {
-      throw new Error("User not found");
-    }
-
     return {
-      bio: user.bio as string,
-      id: user.id as string,
-      firstName: user.firstName as string,
-      lastName: user.lastName as string,
-      fullName: user.firstName + " " + user.lastName,
-      email: user.email,
-      pronouns: user.pronouns as string,
-      location: user.location as string,
-      education: user.education as string,
-      currentPosition: user.currentPosition as string,
-      title: user.title as string,
-      image: `https://econnectbucket.s3.amazonaws.com/${user.id}%7D`,
+      bio: user?.bio as string,
+      id: user?.id as string,
+      firstName: user?.firstName as string,
+      lastName: user?.lastName as string,
+      fullName: user?.firstName + " " + user?.lastName,
+      email: user?.email,
+      pronouns: user?.pronouns as string,
+      location: user?.location as string,
+      education: user?.education as string,
+      currentPosition: user?.currentPosition as string,
+      title: user?.title as string,
+      image: `https://econnectbucket.s3.amazonaws.com/${user?.id}%7D`,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.

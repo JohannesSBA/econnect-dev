@@ -10,28 +10,18 @@ export async function GET(req: Request, res: Response) {
       throw new Error("Invalid request");
     }
 
+    const terms = decodedQuery.split(/\s+/).filter(Boolean);
+
     const users = await prisma.user.findMany({
       where: {
-        OR: [
-          {
-            firstName: {
-              contains: decodedQuery,
-              mode: "insensitive",
-            },
-          },
-          {
-            lastName: {
-              contains: decodedQuery,
-              mode: "insensitive",
-            },
-          },
-          {
-            email: {
-              contains: decodedQuery,
-              mode: "insensitive",
-            },
-          },
-        ],
+        OR: terms.map((term) => ({
+          OR: [
+            { firstName: { contains: term, mode: "insensitive" } },
+            { lastName: { contains: term, mode: "insensitive" } },
+            { email: { contains: term, mode: "insensitive" } },
+            { phoneNumber: { contains: term, mode: "insensitive" } },
+          ],
+        })),
       },
       select: {
         id: true,
@@ -41,7 +31,6 @@ export async function GET(req: Request, res: Response) {
         email: true,
         bio: true,
         role: true,
-        image: true,
         posts: {
           select: {
             // Include only the necessary fields from the 'posts' relation

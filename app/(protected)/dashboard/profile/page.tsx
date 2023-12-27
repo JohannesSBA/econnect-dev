@@ -4,9 +4,12 @@ import EditContent from "../../components/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Card, Image } from "@nextui-org/react";
 import ProfileImage from "../../components/ProfileImage";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 const page = async () => {
-  const userInfo = await getUserContent("");
+  const session = await getServerSession(options);
+  const userInfo = await getUserContent(session?.user.id as string);
 
   return (
     <div className="h-fit md:h-screen bg-slate-200">
