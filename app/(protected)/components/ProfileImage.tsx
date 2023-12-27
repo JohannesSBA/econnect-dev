@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import {
   Button,
-  Image,
   Input,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -13,12 +13,15 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from "sonner";
+// import { useRouter } from "next/navigation";
+import { CiImageOn } from "react-icons/ci";
 
 interface ProfileImageProps {
   image: string;
 }
 
 const ProfileImage = ({ image }: ProfileImageProps) => {
+  // const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [newImage, setNewImage] = useState<File | null | undefined>(null);
   // const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -32,7 +35,7 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
     }
 
     const formData = new FormData();
-    formData.append("newImage", newImage);
+    formData.append("newImage", newImage, newImage.name);
 
     try {
       const response = await axios.post("/api/s3-upload", formData, {
@@ -50,16 +53,16 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center flex-col items-center">
+      <Image src={image} alt="profile piture" width={450} />
       <Button
         onPress={onOpen}
-        className="w-fit h-fit bg-transparent flex justify-center border-2 border-black"
+        color="primary"
+        variant="light"
+        className="font-semibold flex"
       >
-        <Image
-          src={image}
-          alt="NextUI Album Cover"
-          className="rounded-full border-4"
-        />
+        <CiImageOn />
+        Change Profile picture
       </Button>
       <Modal
         isOpen={isOpen}

@@ -67,14 +67,9 @@ export default function App({
 
   return (
     <div className="fixed top-0 right-0 mt-24 mr-12 z-50">
-      <Button
-        onPress={onOpen}
-        isIconOnly
-        color="primary"
-        variant="light"
-        className="text-black"
-      >
+      <Button onPress={onOpen} color="primary" variant="ghost">
         <BiPencil />
+        <h1>Edit Content</h1>
       </Button>
       <Modal
         isOpen={isOpen}

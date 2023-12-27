@@ -48,7 +48,7 @@ const SearchPage = () => {
                 description={user.title}
                 isFocusable
                 avatarProps={{
-                  src: `https://econnectbucket.s3.amazonaws.com/${user.id}%7D`,
+                  src: `https://econnectbucket.s3.amazonaws.com/${user.id}`,
                   alt: `/user-avatar`,
                 }}
               />

@@ -15,7 +15,7 @@ export default async function App() {
           as="button"
           avatarProps={{
             isBordered: true,
-            src: `https://econnectbucket.s3.amazonaws.com/${userInfo.id}%7D`,
+            src: `https://econnectbucket.s3.amazonaws.com/${userInfo.id}`,
           }}
           className="transition-transform"
           description={userInfo.email}
