@@ -26,11 +26,11 @@ const Header: React.FC = () => {
           <p className="font-extralight text-xs">Requests</p>
         </Link>
         <Link
-          href="/dashboard/messages"
+          href="/dashboard/connects"
           className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200 border-r-1"
         >
           <FaMessage />
-          <p className="font-extralight text-xs">Messages</p>
+          <p className="font-extralight text-xs">Connects</p>
         </Link>
 
         <UserPicture />

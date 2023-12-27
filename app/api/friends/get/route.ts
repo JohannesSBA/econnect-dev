@@ -6,7 +6,9 @@ export async function GET(req: Request, res: Response) {
   try {
     const session = await getServerSession(options);
 
-    if (!session) return;
+    if (!session) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     const getFriends = await prisma.user.findMany({
       where: {
@@ -17,8 +19,14 @@ export async function GET(req: Request, res: Response) {
       },
     });
 
-    return new Response(JSON.stringify(getFriends));
+    console.log(getFriends);
+
+    // Return the actual response with friends data
+    return new Response(JSON.stringify(getFriends), { status: 200 });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
+    // Return an error response
+    return new Response("Error", { status: 500 });
   }
 }
