@@ -9,10 +9,10 @@ export async function POST(req: Request, res: Response) {
     where: {
       OR: [
         {
-          recipientId: body.chatPartner,
+          AND: [{ recipientId: body.chatId }, { senderId: body.chatPartner }],
         },
         {
-          senderId: body.chatId,
+          AND: [{ recipientId: body.chatPartner }, { senderId: body.chatId }],
         },
       ],
     },

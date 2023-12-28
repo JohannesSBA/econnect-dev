@@ -6,12 +6,14 @@ interface conversationProps {
   chatPartner: string;
   chatId: string;
   partnerName: string;
+  userName: string;
 }
 
 const Conversations: FunctionComponent<conversationProps> = ({
   chatPartner,
   chatId,
   partnerName,
+  userName,
 }) => {
   const [messages, setMessages] = useState([]);
 
@@ -36,7 +38,7 @@ const Conversations: FunctionComponent<conversationProps> = ({
   console.log();
 
   return (
-    <div>
+    <div className="w-full flex flex-col">
       {messages.map(
         (message: {
           key: React.Key | string | null | undefined;
@@ -45,12 +47,19 @@ const Conversations: FunctionComponent<conversationProps> = ({
           senderId: any;
           text: string;
         }) => (
-          <div key={message.key} className="flex w-96">
-            <div className="flex items-start gap-2.5">
+          <div
+            key={message.key}
+            className={
+              chatPartner === message.senderId
+                ? "flex w-full justify-end"
+                : "flex w-full justify-start"
+            }
+          >
+            <div className="items-start flex gap-2.5">
               <div className="flex flex-col gap-1 w-full max-w-[320px]">
                 <div className="flex items-center space-x-2 rtl:space-x-reverse">
                   <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                    {partnerName}
+                    {chatPartner === message.senderId ? partnerName : userName}
                   </span>
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                     {new Date(message.createdAt).toLocaleTimeString("en-US")}

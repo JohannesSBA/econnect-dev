@@ -22,7 +22,8 @@ const page = async ({ params }: { params: { chatid: string } }) => {
 
   const [friendId, userId] = chatid.split("--");
 
-  const friend = await getUserContent(friendId);
+  const friendContent = await getUserContent(friendId);
+  const userContent = await getUserContent(session.user.id);
 
   const { user } = session;
 
@@ -34,8 +35,9 @@ const page = async ({ params }: { params: { chatid: string } }) => {
     <div className="w-screen h-screen bg-red-50 text-black">
       <Conversations
         chatPartner={friendId as string}
-        partnerName={friend.fullName as string}
+        partnerName={friendContent.fullName as string}
         chatId={userId as string}
+        userName={userContent.fullName as string}
       />
       <ChatInput chatPartner={friendId} chatId={userId} />
     </div>
