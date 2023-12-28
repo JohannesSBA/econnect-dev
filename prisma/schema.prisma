@@ -33,42 +33,20 @@ model User {
   sentFriendRequest User[] @relation("sentFriendRequest")
   pendingFriendRequest User[] @relation("sentFriendRequest")
 
-  conversationIds String[] 
-  conversaitions Conversation[]
-
-  seenMessageIds String[]
-  seenMessages Message[] 
-}
-
-
-
-model Conversation{
-  id String @id @default(dbgenerated()) @map("_id")
-  createdAt DateTime @default(now())
-  lastMessageAt DateTime @default(now())
-  name String?
-  isGroup Boolean?
-
-  messageIds String[]
-  messages Message[]
-
-  userIds String[] 
-  users User[] 
+  messagesSent       Message[]    @relation("messagesSent")
+  messagesReceived   Message[]    @relation("messagesReceived")
 }
 
 model Message {
-  id String @default(dbgenerated()) @id @map("_id")
-  body String?
-  image String?
-  createdAt DateTime @default(now())
+  id                 String       @default(cuid()) @id
+  createdAt          DateTime     @default(now()) @map(name: "created_at")
+  updatedAt          DateTime     @updatedAt @map(name: "updated_at")
 
-  seenIds String[]
-
-  conversationId String
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  senderId String
-  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  text               String
+  sender             User         @relation("messagesSent", fields: [senderId], references: [id])
+  senderId           String
+  recipient          User         @relation("messagesReceived", fields: [recipientId], references: [id])
+  recipientId        String
 }
 
 

@@ -23,7 +23,11 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
     if (!input) return;
     setIsLoading(true);
     try {
-      await axios.post("/api/message/send", { text: input, chatId });
+      await axios.post("/api/message/send", {
+        text: input,
+        chatId: chatId,
+        chatPartner: chatPartner,
+      });
       setInput("");
       textareaRef.current?.focus();
     } catch {
