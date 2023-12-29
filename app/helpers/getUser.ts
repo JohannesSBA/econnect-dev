@@ -27,6 +27,7 @@ export const getUserContent = async (id: string) => {
       currentPosition: user?.currentPosition as string,
       title: user?.title as string,
       image: `https://econnectbucket.s3.amazonaws.com/${user?.id}`,
+      gotStarted: user?.gotStarted,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.

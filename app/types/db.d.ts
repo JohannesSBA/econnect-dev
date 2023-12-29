@@ -18,6 +18,7 @@ interface User {
   location: String;
   friends: User[];
   pendingFriendRequests: User[];
+  gotStarted: boolean;
 }
 
 interface userProps {
