@@ -6,6 +6,7 @@ import validateCredentials from "../helpers/validateForm";
 import { Button, Checkbox, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 export default function Form() {
   const [email, setEmail] = useState<string>();
@@ -49,9 +50,9 @@ export default function Form() {
 
           if (resq.status === 200) {
             setTimeout(() => {
-              toast.success("Welcome to Econnect LogIn to continue");
+              toast.success("Welcome to Econnect");
             }, 1000);
-            router.push("/login");
+            loginWithCredentials(email as string, password as string);
           } else {
             toast.error(resq.data);
           }
@@ -62,6 +63,21 @@ export default function Form() {
       }
     }
   };
+
+  async function loginWithCredentials(email: string, password: string) {
+    let res = await signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "https://localhost:3000/dashboard",
+      redirect: false,
+    });
+    if (!res?.ok) {
+      toast.error(res?.error);
+    }
+    if (res?.ok) {
+      router.push("/dashboard/get-started");
+    }
+  }
 
   return (
     <div className="w-screen h-screen flex">
