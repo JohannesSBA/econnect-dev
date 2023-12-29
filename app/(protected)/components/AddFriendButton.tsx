@@ -18,7 +18,6 @@ const AddFriendComponent: React.FC<addFriend> = ({ id }) => {
       });
 
       // Handle the response
-      console.log(response.status);
       if (response.status === 200) {
         toast.success("Friend Request Sent");
       } else {

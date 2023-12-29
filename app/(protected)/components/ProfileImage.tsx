@@ -44,10 +44,8 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
         },
       });
 
-      console.log("Image uploaded successfully:", response.data);
       toast.dismiss();
     } catch (error) {
-      console.error("Error uploading image:", error);
       toast.dismiss();
     }
   };

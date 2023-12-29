@@ -2,7 +2,6 @@ import prisma from "@/app/lib/prisma";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
-  console.log("called");
 
   // Create a new message in the conversation
   const getMessage = await prisma.message.findMany({

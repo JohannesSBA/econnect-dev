@@ -6,11 +6,7 @@ import FriendRequests from "../components/FriendRequests";
 
 const page = async () => {
   const session = await getServerSession(options);
-  return (
-    <div className="w-screen h-screen bg-red-50 flex gap-12">
-      <Messages userId={session?.user.id as string} />
-    </div>
-  );
+  return <div className="w-screen h-screen bg-red-50 flex gap-12"></div>;
 };
 
 export default page;

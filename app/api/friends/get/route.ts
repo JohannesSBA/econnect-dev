@@ -19,8 +19,6 @@ export async function GET(req: Request, res: Response) {
       },
     });
 
-    console.log(getFriends);
-
     // Return the actual response with friends data
     return new Response(JSON.stringify(getFriends), { status: 200 });
   } catch (error) {

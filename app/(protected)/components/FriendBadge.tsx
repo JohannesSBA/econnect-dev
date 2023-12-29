@@ -7,14 +7,12 @@ interface avatarProps {
   friendId: string;
   firstName: string;
   lastName: string;
-  pic: string;
   user: string;
 }
 
 export default function App({
   firstName,
   lastName,
-  pic,
   friendId,
   user,
 }: avatarProps) {
@@ -26,16 +24,24 @@ export default function App({
       onClick={() => {
         router.push(`/dashboard/chat/${friendId}--${user}`);
       }}
-      className="w-full justify-start p-12 m-0 bg-white hover:bg-slate-100 group"
+      className="w-full justify-start bg-slate-100 hover:bg-white group"
     >
       <div className="flex w-full justify-between">
         <div className="flex w-full gap-2 justify-normal">
-          <Avatar radius="lg" size="lg" src={pic} />
+          <div className=" flex items-center">
+            <Avatar
+              radius="lg"
+              size="sm"
+              src={`https://econnectbucket.s3.amazonaws.com/${friendId}`}
+              className="flex items-center border-2"
+            />
+          </div>
+
           <h1 className="text-black flex flex-col justify-center font-bold">
             {firstName} {lastName}
           </h1>
         </div>
-        <div className="p-4 w-12 h-12 rounded-full bg-white group-hover:bg-blue-600 group-hover:text-white ">
+        <div className="p-4 w-12">
           <AiOutlineArrowRight />
         </div>
       </div>

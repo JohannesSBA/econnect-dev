@@ -8,26 +8,35 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
 } from "@nextui-org/react";
 import FriendBadge from "./FriendBadge";
 import axios from "axios";
+import { FaSearch } from "react-icons/fa";
 
 interface MessageProps {
   userId: string;
+}
+interface Friend {
+  key: React.Key | null | undefined;
+  id: string;
+  firstName: string;
+  lastName: string;
 }
 
 export default function Messages({ userId }: MessageProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
+  const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
         const res = await axios.get("/api/friends/get");
         setFriends(res.data[0].friends);
-        console.log("from res data", res.data);
       } catch (error) {
         console.error("Error fetching friends:", error);
         setLoading(false);
@@ -37,20 +46,38 @@ export default function Messages({ userId }: MessageProps) {
     fetchFriends();
   }, []);
 
+  useEffect(() => {
+    // Filter friends based on the search term
+    const filtered = friends.filter((friend) =>
+      `${friend.firstName} ${friend.lastName}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredFriends(filtered);
+  }, [friends, searchTerm]);
+
   return (
-    <div>
-      {friends.map(
+    <div className="flex flex-col gap-2 m-4 bg-slate-100">
+      <Input
+        type="text"
+        label="Search"
+        className="max-w-xs bg-slate-100"
+        endContent={<FaSearch />}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      {filteredFriends.map(
         (friend: {
-          id: React.Key | null | undefined;
+          key: React.Key | null | undefined;
+          id: string;
           firstName: string;
           lastName: string;
-          image: string;
         }) => (
-          <div key={friend.id} className="w-full p-4 ">
+          <div key={friend.key} className="w-full">
             <FriendBadge
               firstName={friend.firstName}
               lastName={friend.lastName}
-              pic={friend.image}
               friendId={friend.id as string}
               user={userId}
             />

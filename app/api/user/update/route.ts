@@ -35,7 +35,6 @@ export async function PUT(req: Request, res: Response) {
     if (e instanceof AxiosError) {
       response = e.message;
     } else {
-      console.log(e);
     }
   }
 

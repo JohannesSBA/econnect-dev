@@ -16,7 +16,6 @@ const page = async ({ params }: { params: { userName: string } }) => {
     redirect("/dashboard/profile");
   }
 
-  console.log("params id", params.userName);
   const userInfo = await getUserContent(params.userName);
 
   return (

@@ -3,8 +3,6 @@ import prisma from "@/app/lib/prisma";
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
 
-  console.log(body);
-
   // Create a new message in the conversation
   const newMessage = await prisma.message.create({
     data: {

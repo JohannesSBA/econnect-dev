@@ -15,7 +15,6 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
         try {
           await signOut();
         } catch (error) {
-          console.log("there was an error");
         } finally {
           setIsSigningOut(false);
         }

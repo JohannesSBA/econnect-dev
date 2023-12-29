@@ -20,10 +20,8 @@ const RequestHandler = ({
 
   async function rejectFriend(email: string, id: string, name: string) {
     try {
-      console.log("reject calling");
       axios.post("/api/friends/deny", { email, id });
     } catch (error) {
-      console.log(error);
     } finally {
       return toast.success(
         `You have successfully removed ${name} from your requests`
@@ -33,10 +31,8 @@ const RequestHandler = ({
 
   async function acceptFriend(email: string, id: string, name: string) {
     try {
-      console.log("api calling");
       axios.post("/api/friends/accept", { email, id });
     } catch (error) {
-      console.log(error);
     } finally {
       return toast.success(`You have added ${email} as a friend`);
     }

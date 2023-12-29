@@ -1,6 +1,8 @@
 "use client";
 import axios from "axios";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import Image from "next/image";
+import { Avatar } from "@nextui-org/react";
 
 interface conversationProps {
   chatPartner: string;
@@ -18,7 +20,6 @@ const Conversations: FunctionComponent<conversationProps> = ({
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    console.log("made it here");
     const getMessage = async () => {
       try {
         const res = await axios.post("/api/message/get", {
@@ -27,15 +28,12 @@ const Conversations: FunctionComponent<conversationProps> = ({
         });
         setMessages(res.data);
       } catch {
-        console.log("error");
       } finally {
       }
     };
 
     getMessage();
   }, [chatId, chatPartner]);
-
-  console.log();
 
   return (
     <div className="w-full flex flex-col">
@@ -70,9 +68,6 @@ const Conversations: FunctionComponent<conversationProps> = ({
                     {message.text}
                   </p>
                 </div>
-                <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                  Delivered
-                </span>
               </div>
             </div>
           </div>

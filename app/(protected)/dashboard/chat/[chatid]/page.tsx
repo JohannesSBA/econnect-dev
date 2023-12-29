@@ -15,6 +15,34 @@ interface PageProps {
   };
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { chatid: string };
+}) {
+  const { chatid } = params;
+  const session = await getServerSession(options);
+  if (!session) notFound();
+
+  const [friendId, userId] = chatid.split("--");
+
+  const friendContent = await getUserContent(friendId);
+
+  const { user } = session;
+
+  if (user.id !== userId) {
+    notFound();
+  }
+
+  return { title: `FriendZone | ${friendContent.fullName} chat` };
+}
+
+interface PageProps {
+  params: {
+    chatId: string;
+  };
+}
+
 const page = async ({ params }: { params: { chatid: string } }) => {
   const { chatid } = params;
   const session = await getServerSession(options);
@@ -32,14 +60,22 @@ const page = async ({ params }: { params: { chatid: string } }) => {
   }
 
   return (
-    <div className="w-screen h-screen bg-red-50 text-black">
-      <Conversations
-        chatPartner={friendId as string}
-        partnerName={friendContent.fullName as string}
-        chatId={userId as string}
-        userName={userContent.fullName as string}
-      />
-      <ChatInput chatPartner={friendId} chatId={userId} />
+    <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
+      <div className="w-1/4 h-full flex flex-col ">
+        <h1 className="font-semibold pt-8 pl-8">Friends List</h1>
+        <div className="w-full">
+          <Messages userId={userId} />
+        </div>
+      </div>
+      <div className="w-3/4 h-full p-8 rounded-2xl ml-3 border-2 border-slate-300 flex flex-col justify-between">
+        <Conversations
+          chatPartner={friendId as string}
+          partnerName={friendContent.fullName as string}
+          chatId={userId as string}
+          userName={userContent.fullName as string}
+        />
+        <ChatInput chatPartner={friendId} chatId={userId} />
+      </div>
     </div>
   );
 };

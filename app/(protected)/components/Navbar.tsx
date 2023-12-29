@@ -6,8 +6,13 @@ import UserPicture from "./UserPicture";
 import Search from "./Search";
 import { FaUserFriends } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
+import Messages from "./Messages";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
-const Header: React.FC = () => {
+const Header: React.FC = async () => {
+  const session = await getServerSession(options);
+
   return (
     <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
       <div className="w-1/6 flex gap-2">
