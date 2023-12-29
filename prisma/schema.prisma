@@ -26,6 +26,7 @@ model User {
   currentPosition String?
   education String?
   emailVerified DateTime?
+  gotStarted Boolean @default(false)
 
   friends  User[] @relation("friends")
   frinedsOf User[] @relation("friends")
@@ -35,6 +36,7 @@ model User {
 
   messagesSent       Message[]    @relation("messagesSent")
   messagesReceived   Message[]    @relation("messagesReceived")
+  
 }
 
 model Message {
