@@ -38,8 +38,8 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
   };
 
   return (
-    <div className="border-t border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-      <div className="relative flex-1 overlow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 ">
+    <div className="border-t border-gray-200 px-4 py-4 mb-2 sm:mb-0">
+      <div className="relative flex-1 overlow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-blue-600">
         <TextareaAutosize
           ref={textareaRef}
           onKeyDown={(e) => {
@@ -51,7 +51,8 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
           rows={1}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 sm:padding-y-1.5 sm:text-sm sm:leading-6"
+          placeholder={`Send a message`}
+          className="block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 sm:padding-y-1.5 sm:text-sm sm:leading-6 outline-none p-2"
         />
 
         <div
@@ -66,12 +67,7 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
 
         <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
           <div className="flex-shrink-0">
-            <Button
-              onClick={sendMessage}
-              isLoading={isLoading}
-              type="submit"
-              variant="ghost"
-            >
+            <Button onClick={sendMessage} isLoading={isLoading} type="submit">
               Post
             </Button>
           </div>

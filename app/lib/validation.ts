@@ -2,11 +2,12 @@ import { z } from "zod";
 
 export const messageValidator = z.object({
   id: z.string(),
-  body: z.string(),
+  text: z.string(),
   image: z.string(),
   createdAt: z.date(),
+  updatedAt: z.date(),
   seenIds: z.string(),
-  conversationId: z.string(),
+  recipientId: z.string(),
   senderId: z.string(),
 });
 

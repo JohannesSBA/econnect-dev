@@ -192,7 +192,9 @@ export default function App({
                   <Input
                     isRequired
                     label="Country/Region"
-                    defaultValue={userLocation.split(":").at(0)}
+                    defaultValue={
+                      userLocation !== null ? userLocation.split(":").at(0) : ""
+                    }
                     labelPlacement="outside"
                     onChange={(e) => {
                       setCountry(e.target.value);
@@ -201,7 +203,9 @@ export default function App({
                   <Input
                     isRequired
                     label="City"
-                    defaultValue={userLocation.split(":").at(1)}
+                    defaultValue={
+                      userLocation !== null ? userLocation.split(":").at(0) : ""
+                    }
                     labelPlacement="outside"
                     onChange={(e) => {
                       setCity(e.target.value);

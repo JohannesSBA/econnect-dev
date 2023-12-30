@@ -1,11 +1,15 @@
 "use client";
 
 import { Button, Pagination } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileImage from "./ProfileImage";
 import Search from "./Search";
 import EditContent from "./EditContent";
 import { User } from "@/app/types/db";
+import axios from "axios";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { redirect, useRouter } from "next/navigation";
 
 interface starterProps {
   user: User;
@@ -13,6 +17,17 @@ interface starterProps {
 
 const StarterForms = ({ user }: starterProps) => {
   const [currentPage, setCurrentPage] = React.useState(1);
+  const router = useRouter();
+
+  async function finish() {
+    const res = await axios.post("/api/user/started", {
+      id: user.id,
+    });
+    console.log("p");
+    console.log(res.status);
+    router.push("/dashboard");
+  }
+
   return (
     <div className="h-full w-full">
       <span className=" w-full flex justify-center">
@@ -41,6 +56,14 @@ const StarterForms = ({ user }: starterProps) => {
                     userCPosition={""}
                     userTitle={user.title as string}
                   />
+                  <Button
+                    color="primary"
+                    onClick={() => {
+                      finish();
+                    }}
+                  >
+                    Finish
+                  </Button>
                 </div>
               );
             default:
