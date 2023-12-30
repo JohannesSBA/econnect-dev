@@ -6,7 +6,7 @@ import PusherClient from "pusher-js";
 
 export const pusherServer = new PusherServer({
   appId: process.env.PUSHER_APP_ID!,
-  key: "cc883f8f5eca615325ac",
+  key: process.env.PUSHER_APP_KEY!,
   secret: process.env.PUSHER_APP_SECRET!,
   cluster: "mt1",
   useTLS: true,
