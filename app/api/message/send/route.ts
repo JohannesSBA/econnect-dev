@@ -1,10 +1,8 @@
 import prisma from "@/app/lib/prisma";
 import { pusherServer } from "@/app/lib/pusher";
-import { toPusherKey } from "@/app/lib/utils";
+import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
-import { Message, messageValidator } from "@/app/lib/validation";
-import { BiFoodTag } from "react-icons/bi";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
@@ -27,28 +25,17 @@ export async function POST(req: Request, res: Response) {
   };
 
   //Pusher Events
+
+  const chatRoom = body.chatRoom;
+
   pusherServer.trigger(
-    toPusherKey(`chat:${body.chatId}`),
+    toPusherKey(`chat:${chatRoom}`),
     "incoming-message",
     messageData
   );
 
   pusherServer.trigger(
-    toPusherKey(`chat:${body.chatPartner}`),
-    "incoming-message",
-    messageData
-  );
-
-  pusherServer.trigger(
-    toPusherKey(`user:${body.chatid}:chats`),
-    "new_message",
-    {
-      ...messageData,
-    }
-  );
-
-  pusherServer.trigger(
-    toPusherKey(`user:${body.chatPartner}:chats`),
+    toPusherKey(`user:${messageData.recipientId}:chats`),
     "new_message",
     {
       ...messageData,

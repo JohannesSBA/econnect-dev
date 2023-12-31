@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Button } from "@nextui-org/react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import { chatHrefConstructor } from "@/app/lib/utils";
 
 interface avatarProps {
   friendId: string;
@@ -17,12 +18,12 @@ export default function App({
   user,
 }: avatarProps) {
   const router = useRouter();
-  const [userId, setUserId] = useState<string>();
+  const chatroom = chatHrefConstructor(friendId, user);
 
   return (
     <Button
       onClick={() => {
-        router.push(`/dashboard/chat/${friendId}--${user}`);
+        router.push(`/dashboard/chat/${chatroom}`);
       }}
       className="w-full justify-start bg-slate-100 hover:bg-white group"
     >

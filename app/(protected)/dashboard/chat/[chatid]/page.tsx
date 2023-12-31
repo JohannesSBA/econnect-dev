@@ -3,13 +3,10 @@ import Conversations from "@/app/(protected)/components/Conversations";
 import Messages from "@/app/(protected)/components/Messages";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import prisma from "@/app/lib/prisma";
-import { Message, messageArrayValidator } from "@/app/lib/validation";
 import { Avatar } from "@nextui-org/react";
-import axios from "axios";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 
 interface PageProps {
   params: {
@@ -26,13 +23,15 @@ export async function generateMetadata({
   const session = await getServerSession(options);
   if (!session) notFound();
 
-  const [friendId, userId] = chatid.split("--");
+  const [id1, id2] = chatid.split("--");
+
+  const friendId = id1 === session.user.id ? id2 : id1;
+  const userId = id1 === session.user.id ? id1 : id2;
 
   const friendContent = await getUserContent(friendId);
+  const userContent = await getUserContent(session.user.id);
 
-  const { user } = session;
-
-  if (user.id !== userId) {
+  if (session.user.id !== userId) {
     notFound();
   }
 
@@ -50,14 +49,14 @@ const page = async ({ params }: { params: { chatid: string } }) => {
   const session = await getServerSession(options);
   if (!session) notFound();
 
-  const [friendId, userId] = chatid.split("--");
+  const [id1, id2] = chatid.split("--");
+
+  const friendId = id1 === session.user.id ? id2 : id1;
+  const userId = id1 === session.user.id ? id1 : id2;
 
   const friendContent = await getUserContent(friendId);
-  const userContent = await getUserContent(session.user.id);
 
-  const { user } = session;
-
-  if (user.id !== userId) {
+  if (session.user.id !== userId) {
     notFound();
   }
 
@@ -85,11 +84,10 @@ const page = async ({ params }: { params: { chatid: string } }) => {
         </div>
         <Conversations
           chatPartner={friendId as string}
-          partnerName={friendContent.fullName as string}
           chatId={userId as string}
-          userName={userContent.fullName as string}
+          chatRoom={chatid}
         />
-        <ChatInput chatPartner={friendId} chatId={userId} />
+        <ChatInput chatPartner={friendId} chatId={userId} chatRoom={chatid} />
       </div>
     </div>
   );

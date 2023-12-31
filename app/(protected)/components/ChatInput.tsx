@@ -9,11 +9,13 @@ import { toast } from "sonner";
 interface ChatInputProps {
   chatPartner: string;
   chatId: string;
+  chatRoom: string;
 }
 
 const ChatInput: FunctionComponent<ChatInputProps> = ({
   chatPartner,
   chatId,
+  chatRoom,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,6 +29,7 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
         text: input,
         chatId: chatId,
         chatPartner: chatPartner,
+        chatRoom: chatRoom,
       });
       setInput("");
       textareaRef.current?.focus();

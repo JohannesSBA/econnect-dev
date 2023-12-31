@@ -12,6 +12,6 @@ export const pusherServer = new PusherServer({
   useTLS: true,
 });
 
-export const pusherClient = new PusherClient("cc883f8f5eca615325ac", {
+export const pusherClient = new PusherClient("b0ae9f10b344ae0b7b00", {
   cluster: "mt1",
 });

@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { pusherClient } from "@/app/lib/pusher";
-import { toPusherKey } from "@/app/lib/utils";
+import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { z } from "zod";
 import { messageValidator } from "@/app/lib/validation";
 import { toast } from "sonner";
@@ -10,8 +10,7 @@ import { toast } from "sonner";
 interface conversationProps {
   chatPartner: string;
   chatId: string;
-  partnerName: string;
-  userName: string;
+  chatRoom: string;
 }
 
 type Message = z.infer<typeof messageValidator>;
@@ -19,8 +18,7 @@ type Message = z.infer<typeof messageValidator>;
 const Conversations: FunctionComponent<conversationProps> = ({
   chatPartner,
   chatId,
-  partnerName,
-  userName,
+  chatRoom,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -43,7 +41,7 @@ const Conversations: FunctionComponent<conversationProps> = ({
   }, [chatId, chatPartner]);
 
   useEffect(() => {
-    pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
+    pusherClient.subscribe(toPusherKey(`chat:${chatRoom}`));
 
     const messageHandler = (message: Message) => {
       setMessages((prev) => [...prev, message]);
@@ -52,10 +50,10 @@ const Conversations: FunctionComponent<conversationProps> = ({
     pusherClient.bind("incoming-message", messageHandler);
 
     return () => {
-      pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`));
+      pusherClient.unsubscribe(toPusherKey(`chat:${chatRoom}`));
       pusherClient.unbind("incoming-message", messageHandler);
     };
-  }, [chatId]);
+  }, [chatRoom]);
 
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
 
@@ -95,27 +93,27 @@ const Conversations: FunctionComponent<conversationProps> = ({
                 <div
                   className={
                     isCurrentUser
-                      ? "flex flex-col leading-1.5 p-4 border-gray-200 bg-blue-500 rounded-s-xl rounded-se-xl "
-                      : "flex flex-col leading-1.5 p-4 border-gray-200 bg-slate-200 rounded-e-xl rounded-es-xl "
+                      ? "flex flex-col leading-1.5 p-2 border-gray-200 bg-blue-500 rounded-s-xl rounded-se-xl "
+                      : "flex flex-col leading-1.5 p-2 border-gray-200 bg-slate-200 rounded-e-xl rounded-es-xl "
                   }
                 >
                   <span
                     className={
                       isCurrentUser
-                        ? "px-4 py-2 rounded-lg inline-block text-white"
-                        : "px-4 py-2 rounded-lg inline-block"
+                        ? "py-2 rounded-lg w-full text-white"
+                        : "py-2 rounded-lg w-full"
                     }
                   >
                     {message.text}{" "}
-                    <span
-                      className={
-                        isCurrentUser
-                          ? "ml-2 text-xs text-gray-300"
-                          : "ml-2 text-xs text-gray-400"
-                      }
-                    >
-                      {new Date(message.createdAt).toLocaleTimeString("en-US")}
-                    </span>
+                  </span>
+                  <span
+                    className={
+                      isCurrentUser
+                        ? "ml-2 text-[10px] p-1 text-gray-300 realtive right-0 w-full text-right"
+                        : "ml-2 text-[10px] p-1 text-gray-400 realtive right-0 w-full text-right"
+                    }
+                  >
+                    {new Date(message.createdAt).toLocaleTimeString("en-US")}
                   </span>
                 </div>
               </div>
