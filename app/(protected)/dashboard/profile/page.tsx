@@ -15,7 +15,7 @@ const page = async () => {
   return (
     <div className="w-screen h-screen bg-white flex">
       <div className="w-1/3 h-full ">
-        <div className="h-2/5 w-full  flex flex-col justify-center items-center">
+        <div className="h-2/5 w-full overflow-clip flex flex-col justify-center items-center">
           <ProfileImage image={userInfo.image as string} />
           <div className="fixed top-0 right-0">
             <EditContent

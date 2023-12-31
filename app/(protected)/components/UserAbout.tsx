@@ -22,8 +22,8 @@ export default function UserAbout({ userBio }: bioProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   // TODO : USE PUSHER TO UPDATE THE BIO AS SOON AS IT IS SUBMIT OR FORCE A REFRESH
   return (
-    <div className="w-fit h-1/3 mt-2 rounded-md shadow-sm flex justify-center">
-      <Card className="bg-transparent ml-6 p-2 flex justify-center">
+    <div className="w-full h-1/3 mt-2 rounded-md shadow-sm flex">
+      <Card className="bg-transparent W-full ml-6 p-2 flex justify-center">
         <CardHeader className="flex font-semibold justify-between">
           <p className="text-md">About</p>
         </CardHeader>
