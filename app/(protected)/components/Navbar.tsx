@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "@nextui-org/react";
+import React, { useEffect } from "react";
+import { Badge, Link } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
 import SignOutButton from "./SignOutButton";
 import UserPicture from "./UserPicture";
@@ -9,10 +9,9 @@ import { FaMessage } from "react-icons/fa6";
 import Messages from "./Messages";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import axios from "axios";
 
-const Header: React.FC = async () => {
-  const session = await getServerSession(options);
-
+const Header: React.FC = () => {
   return (
     <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
       <div className="w-1/6 flex gap-2">
@@ -23,13 +22,15 @@ const Header: React.FC = async () => {
       </div>
       <div className="w-5/6 hidden md:flex gap-2 justify-end">
         <Search />
-        <Link
-          href="/dashboard/friend-requests"
-          className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200"
-        >
-          <FaUserFriends />
-          <p className="font-extralight text-xs">Requests</p>
-        </Link>
+        <Badge content={``} color="primary">
+          <Link
+            href="/dashboard/friend-requests"
+            className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200"
+          >
+            <FaUserFriends />
+            <p className="font-extralight text-xs">Requests</p>
+          </Link>
+        </Badge>
         <Link
           href="/dashboard/connects"
           className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200 border-r-1"
@@ -37,7 +38,6 @@ const Header: React.FC = async () => {
           <FaMessage />
           <p className="font-extralight text-xs">Connects</p>
         </Link>
-
         <UserPicture />
         <SignOutButton />
       </div>
