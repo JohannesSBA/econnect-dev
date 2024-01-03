@@ -1,9 +1,5 @@
 "use client";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { pusherClient } from "@/app/lib/pusher";
-import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
-import { Message } from "@/app/lib/validation";
-import { getServerSession } from "next-auth";
+import { chatHrefConstructor } from "@/app/lib/utils";
 import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -25,7 +21,7 @@ const NotificationToast: FC<NotificationToastProps> = ({
   senderMessage,
 }) => {
   return (
-    <div className="max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
+    <div className=" w-96 absolute bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
       <a
         onClick={() => toast.dismiss()}
         href={`/dashboard/chat/${chatHrefConstructor(sessionId, senderId)}`}

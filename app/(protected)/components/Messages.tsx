@@ -18,7 +18,7 @@ import { pusherClient } from "@/app/lib/pusher";
 import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Message } from "@/app/lib/validation";
-import { toast } from "sonner";
+import { Toaster, toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { Friend } from "@/app/types/db";
 import NotificationToast from "./NotificationToast";
