@@ -2,17 +2,13 @@ import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
 
-export async function GET(req: Request, res: Response) {
+export async function POST(req: Request, res: Response) {
+  console.log("i made it here tho");
   try {
-    const session = await getServerSession(options);
-
-    if (!session) {
-      return new Response("Unauthorized", { status: 401 });
-    }
-
+    const body = await req.json();
     const getFriends = await prisma.user.findMany({
       where: {
-        email: session.user.email as string,
+        id: body.session.user.id,
       },
       select: {
         friends: true,

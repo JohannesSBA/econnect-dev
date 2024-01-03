@@ -14,6 +14,7 @@
     "@next-auth/prisma-adapter": "^1.0.7",
     "@nextui-org/react": "^2.1.13",
     "@prisma/client": "^5.4.2",
+    "@pusher/push-notifications-web": "^1.1.0",
     "aws-sdk": "^2.1511.0",
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",

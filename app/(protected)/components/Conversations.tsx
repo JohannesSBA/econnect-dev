@@ -21,7 +21,11 @@ const Conversations: FunctionComponent<conversationProps> = ({
   chatRoom,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [userReadStatus, setUserReadStatus] = useState<Record<string, boolean>>(
+    {}
+  );
 
+  // Get all Messages in the conversation
   useEffect(() => {
     const getMessage = async () => {
       try {
@@ -40,11 +44,14 @@ const Conversations: FunctionComponent<conversationProps> = ({
     getMessage();
   }, [chatId, chatPartner]);
 
+  // Realtime updating of the messages
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`chat:${chatRoom}`));
 
     const messageHandler = (message: Message) => {
       setMessages((prev) => [...prev, message]);
+      // Assume the current user has not read the message initially
+      setUserReadStatus((prev) => ({ ...prev, [message.id]: false }));
     };
 
     pusherClient.bind("incoming-message", messageHandler);
@@ -64,15 +71,23 @@ const Conversations: FunctionComponent<conversationProps> = ({
     }
   }, [messages]);
 
+  const handleReadMessage = (messageId: string) => {
+    setUserReadStatus((prev) => ({ ...prev, [messageId]: true }));
+    axios.post("/api/message/mark-as-read", {
+      messageId: messageId,
+    });
+  };
+
   return (
     <div
-      className="w-full max-h-full px-4 overflow-scroll flex flex-col"
+      className="w-full h-full px-4 overflow-scroll flex flex-col"
       id="messages"
     >
       {messages.map((message, index) => {
         const isCurrentUser = chatPartner !== message.senderId;
         const hasNextMessageFromSameUser =
           messages[index - 1]?.senderId === messages[index].senderId;
+        const isRead = userReadStatus[message.id];
 
         return (
           <div

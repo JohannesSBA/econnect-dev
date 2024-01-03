@@ -3,6 +3,7 @@ import { pusherServer } from "@/app/lib/pusher";
 import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
+import { getUserContent } from "@/app/helpers/getUser";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
@@ -24,6 +25,9 @@ export async function POST(req: Request, res: Response) {
     createdAt: timeStamp,
   };
 
+  //Sender object
+  const user = await getUserContent(body.chatId);
+
   //Pusher Events
 
   const chatRoom = body.chatRoom;
@@ -39,6 +43,8 @@ export async function POST(req: Request, res: Response) {
     "new_message",
     {
       ...messageData,
+      senderImg: `https://econnectbucket.s3.amazonaws.com/${user.id}`,
+      senderName: user.fullName,
     }
   );
 

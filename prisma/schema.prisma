@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
 model User {
@@ -36,6 +36,7 @@ model User {
 
   messagesSent       Message[]    @relation("messagesSent")
   messagesReceived   Message[]    @relation("messagesReceived")
+  messagesRead     Message[] @relation("messagesRead")
   
 }
 
@@ -49,6 +50,8 @@ model Message {
   senderId           String
   recipient          User         @relation("messagesReceived", fields: [recipientId], references: [id])
   recipientId        String
+  readBy           User[]       @relation("messagesRead")
+
 }
 
 

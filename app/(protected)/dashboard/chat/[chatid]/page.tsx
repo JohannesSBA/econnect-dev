@@ -62,12 +62,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
-      <div className="w-1/4 h-full flex flex-col ">
-        <h1 className="font-semibold pt-8 pl-8">Friends List</h1>
-        <div className="w-full">
-          <Messages userId={userId} />
-        </div>
-      </div>
+      <div className="w-1/4 h-full flex flex-col "></div>
       <div className="w-3/4 h-full rounded-2xl ml-3 border-2 border-slate-300 flex flex-col justify-between">
         <div className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg">
           <div className="flex items-center">

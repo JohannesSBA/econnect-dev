@@ -39,3 +39,10 @@ interface CustomSession {
   };
   accessToken: string;
 }
+
+interface Friend {
+  key: React.Key | null | undefined;
+  id: string;
+  firstName: string;
+  lastName: string;
+}

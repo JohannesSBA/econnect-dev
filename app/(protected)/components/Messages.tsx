@@ -13,41 +13,29 @@ import {
 import FriendBadge from "./FriendBadge";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
+import { getServerSession } from "next-auth";
+import { pusherClient } from "@/app/lib/pusher";
+import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Message } from "@/app/lib/validation";
+import { toast } from "sonner";
+import { usePathname } from "next/navigation";
+import { Friend } from "@/app/types/db";
+import NotificationToast from "./NotificationToast";
 
 interface MessageProps {
   userId: string;
-}
-interface Friend {
-  key: React.Key | null | undefined;
-  id: string;
-  firstName: string;
-  lastName: string;
+  friends: Friend[];
 }
 
-export default function Messages({ userId }: MessageProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const [friends, setFriends] = useState<Friend[]>([]);
+export default function Messages({ userId, friends }: MessageProps) {
   const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const res = await axios.get("/api/friends/get");
-        setFriends(res.data[0].friends);
-      } catch (error) {
-        console.error("Error fetching friends:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchFriends();
-  }, []);
+  const pathName = usePathname();
 
   useEffect(() => {
     // Filter friends based on the search term
+    if (!friends) return;
     const filtered = friends.filter((friend) =>
       `${friend.firstName} ${friend.lastName}`
         .toLowerCase()
@@ -56,6 +44,36 @@ export default function Messages({ userId }: MessageProps) {
 
     setFilteredFriends(filtered);
   }, [friends, searchTerm]);
+
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`user:${userId}:chats`));
+    console.log(userId);
+
+    const chatHandler = (message: Message) => {
+      const shouldNotify =
+        pathName !==
+        `/dashboard/chat/${chatHrefConstructor(userId, message.senderId)}`;
+      if (!shouldNotify) return;
+      toast.custom(() => {
+        return (
+          <NotificationToast
+            sessionId={userId}
+            senderId={message.senderId}
+            senderImg={message.image}
+            senderName={message.id}
+            senderMessage={message.text}
+          />
+        );
+      });
+    };
+
+    pusherClient.bind("new_message", chatHandler);
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`user:${userId}:chats`));
+      pusherClient.unbind("new_message", chatHandler);
+    };
+  }, [pathName, userId]);
 
   return (
     <div className="flex flex-col gap-2 m-4 bg-slate-100">

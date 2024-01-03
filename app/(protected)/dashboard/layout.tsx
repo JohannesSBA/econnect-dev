@@ -1,14 +1,24 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Inter } from "next/font/google";
-import Navbar from "@/app/(protected)/components/Navbar";
 import Messages from "../components/Messages";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import axios from "axios";
 import { pusherClient } from "@/app/lib/pusher";
-import { toPusherKey } from "@/app/lib/utils";
+import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { Message } from "postcss";
+import { toast } from "sonner";
+import { Avatar, Badge, Link } from "@nextui-org/react";
+import { FaUserFriends } from "react-icons/fa";
+import { FaMessage } from "react-icons/fa6";
+import { GiWaterDrop } from "react-icons/gi";
+import NotificationToast from "../components/NotificationToast";
+import Search from "../components/Search";
+import SignOutButton from "../components/SignOutButton";
+import UserPicture from "../components/UserPicture";
+import prisma from "@/app/lib/prisma";
+import { Friend } from "@/app/types/db";
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,13 +33,57 @@ export const metadata: Metadata = {
 
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const session = await getServerSession(options);
+  if (!session) return;
+
+  const getFriends = await prisma.user.findMany({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      friends: true,
+    },
+  });
+
+  const friendsList = getFriends[0].friends as unknown as Friend[];
 
   return (
     <html lang="en">
-      {/* Your layout content */}
       <body className={inter.className}>
         <div className="h-screen w-screen overflow-clip">
-          <Navbar />
+          <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
+            <div className="w-1/6 flex gap-2">
+              <Link href={"/dashboard"} className="flex gap-4 text-blue-800">
+                <GiWaterDrop />
+                <p className="hidden md:flex font-bold text-inherit">
+                  Econnect
+                </p>
+              </Link>
+            </div>
+            <div className="w-5/6 hidden md:flex gap-2 justify-end">
+              <Search />
+              <Badge content={``} color="primary">
+                <Link
+                  href="/dashboard/friend-requests"
+                  className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200"
+                >
+                  <FaUserFriends />
+                  <p className="font-extralight text-xs">Requests</p>
+                </Link>
+              </Badge>
+              <Link
+                href="/dashboard/connects"
+                className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200 border-r-1"
+              >
+                <FaMessage />
+                <p className="font-extralight text-xs">Connects</p>
+              </Link>
+              <UserPicture />
+              <SignOutButton />
+            </div>
+          </div>
+          <div className="w-1/4 absolute">
+            <Messages userId={session?.user.id} friends={friendsList} />
+          </div>
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
             {/* <NewPost /> */}
