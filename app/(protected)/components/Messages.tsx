@@ -1,27 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Input,
-} from "@nextui-org/react";
+import { Badge, Input } from "@nextui-org/react";
 import FriendBadge from "./FriendBadge";
-import axios from "axios";
 import { FaSearch } from "react-icons/fa";
-import { getServerSession } from "next-auth";
 import { pusherClient } from "@/app/lib/pusher";
 import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Message } from "@/app/lib/validation";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { Friend } from "@/app/types/db";
 import NotificationToast from "./NotificationToast";
+import Link from "next/link";
+import { FaUserFriends } from "react-icons/fa";
+import prisma from "@/app/lib/prisma";
+import axios from "axios";
 
 interface MessageProps {
   userId: string;
@@ -31,6 +23,7 @@ interface MessageProps {
 export default function Messages({ userId, friends }: MessageProps) {
   const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [requestCounter, setRequestCounter] = useState(0);
   const pathName = usePathname();
 
   useEffect(() => {
@@ -75,33 +68,72 @@ export default function Messages({ userId, friends }: MessageProps) {
     };
   }, [pathName, userId]);
 
+  useEffect(() => {
+    const friendRequestCounter = async () => {
+      const getPending = await axios.post("/api/friends/requests", {});
+
+      setRequestCounter(getPending.data[0].pendingFriendRequest.length);
+    };
+
+    friendRequestCounter();
+  }, [userId]);
+
   return (
-    <div className="flex flex-col gap-2 m-4 bg-slate-100">
-      <Input
-        type="text"
-        label="Search"
-        className="max-w-xs bg-slate-100"
-        endContent={<FaSearch />}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      {filteredFriends.map(
-        (friend: {
-          key: React.Key | null | undefined;
-          id: string;
-          firstName: string;
-          lastName: string;
-        }) => (
-          <div key={friend.key} className="w-full">
-            <FriendBadge
-              firstName={friend.firstName}
-              lastName={friend.lastName}
-              friendId={friend.id as string}
-              user={userId}
-            />
-          </div>
-        )
-      )}
+    <div
+      className={
+        pathName.includes("profile") || pathName.includes("ec")
+          ? `hidden`
+          : `h-[calc(100vh-10rem)] flex flex-col justify-between gap-2 m-4 bg-slate-100`
+      }
+    >
+      <div className="flex flex-col gap-2">
+        <Input
+          type="text"
+          label="Search"
+          className="max-w-xs bg-slate-100"
+          endContent={<FaSearch />}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {filteredFriends.map(
+          (friend: {
+            key: React.Key | null | undefined;
+            id: string;
+            firstName: string;
+            lastName: string;
+          }) => (
+            <div key={friend.key} className="w-full">
+              <FriendBadge
+                firstName={friend.firstName}
+                lastName={friend.lastName}
+                friendId={friend.id as string}
+                user={userId}
+              />
+            </div>
+          )
+        )}
+      </div>
+      <div className="group hover:bg-slate-200 p-4 bottom-0">
+        {requestCounter > 0 ? (
+          <Badge content={requestCounter} color="primary">
+            <Link
+              href="/dashboard/friend-requests"
+              className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
+            >
+              <FaUserFriends />
+              <p className=" text-md">Requests</p>
+            </Link>
+          </Badge>
+        ) : (
+          <Link
+            href="/dashboard/friend-requests"
+            className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
+          >
+            <FaUserFriends />
+            <p className=" text-md">Requests</p>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

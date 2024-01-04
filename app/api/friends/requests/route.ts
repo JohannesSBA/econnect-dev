@@ -4,6 +4,7 @@ import prisma from "@/app/lib/prisma";
 
 export async function POST(req: Request, res: Response) {
   const session = await getServerSession(options);
+  if (!session) return;
   const numReq = await prisma.user.findMany({
     where: {
       id: session?.user.id,

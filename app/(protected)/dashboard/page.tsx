@@ -1,8 +1,6 @@
 import React from "react";
-import Messages from "../components/Messages";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import FriendRequests from "../components/FriendRequests";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect } from "next/navigation";
 

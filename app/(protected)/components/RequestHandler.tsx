@@ -19,22 +19,24 @@ const RequestHandler = ({
   const router = useRouter();
 
   async function rejectFriend(email: string, id: string, name: string) {
+    toast.loading("Removing friend request");
     try {
       axios.post("/api/friends/deny", { email, id });
     } catch (error) {
     } finally {
-      return toast.success(
-        `You have successfully removed ${name} from your requests`
-      );
+      toast.dismiss();
+      router.refresh();
     }
   }
 
   async function acceptFriend(email: string, id: string, name: string) {
+    toast.loading(`Adding ${name} as a friend`);
     try {
       axios.post("/api/friends/accept", { email, id });
     } catch (error) {
     } finally {
-      return toast.success(`You have added ${email} as a friend`);
+      toast.dismiss();
+      router.refresh();
     }
   }
 

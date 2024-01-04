@@ -19,7 +19,7 @@ const Search = () => {
       <input
         value={searchQuery}
         onChange={(event) => setSearchQeury(event.target.value)}
-        placeholder="What are you looking for"
+        placeholder="Search"
         className="px-5 py-1 sm:px-5 sm:py-3 flex-1 text-zinc-800 bg-zinc-200 rounded-xl"
       />
     </form>

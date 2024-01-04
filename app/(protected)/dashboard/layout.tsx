@@ -10,8 +10,6 @@ import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { Message } from "postcss";
 import { toast } from "sonner";
 import { Avatar, Badge, Link } from "@nextui-org/react";
-import { FaUserFriends } from "react-icons/fa";
-import { FaMessage } from "react-icons/fa6";
 import { GiWaterDrop } from "react-icons/gi";
 import NotificationToast from "../components/NotificationToast";
 import Search from "../components/Search";
@@ -61,22 +59,6 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
             </div>
             <div className="w-5/6 hidden md:flex gap-2 justify-end">
               <Search />
-              <Badge content={``} color="primary">
-                <Link
-                  href="/dashboard/friend-requests"
-                  className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200"
-                >
-                  <FaUserFriends />
-                  <p className="font-extralight text-xs">Requests</p>
-                </Link>
-              </Badge>
-              <Link
-                href="/dashboard/connects"
-                className="flex flex-col text-slate-800 rounded-md p-2 hover:bg-slate-200 border-r-1"
-              >
-                <FaMessage />
-                <p className="font-extralight text-xs">Connects</p>
-              </Link>
               <UserPicture />
               <SignOutButton />
             </div>
