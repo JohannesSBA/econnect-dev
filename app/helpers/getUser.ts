@@ -1,11 +1,7 @@
-import { getServerSession } from "next-auth";
-import { options } from "../api/auth/[...nextauth]/options";
 import prisma from "../lib/prisma";
-import User from "@/app/types/db";
 
 export const getUserContent = async (id: string) => {
   try {
-    const session = await getServerSession(options);
     let userId = id;
 
     const user = await prisma.user.findUnique({
@@ -28,6 +24,7 @@ export const getUserContent = async (id: string) => {
       title: user?.title as string,
       image: `https://econnectbucket.s3.amazonaws.com/${user?.id}`,
       gotStarted: user?.gotStarted,
+      role: user?.role,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.

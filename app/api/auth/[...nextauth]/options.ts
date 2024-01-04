@@ -58,7 +58,7 @@ export const options: NextAuthOptions = {
           lastName: user.lastName,
           bio: user.bio,
           createdAt: user.createdAt,
-          image: user.image as string,
+          image: "",
           location: user.location as string,
           password: "",
           phoneNumber: user.phoneNumber,
@@ -66,6 +66,9 @@ export const options: NextAuthOptions = {
           role: user.role,
           title: user.title as string,
           pronouns: user.pronouns as string,
+          friends: [],
+          pendingFriendRequests: [],
+          gotStarted: user.gotStarted,
         };
       },
     }),
@@ -86,13 +89,14 @@ export const options: NextAuthOptions = {
         });
 
         if (dbUserResult) {
-          const dbUser = dbUserResult as User;
+          const dbUser = dbUserResult as unknown as User;
           return {
             id: dbUser.id,
             firstName: dbUser.firstName,
             email: dbUser.email,
             picture: dbUser.image,
             lastName: dbUser.lastName,
+            role: dbUser.role, // Add the missing role property
           };
         }
       }

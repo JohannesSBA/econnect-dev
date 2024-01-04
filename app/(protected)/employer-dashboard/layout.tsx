@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Messages from "../components/Messages";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { Link } from "@nextui-org/react";
+import { Avatar, Badge, Link } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
 import Search from "../components/Search";
 import SignOutButton from "../components/SignOutButton";
@@ -13,7 +13,6 @@ import prisma from "@/app/lib/prisma";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 
 interface LayoutProps {
   children: ReactNode;
@@ -34,8 +33,8 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
 
   const userRole = userInfo.role as string;
 
-  if (userRole === "EMPLOYER") {
-    redirect("/employer-dashboard");
+  if (userRole === "EMPLOYEE") {
+    redirect("/dashboard");
   }
 
   if (userRole === "ADMIN") {

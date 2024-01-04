@@ -17,7 +17,7 @@ model User {
   @@map(name: "users")
   phoneNumber String? @unique
   password    String 
-  role        Role    @default(EMPLOYEE)
+  role        String?    @default("EMPLOYEE")
   bio String?
   posts       Post[]
   title String?
@@ -52,13 +52,6 @@ model Message {
   recipientId        String
   readBy           User[]       @relation("messagesRead")
 
-}
-
-
-enum Role {
-  EMPLOYER
-  EMPLOYEE
-  ADMIN
 }
 
 model Post {
