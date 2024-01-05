@@ -1,5 +1,8 @@
 import AddFriendButton from "@/app/(protected)/components/AddFriendButton";
+import EditContent from "@/app/(protected)/components/EditContent";
+import ProfileImage from "@/app/(protected)/components/ProfileImage";
 import UserAbout from "@/app/(protected)/components/UserAbout";
+import UserEducation from "@/app/(protected)/components/UserEducation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Card, Image } from "@nextui-org/react";
@@ -19,60 +22,58 @@ const page = async ({ params }: { params: { userName: string } }) => {
   const userInfo = await getUserContent(params.userName);
 
   return (
-    <div className="h-fit md:h-screen bg-slate-200">
-      <div className="w-screen flex overflow-auto flex-col md:flex-row gap-2">
-        <div className="w-full flex flex-col items-center bg-slate-200 pt-4 gap-2">
-          {/* User Card */}
-          <div className="w-screen border-2 border-slate-200 rounded-md shadow-sm flex justify-center">
-            <Card className="bg-transparent ml-6 p-2 flex justify-center w-4/6">
-              <div className="w-full h-full rounded-md bg-no-repeat bg-[url(https://media.licdn.com/dms/image/D4E16AQFuAM3pbTcEDA/profile-displaybackgroundimage-shrink_350_1400/0/1679969544499?e=1706745600&v=beta&t=OdEcXq5uVWKSJwezbHOSpeS-XOzm9YfA_J7MkJqbXw0)] ">
-                <div className="w-48">
-                  <Image
-                    src={userInfo.image}
-                    alt="NextUI Album Cover"
-                    className="m-5 rounded-full border-4"
-                  />
-                </div>
-              </div>
-              <div className="ml-4 p-2">
-                <h1 className="font-bold text-2xl text-black ">
-                  {userInfo.fullName}
-                </h1>
-                <h2 className="text-slate-600 text-sm">
-                  ({userInfo.pronouns})
-                </h2>
-                <h2 className="text-slate-600 text-sm">
-                  {userInfo.currentPosition}
-                </h2>
-                <h2 className="text-slate-600 text-sm pt-2">
-                  {userInfo.location}
-                </h2>
-              </div>
-              <div className="w-fit m-6 absolute right-0 bottom-0">
-                <AddFriendButton id={userInfo.id as string} />
-              </div>
-            </Card>
+    <div className="w-screen h-screen bg-white flex">
+      <div className="w-1/3 h-full ">
+        <div className="h-2/5 w-full overflow-clip flex flex-col justify-center items-center">
+          <ProfileImage image={userInfo.image as string} />
+          <div className="fixed top-0 right-0">
+            <EditContent
+              userBio={userInfo.bio as string}
+              userName={userInfo.firstName as string}
+              userPronouns={userInfo.pronouns}
+              userLocation={userInfo.location as string}
+              userEducation={userInfo.education}
+              userCPosition={userInfo.currentPosition as string}
+              userTitle={userInfo.title as string}
+            />
           </div>
-          {/* User About */}
-          <UserAbout userBio={userInfo.bio as string} />
+        </div>
+        <div className="h-3/5 w-full  flex flex-col gap-8 items-center mt-12">
+          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
+            <h1 className="font-bold text-2xl text-black">
+              <p className="uppercase font-extralight text-xs">full name</p>
+              {userInfo.fullName}
+            </h1>
+          </div>
+          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
+            <h1 className="font-bold text-2xl text-black">
+              <p className="uppercase font-extralight text-xs">Pronouns</p>(
+              {userInfo.pronouns})
+            </h1>
+          </div>
+          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
+            <h1 className="font-bold text-2xl text-black">
+              <p className="uppercase font-extralight text-xs">
+                Current Position
+              </p>
+              {userInfo.currentPosition}
+            </h1>
+          </div>
 
-          {/* <UserExperience /> */}
-          <div className="w-80 md:w-screen border-2 border-slate-200 rounded-md shadow-sm flex justify-center">
-            <Card className="bg-transparent ml-6 p-2 flex justify-center w-4/6">
-              <div className="ml-4 p-2">
-                <h1 className="font-bold text-2xl text-black ">Experience</h1>
-                <h2 className="text-slate-600 text-sm">(He/Him)</h2>
-                <h2 className="text-slate-600 text-sm">
-                  Student at Fordham University
-                </h2>
-                <h2 className="text-slate-600 text-sm pt-2">
-                  Addis Ababa, Ethiopia
-                </h2>
-              </div>
-            </Card>
+          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
+            <h1 className="font-bold text-2xl text-black">
+              <p className="uppercase font-extralight text-xs">Location</p>
+              {userInfo.location}
+            </h1>
           </div>
         </div>
       </div>
+      <div className="w-1/3 h-full flex flex-col">
+        <UserAbout userBio={userInfo.bio as string} />
+        <UserEducation userInfo={userInfo} />
+      </div>
+
+      <div className="w-1/3 h-full flex flex-col"></div>
     </div>
   );
 };

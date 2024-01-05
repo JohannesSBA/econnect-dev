@@ -58,7 +58,10 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
         <div className="h-screen w-screen overflow-clip">
           <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
             <div className="w-1/6 flex gap-2">
-              <Link href={"/dashboard"} className="flex gap-4 text-blue-800">
+              <Link
+                href={"/employer-dashboard"}
+                className="flex gap-4 text-blue-800"
+              >
                 <GiWaterDrop />
                 <p className="hidden md:flex font-bold text-inherit">
                   Econnect

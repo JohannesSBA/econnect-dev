@@ -11,7 +11,7 @@ const Search = () => {
 
     const encodedSearchQuery = encodeURI(searchQuery);
 
-    router.push(`/dashboard/search?q=${encodedSearchQuery}`);
+    router.push(`/search?q=${encodedSearchQuery}`);
   };
 
   return (
