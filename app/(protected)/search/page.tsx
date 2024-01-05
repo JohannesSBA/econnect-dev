@@ -4,6 +4,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { User } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 const SearchPage = () => {
   const search = useSearchParams();

@@ -3,6 +3,7 @@ import { getUserContent } from "@/app/helpers/getUser";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
+import JobListing from "../components/JobListing";
 
 const Page = async () => {
   const session = await getServerSession(options);
@@ -12,17 +13,17 @@ const Page = async () => {
 
   const userRole = userInfo.role as string;
 
-  if (userRole === "EMPLOYEE") {
-    redirect("/dashboard");
-  }
-
-  if (userRole === "ADMIN") {
-    redirect("/admin");
-  }
-
   return (
     <div className="bg-slate-100 w-screen h-[calc(100vh-6rem)]">
-      p{/* Your component content goes here */}
+      <JobListing
+        id={""}
+        createdAt={""}
+        updatedAt={""}
+        title={""}
+        description={""}
+        location={""}
+        company={""}
+      />
     </div>
   );
 };

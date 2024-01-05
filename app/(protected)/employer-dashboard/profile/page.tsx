@@ -13,8 +13,8 @@ const page = async () => {
   const session = await getServerSession(options);
   const userInfo = await getUserContent(session?.user.id as string);
 
-  if (userInfo.role === "EMPLOYER") {
-    redirect("/employer-dashboard/profile");
+  if (userInfo.role === "EMPLOYEE") {
+    redirect("/dashboard/profile");
   }
 
   return (
