@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Inter } from "next/font/google";
-import Messages from "../components/Messages";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Avatar, Badge, Link } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
-import Search from "../components/Search";
-import SignOutButton from "../components/SignOutButton";
-import UserPicture from "../components/UserPicture";
 import prisma from "@/app/lib/prisma";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect } from "next/navigation";
+import Messages from "./components/Messages";
+import UserPicture from "./components/UserPicture";
+import Search from "./components/Search";
+import SignOutButton from "./components/SignOutButton";
 
 interface LayoutProps {
   children: ReactNode;
@@ -32,14 +32,6 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const userInfo = await getUserContent(session.user.id);
 
   const userRole = userInfo.role as string;
-
-  if (userRole === "EMPLOYEE") {
-    redirect("/dashboard");
-  }
-
-  if (userRole === "ADMIN") {
-    redirect("/admin");
-  }
 
   const getFriends = await prisma.user.findMany({
     where: {
@@ -75,7 +67,11 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
             </div>
           </div>
           <div className="w-1/4 absolute">
-            <Messages userId={session?.user.id} friends={friendsList} />
+            <Messages
+              userId={session?.user.id}
+              friends={friendsList}
+              role={userRole}
+            />
           </div>
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">

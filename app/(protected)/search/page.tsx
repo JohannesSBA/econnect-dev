@@ -41,7 +41,7 @@ const SearchPage = () => {
           <div key={user.key} className="flex w-96">
             <a
               className="w-full h-fit p-6 m-4 shadow-md bg-slate-100 rounded-md text-black hover:bg-slate-400 hover:text-slate-50"
-              href={`/dashboard/ec/${user.id}`}
+              href={`/ec/${user.id}`}
             >
               <User
                 name={user.firstName + " " + user.lastName}

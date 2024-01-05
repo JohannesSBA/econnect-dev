@@ -5,7 +5,7 @@ import UserAbout from "@/app/(protected)/components/UserAbout";
 import UserEducation from "@/app/(protected)/components/UserEducation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Card, Image } from "@nextui-org/react";
+import { Button, Card, Image } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
@@ -20,23 +20,36 @@ const page = async ({ params }: { params: { userName: string } }) => {
   }
 
   const userInfo = await getUserContent(params.userName);
+  const stringifiedFriends = JSON.stringify(userInfo.friends);
+
+  const role = userInfo.role as string;
+  let userActionButton;
+  if (role === "EMPLOYER") {
+    userActionButton = (
+      <div>
+        <Button color="primary">
+          <a href={`/ec/${userInfo.id}`}></a>
+          Go to Messages
+        </Button>
+      </div>
+    );
+  } else if (role === "EMPLOYEE") {
+    stringifiedFriends.includes(session.user.id)
+      ? (userActionButton = (
+          <Button color="primary">
+            <a href={`/ec/${userInfo.id}`}></a>
+            Send a Message
+          </Button>
+        ))
+      : (userActionButton = <AddFriendButton id={userInfo.id as string} />);
+  }
 
   return (
     <div className="w-screen h-screen bg-white flex">
       <div className="w-1/3 h-full ">
         <div className="h-2/5 w-full overflow-clip flex flex-col justify-center items-center">
           <ProfileImage image={userInfo.image as string} />
-          <div className="fixed top-0 right-0">
-            <EditContent
-              userBio={userInfo.bio as string}
-              userName={userInfo.firstName as string}
-              userPronouns={userInfo.pronouns}
-              userLocation={userInfo.location as string}
-              userEducation={userInfo.education}
-              userCPosition={userInfo.currentPosition as string}
-              userTitle={userInfo.title as string}
-            />
-          </div>
+          {userActionButton}
         </div>
         <div className="h-3/5 w-full  flex flex-col gap-8 items-center mt-12">
           <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">

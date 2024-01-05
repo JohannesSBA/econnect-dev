@@ -8,8 +8,18 @@ const page = async () => {
   const session = await getServerSession(options);
   const user = await getUserContent(session?.user.id as string);
 
+  const userRole = user.role as string;
+
   if (user.gotStarted == false) {
     redirect("/dashboard/get-started");
+  }
+
+  if (userRole === "EMPLOYER") {
+    redirect("/employer-dashboard");
+  }
+
+  if (userRole === "ADMIN") {
+    redirect("/admin");
   }
 
   return <div className="w-screen h-screen bg-red-50 flex gap-12"></div>;

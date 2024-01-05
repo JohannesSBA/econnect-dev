@@ -21,9 +21,6 @@ const Conversations: FunctionComponent<conversationProps> = ({
   chatRoom,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [userReadStatus, setUserReadStatus] = useState<Record<string, boolean>>(
-    {}
-  );
 
   // Get all Messages in the conversation
   useEffect(() => {
@@ -72,13 +69,6 @@ const Conversations: FunctionComponent<conversationProps> = ({
       scrollDownRef.current.scrollIntoView();
     }
   }, [messages]);
-
-  const handleReadMessage = (messageId: string) => {
-    setUserReadStatus((prev) => ({ ...prev, [messageId]: true }));
-    axios.post("/api/message/mark-as-read", {
-      messageId: messageId,
-    });
-  };
 
   return (
     <div

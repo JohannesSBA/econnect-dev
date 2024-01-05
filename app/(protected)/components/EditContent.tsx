@@ -19,6 +19,7 @@ import { BiPencil } from "react-icons/bi";
 import { userProps } from "@/app/types/db";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
+import { useRouter } from "next/router";
 
 export default function App({
   userBio,
@@ -61,7 +62,7 @@ export default function App({
       }
       toast.error(error as string);
     } finally {
-      onclose;
+      window.location.reload();
     }
   };
 

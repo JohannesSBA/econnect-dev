@@ -18,9 +18,10 @@ import axios from "axios";
 interface MessageProps {
   userId: string;
   friends: Friend[];
+  role: string;
 }
 
-export default function Messages({ userId, friends }: MessageProps) {
+export default function Messages({ userId, friends, role }: MessageProps) {
   const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [requestCounter, setRequestCounter] = useState(0);
@@ -68,6 +69,30 @@ export default function Messages({ userId, friends }: MessageProps) {
     };
   }, [pathName, userId]);
 
+  let requestElement;
+
+  requestCounter > 0
+    ? (requestElement = (
+        <Badge content={requestCounter} color="primary">
+          <Link
+            href="/dashboard/friend-requests"
+            className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
+          >
+            <FaUserFriends />
+            <p className=" text-md">Requests</p>
+          </Link>
+        </Badge>
+      ))
+    : (requestElement = (
+        <Link
+          href="/dashboard/friend-requests"
+          className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
+        >
+          <FaUserFriends />
+          <p className=" text-md">Requests</p>
+        </Link>
+      ));
+
   useEffect(() => {
     const friendRequestCounter = async () => {
       const getPending = await axios.post("/api/friends/requests", {});
@@ -113,27 +138,13 @@ export default function Messages({ userId, friends }: MessageProps) {
           )
         )}
       </div>
-      <div className="group hover:bg-slate-200 p-4 bottom-0">
-        {requestCounter > 0 ? (
-          <Badge content={requestCounter} color="primary">
-            <Link
-              href="/dashboard/friend-requests"
-              className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
-            >
-              <FaUserFriends />
-              <p className=" text-md">Requests</p>
-            </Link>
-          </Badge>
-        ) : (
-          <Link
-            href="/dashboard/friend-requests"
-            className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
-          >
-            <FaUserFriends />
-            <p className=" text-md">Requests</p>
-          </Link>
-        )}
-      </div>
+      {role === "EMPLOYEE" ? (
+        <div className="group hover:bg-slate-200 p-4 bottom-0">
+          {requestElement}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
