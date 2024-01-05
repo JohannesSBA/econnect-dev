@@ -2,16 +2,16 @@
 
 # Problem
 ### Background
-- Creating a social platform, that enables job seekers to look for employment, and for companies to hire employees._
+- Creating a social platform, that enables job seekers to look for employment, and for companies to hire employees.
 ### The Problem
-- Currently, Ethiopian businesses still use newspapers and word-of-mouth to look for employees, which is inefficient. S_imultaneously, many recent university graduates in Ethiopia haven't been able to find employment, because of a lack of experience and lack of access to proper implementation of Resumes and Cover Letters, which are integral to the employment process.
+- Currently, Ethiopian businesses still use newspapers and word-of-mouth to look for employees, which is inefficient. Simultaneously, many recent university graduates in Ethiopia haven't been able to find employment, because of a lack of experience and lack of access to proper implementation of Resumes and Cover Letters, which are integral to the employment process.
 - The Goal of Econnect is to create a medium in which employers and employees can have a unified way of checking applications and enabling them to submit required documentation online, as well as enabling companies to advertise on the website. 
 - "A new report by the Ministry of Education reveals only 58 percent of university graduates get jobs in Ethiopia. As many as **42 percent** of university grads are unemployed after graduating."
 ### Our Approach
-- Econnect will provide a system where people can look for jobs and apply for them directly through the website. Companies can make job listings and also advertise for special events that they are possibly hosting (i.e. conventions, exhibitions, networking events)_
+- Econnect will provide a system where people can look for jobs and apply for them directly through the website. Companies can make job listings and also advertise for special events that they are possibly hosting (i.e. conventions, exhibitions, networking events)
 # Goals & Success
-- The goal of this project is to create a mobile and web platform that will help remedy the aforementioned problems. _
-- Apart from the business and corporate components of the project, success is defined by the completion of the working product, with possible improvements added later on. _
+- The goal of this project is to create a mobile and web platform that will help remedy the aforementioned problems. 
+- Apart from the business and corporate components of the project, success is defined by the completion of the working product, with possible improvements added later on. 
 # Solution
 ### Features
 - The features are broken down into two categories for the two types of users, being "Employees" and "Employers".
@@ -30,7 +30,7 @@
     - Adding friends to network and communicate
     - A chat feature that enables communication between possible employers or other employees in companies where they are looking to attain employment.
 ### User Flows & Mocks
-![User_Flow](https://github.com/JohannesSBA/econnect-dev/assets/76441090/fa1aa595-bc9b-42f1-9e76-583e7c7b836c)
+![UserFlow](https://github.com/JohannesSBA/econnect-dev/assets/76441090/fa1aa595-bc9b-42f1-9e76-583e7c7b836c)
 
 ### Technical Architecture
 # Econnect Technical Design Doc
