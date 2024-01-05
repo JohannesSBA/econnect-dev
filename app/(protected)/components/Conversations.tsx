@@ -33,11 +33,13 @@ const Conversations: FunctionComponent<conversationProps> = ({
           chatPartner: chatPartner,
           chatId: chatId,
         });
-        setMessages(res.data);
-      } catch {
-        return toast.error(
-          "Sorry, Message did not send. Please try again later."
+        const sortedMessages = res.data.sort(
+          (a: Message, b: Message) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
+        setMessages(sortedMessages);
+      } catch {
+        return toast.error("Sorry, This chat isn't available.");
       }
     };
 
@@ -85,51 +87,74 @@ const Conversations: FunctionComponent<conversationProps> = ({
     >
       {messages.map((message, index) => {
         const isCurrentUser = chatPartner !== message.senderId;
-        const hasNextMessageFromSameUser =
-          messages[index - 1]?.senderId === messages[index].senderId;
-        const isRead = userReadStatus[message.id];
+        const messageDate = new Date(message.createdAt);
+        const month = messageDate.getUTCMonth() + 1; // months from 1-12
+        const day = messageDate.getUTCDate();
+        const year = messageDate.getUTCFullYear();
+
+        const hasMessageOnNewDay = (() => {
+          if (index === 0) {
+            // The first message is always on a new day
+            return true;
+          }
+
+          const previousMessageDate = new Date(messages[index - 1].createdAt);
+          const currentMessageDate = new Date(message.createdAt);
+
+          // Compare the dates without considering the time
+          return (
+            previousMessageDate.getUTCFullYear() !==
+              currentMessageDate.getUTCFullYear() ||
+            previousMessageDate.getUTCMonth() !==
+              currentMessageDate.getUTCMonth() ||
+            previousMessageDate.getUTCDate() !== currentMessageDate.getUTCDate()
+          );
+        })();
 
         return (
-          <div
-            key={message.id}
-            className={
-              !isCurrentUser
-                ? "flex w-full justify-start my-1"
-                : "flex w-full justify-end my-1"
-            }
-          >
-            <div className="items-start flex gap-2.5">
-              <div className="flex flex-col gap-1 w-full max-w-[320px]">
-                {hasNextMessageFromSameUser ? (
-                  ""
-                ) : (
-                  <div className="flex items-center space-x-2"></div>
-                )}
-                <div
-                  className={
-                    isCurrentUser
-                      ? "flex flex-col leading-1.5 p-2 border-gray-200 bg-blue-500 rounded-s-xl rounded-se-xl "
-                      : "flex flex-col leading-1.5 p-2 border-gray-200 bg-slate-200 rounded-e-xl rounded-es-xl "
-                  }
-                >
-                  <span
+          <div key={message.id} className="w-full ">
+            {hasMessageOnNewDay ? (
+              <div className="flex justify-center border-l-2 border-r-2 font-semibold text-xs text-slate-500 bg-slate-200">
+                {`${day}/${month}/${year}`}
+              </div>
+            ) : (
+              ""
+            )}
+            <div
+              className={
+                !isCurrentUser
+                  ? "flex justify-start my-2"
+                  : "flex justify-end my-2"
+              }
+            >
+              <div className="items-start flex gap-2.5">
+                <div className="flex flex-col gap-1 w-full max-w-[320px]">
+                  <div
                     className={
                       isCurrentUser
-                        ? "py-2 rounded-lg w-full text-white"
-                        : "py-2 rounded-lg w-full"
+                        ? "flex flex-col leading-1.5 p-2 border-gray-200 bg-blue-500 rounded-s-xl rounded-se-xl "
+                        : "flex flex-col leading-1.5 p-2 border-gray-200 bg-slate-200 rounded-e-xl rounded-es-xl "
                     }
                   >
-                    {message.text}{" "}
-                  </span>
-                  <span
-                    className={
-                      isCurrentUser
-                        ? "ml-2 text-[10px] p-1 text-gray-300 realtive right-0 w-full text-right"
-                        : "ml-2 text-[10px] p-1 text-gray-400 realtive right-0 w-full text-right"
-                    }
-                  >
-                    {new Date(message.createdAt).toLocaleTimeString("en-US")}
-                  </span>
+                    <span
+                      className={
+                        isCurrentUser
+                          ? "py-2 rounded-lg w-full text-white"
+                          : "py-2 rounded-lg w-full"
+                      }
+                    >
+                      {message.text}
+                    </span>
+                    <span
+                      className={
+                        isCurrentUser
+                          ? "ml-2 text-[10px] p-1 text-gray-300 realtive right-0 w-full text-right"
+                          : "ml-2 text-[10px] p-1 text-gray-400 realtive right-0 w-full text-right"
+                      }
+                    >
+                      {new Date(message.createdAt).toLocaleTimeString("en-US")}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

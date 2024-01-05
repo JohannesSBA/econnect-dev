@@ -23,7 +23,7 @@ export default function App({
   return (
     <Button
       onClick={() => {
-        router.push(`/dashboard/chat/${chatroom}`);
+        router.push(`/chat/${chatroom}`);
       }}
       className="w-full justify-start bg-slate-100 hover:bg-white group"
     >

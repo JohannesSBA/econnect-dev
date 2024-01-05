@@ -1,6 +1,5 @@
 import ChatInput from "@/app/(protected)/components/ChatInput";
 import Conversations from "@/app/(protected)/components/Conversations";
-import Messages from "@/app/(protected)/components/Messages";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Avatar } from "@nextui-org/react";
@@ -35,7 +34,7 @@ export async function generateMetadata({
     notFound();
   }
 
-  return { title: `FriendZone | ${friendContent.fullName} chat` };
+  return { title: `Connected | ${friendContent.fullName} chat` };
 }
 
 interface PageProps {

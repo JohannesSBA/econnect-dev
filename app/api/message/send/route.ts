@@ -13,8 +13,23 @@ export async function POST(req: Request, res: Response) {
   // Vallidations for sending a message
   if (!session) return new Response("Unauthorized", { status: 401 });
 
+  if (!body.text) {
+    return new Response("Message text is required", { status: 400 });
+  }
+
   if (session.user.id !== body.chatId && session.user.id !== body.chatPartner) {
     return new Response("Unauthorized", { status: 401 });
+  }
+
+  //Sender object
+  const user = await getUserContent(body.chatId);
+
+  // Check if the user is authorized to send a message
+  if (user.role === "employee") {
+    const stringifiedFriends = JSON.stringify(user.friends);
+    if (!stringifiedFriends.includes(body.chatPartner)) {
+      return new Response("Unauthorized", { status: 401 });
+    }
   }
 
   // Message objext
@@ -24,9 +39,6 @@ export async function POST(req: Request, res: Response) {
     recipientId: body.chatPartner,
     createdAt: timeStamp,
   };
-
-  //Sender object
-  const user = await getUserContent(body.chatId);
 
   //Pusher Events
 

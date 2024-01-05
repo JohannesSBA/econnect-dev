@@ -8,6 +8,21 @@ export const getUserContent = async (id: string) => {
       where: {
         id: userId,
       },
+      select: {
+        bio: true,
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        pronouns: true,
+        location: true,
+        education: true,
+        currentPosition: true,
+        title: true,
+        gotStarted: true,
+        role: true,
+        friends: true,
+      },
     });
 
     return {
@@ -25,6 +40,7 @@ export const getUserContent = async (id: string) => {
       image: `https://econnectbucket.s3.amazonaws.com/${user?.id}`,
       gotStarted: user?.gotStarted,
       role: user?.role,
+      friends: user?.friends,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.
