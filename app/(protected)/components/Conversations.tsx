@@ -21,6 +21,9 @@ const Conversations: FunctionComponent<conversationProps> = ({
   chatRoom,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [userReadStatus, setUserReadStatus] = useState<Record<string, boolean>>(
+    {}
+  );
 
   // Get all Messages in the conversation
   useEffect(() => {
