@@ -11,7 +11,6 @@ export async function POST(req: Request, res: Response) {
   }
 
   const { messageId } = body;
-  console.log(messageId);
 
   if (!messageId) {
     return new Response("Message Id is required", { status: 400 });

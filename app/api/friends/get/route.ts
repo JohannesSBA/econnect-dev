@@ -3,7 +3,6 @@ import { options } from "../../auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
 
 export async function POST(req: Request, res: Response) {
-  console.log("i made it here tho");
   try {
     const body = await req.json();
     const getFriends = await prisma.user.findMany({

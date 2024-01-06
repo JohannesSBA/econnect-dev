@@ -35,7 +35,6 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
-    console.log(";p");
     await axios.post("/api/job/create", {
       title: title,
       descrption: description,

@@ -41,7 +41,6 @@ export default function Messages({ userId, friends, role }: MessageProps) {
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`user:${userId}:chats`));
-    console.log(userId);
 
     const chatHandler = (message: Message) => {
       const shouldNotify =

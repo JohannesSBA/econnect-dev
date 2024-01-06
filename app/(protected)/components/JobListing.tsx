@@ -23,7 +23,6 @@ const JobListing = () => {
   const [jobs, setJobs] = useState<Jobs[]>([]);
 
   useEffect(() => {
-    console.log("i made it here");
     const getMessage = async () => {
       try {
         const res = await axios.post("/api/job/get");
@@ -33,10 +32,7 @@ const JobListing = () => {
       }
     };
     getMessage();
-    console.log("i fire once");
   }, []);
-
-  console.log(jobs[0]);
 
   return (
     <div>

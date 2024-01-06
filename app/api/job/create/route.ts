@@ -6,7 +6,6 @@ import { options } from "../../auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 
 export async function POST(req: Request, res: Response) {
-  console.log("here");
   const body = await req.json();
   const session = await getServerSession(options);
   const timeStamp = Date();

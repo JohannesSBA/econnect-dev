@@ -23,8 +23,6 @@ const StarterForms = ({ user }: starterProps) => {
     const res = await axios.post("/api/user/started", {
       id: user.id,
     });
-    console.log("p");
-    console.log(res.status);
     router.push("/dashboard");
   }
 
