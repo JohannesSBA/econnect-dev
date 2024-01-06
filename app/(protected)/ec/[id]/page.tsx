@@ -10,16 +10,16 @@ import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 
-const page = async ({ params }: { params: { userName: string } }) => {
+const page = async ({ params }: { params: { id: string } }) => {
   const session = await getServerSession(options);
   if (!session) {
     notFound();
   }
-  if (session.user.id === params.userName) {
+  if (session.user.id === params.id) {
     redirect("/dashboard/profile");
   }
 
-  const userInfo = await getUserContent(params.userName);
+  const userInfo = await getUserContent(params.id);
   const stringifiedFriends = JSON.stringify(userInfo.friends);
 
   const role = userInfo.role as string;

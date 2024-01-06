@@ -62,9 +62,9 @@ model JobListing {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   title         String
+  jobType       String
   description   String
   location      String
-  company       String
   postedBy      User      @relation("jobListingsPosted",fields: [postedById], references: [id])
   postedById    String
   applicants    User[]    @relation("jobApplications")

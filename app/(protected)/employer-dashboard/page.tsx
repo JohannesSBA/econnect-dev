@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
 import JobListing from "../components/JobListing";
+import NewJobListing from "../components/NewJobListing";
 
 const Page = async () => {
   const session = await getServerSession(options);
@@ -14,16 +15,20 @@ const Page = async () => {
   const userRole = userInfo.role as string;
 
   return (
-    <div className="bg-slate-100 w-screen h-[calc(100vh-6rem)]">
+    <div className="bg-slate-100 w-screen h-[calc(100vh-6rem)] flex justify-center">
       <JobListing
         id={""}
-        createdAt={""}
+        createdAt={"11/21/24"}
         updatedAt={""}
-        title={""}
-        description={""}
-        location={""}
-        company={""}
+        title={"Engineer"}
+        description={
+          "Full Stack Engineer Full Stack Engineer Full Stack Engineer Full Stack Engineer Full Stack Engineer"
+        }
+        location={"UK"}
+        company={"Mehre"}
+        jobType={"Full-Time"}
       />
+      <NewJobListing id={session.user.id} />
     </div>
   );
 };
