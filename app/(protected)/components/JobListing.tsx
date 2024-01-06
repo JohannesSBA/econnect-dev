@@ -23,7 +23,7 @@ const JobListing = () => {
   const [jobs, setJobs] = useState<Jobs[]>([]);
 
   useEffect(() => {
-    const getMessage = async () => {
+    const getJobs = async () => {
       try {
         const res = await axios.post("/api/job/get");
         setJobs(res.data);
@@ -31,7 +31,7 @@ const JobListing = () => {
         return toast.error("Sorry, something went wrong.");
       }
     };
-    getMessage();
+    getJobs();
   }, []);
 
   return (

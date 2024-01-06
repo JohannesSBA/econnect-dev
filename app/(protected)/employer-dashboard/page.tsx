@@ -16,18 +16,7 @@ const Page = async () => {
 
   return (
     <div className="bg-slate-100 w-screen h-[calc(100vh-6rem)] flex justify-center">
-      <JobListing
-        id={""}
-        createdAt={"11/21/24"}
-        updatedAt={""}
-        title={"Engineer"}
-        description={
-          "Full Stack Engineer Full Stack Engineer Full Stack Engineer Full Stack Engineer Full Stack Engineer"
-        }
-        location={"UK"}
-        company={"Mehre"}
-        jobType={"Full-Time"}
-      />
+      <JobListing />
       <NewJobListing id={session.user.id} />
     </div>
   );
