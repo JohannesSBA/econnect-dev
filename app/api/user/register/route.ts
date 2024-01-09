@@ -28,6 +28,7 @@ export async function POST(req: Request, res: Response) {
         firstName: body.firstName,
         lastName: body.lastName,
         phoneNumber: body.phoneNumber,
+        role: body.role,
       },
     })
     .catch((e: AxiosError) => {

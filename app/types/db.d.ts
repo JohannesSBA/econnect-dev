@@ -21,6 +21,18 @@ interface User {
   gotStarted: boolean;
 }
 
+interface Jobs {
+  id: string;
+  title: string;
+  description: string;
+  shortDescription: string;
+  jobType: string;
+  location: string;
+  createdAt: string;
+  postedBy: User;
+  postedById: string;
+}
+
 interface userProps {
   userBio: string;
   userName: string;

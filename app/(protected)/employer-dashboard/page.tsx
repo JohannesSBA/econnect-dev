@@ -10,9 +10,9 @@ const Page = async () => {
   const session = await getServerSession(options);
   if (!session) return;
 
-  const userInfo = await getUserContent(session.user.id);
+  const user = await getUserContent(session.user.id);
 
-  const userRole = userInfo.role as string;
+  if (user.role === "EMPLOYEE") redirect("/dashboard");
 
   return (
     <div className="bg-slate-100 w-screen h-[calc(100vh-6rem)] flex justify-center">

@@ -15,6 +15,7 @@ export const getListing = async (jobId: string) => {
         postedBy: true,
         createdAt: true,
         updatedAt: true,
+        jobType: true,
       },
     });
     return {
@@ -25,6 +26,7 @@ export const getListing = async (jobId: string) => {
       postedBy: listing?.postedBy,
       createdAt: listing?.createdAt,
       updatedAt: listing?.updatedAt,
+      jobType: listing?.jobType,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.

@@ -29,6 +29,7 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [title, setTitle] = useState<string>();
   const [description, setDescription] = useState<string>();
+  const [shortDescription, setShortDescription] = useState<string>();
   const [jobType, setJobType] = useState<string>();
   const [location, setLocation] = useState<string>();
   const [about, setAbout] = useState<string>();
@@ -38,6 +39,7 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
     await axios.post("/api/job/create", {
       title: title,
       descrption: description,
+      shortDescription: shortDescription,
       about: about,
       jobType: jobType,
       location: location,
@@ -88,6 +90,14 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
                     />
                     <Input
                       isRequired
+                      label="Short Description"
+                      labelPlacement="outside"
+                      onChange={(e) => {
+                        setShortDescription(e.target.value);
+                      }}
+                    />
+                    <Input
+                      isRequired
                       label="Description"
                       labelPlacement="outside"
                       onChange={(e) => {
@@ -102,7 +112,7 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
                         size="sm"
                         className="rounded-md"
                       >
-                        Job Type
+                        {jobType ? jobType : "Job Type"}
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu

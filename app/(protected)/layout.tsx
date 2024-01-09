@@ -31,6 +31,8 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
 
   const userInfo = await getUserContent(session.user.id);
 
+  console.log(userInfo);
+
   const userRole = userInfo.role as string;
 
   const getFriends = await prisma.user.findMany({
@@ -42,7 +44,8 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
     },
   });
 
-  const friendsList = getFriends[0].friends as unknown as Friend[];
+  // const friendsList = getFriends[0].friends as unknown as Friend[];
+  console.log(getFriends);
 
   return (
     <html lang="en">
@@ -67,11 +70,11 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
             </div>
           </div>
           <div className="w-1/4 absolute">
-            <Messages
+            {/* <Messages
               userId={session?.user.id}
               friends={friendsList}
               role={userRole}
-            />
+            /> */}
           </div>
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">

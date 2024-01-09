@@ -7,15 +7,7 @@ import { Button, User } from "@nextui-org/react";
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from "axios";
-
-interface Jobs {
-  id: string;
-  title: string;
-  description: string;
-  jobType: string;
-  location: string;
-  createdAt: string;
-}
+import { Jobs } from "@/app/types/db";
 
 const JobListing = () => {
   // Your component logic here
@@ -46,7 +38,7 @@ const JobListing = () => {
             <div className="flex items-center">
               <User
                 avatarProps={{
-                  src: `https://econnectbucket.s3.amazonaws.com/clpk06prs000f9kwpulpc9n33`,
+                  src: `https://econnectbucket.s3.amazonaws.com/${job.postedById}`,
                 }}
                 className="transition-transform"
                 description={""}
@@ -55,7 +47,9 @@ const JobListing = () => {
             </div>
             <div>
               <span className="text-blue-800 text-sm">{job.title}</span>
-              <h3 className="font-bold mt-px text-black">{job.description}</h3>
+              <h3 className="font-bold mt-px text-black">
+                {job.shortDescription}
+              </h3>
               <div className="flex items-center gap-3 mt-2">
                 <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-sm">
                   {job.jobType}

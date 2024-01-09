@@ -29,6 +29,7 @@ export async function POST(req: Request, res: Response) {
       jobType: body.jobType,
       location: body.location,
       postedById: session.user.id,
+      shortDescription: body.shortDescription,
     },
   });
 

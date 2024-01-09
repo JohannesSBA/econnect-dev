@@ -63,6 +63,7 @@ model JobListing {
   updatedAt     DateTime  @updatedAt
   title         String
   jobType       String
+  shortDescription String?
   description   String
   location      String
   postedBy      User      @relation("jobListingsPosted",fields: [postedById], references: [id])
