@@ -11,9 +11,10 @@ export default withAuth(
     const isLoginPage = pathname.startsWith("/login");
     const isHomePage = pathname === "/home";
 
-    const sensitiveRouter = ["/dashboard"];
-    const isAccessingSesnsitiveRoute = sensitiveRouter.some((route) =>
-      pathname.startsWith(route)
+    const sensitiveRouter = ["/dashboard", "/employer-dashboard"];
+    const formattedPathname = pathname.toLowerCase().replace(/\/$/, "");
+    const isAccessingSensitiveRoute = sensitiveRouter.some((route) =>
+      formattedPathname.startsWith(route.toLowerCase())
     );
 
     if (isLoginPage || isHomePage) {
@@ -24,7 +25,7 @@ export default withAuth(
       return NextResponse.next();
     }
 
-    if (!isAuth && isAccessingSesnsitiveRoute) {
+    if (!isAuth && isAccessingSensitiveRoute) {
       return NextResponse.redirect(new URL("/home", req.url));
     }
 
@@ -42,5 +43,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/", "/login", "/dashboard/:path*"],
+  matcher: ["/", "/login", "/dashboard/:path*", "/employer-dashboard/:path*"],
 };

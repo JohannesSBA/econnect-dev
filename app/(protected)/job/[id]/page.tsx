@@ -33,14 +33,6 @@ const Page = ({ params }: { params: { id: string } }) => {
     fetchData();
   }, [params.id]);
 
-  //   useEffect(() => {
-  //     const fetchUser = async () => {
-  //       const postedByData = await getUserContent(listing.postedById);
-  //       setPostedBy(postedByData);
-  //     };
-  //     fetchUser();
-  //   }, [listing]);
-
   const handleSubmit = async () => {
     console.log("clicked");
   };

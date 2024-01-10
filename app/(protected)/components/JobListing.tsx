@@ -27,7 +27,7 @@ const JobListing = () => {
   }, []);
 
   return (
-    <div>
+    <div className="flex justify-between mt-4 p-4">
       {jobs.map((job) => (
         <Link
           key={job.id}

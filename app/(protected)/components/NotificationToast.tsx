@@ -24,7 +24,7 @@ const NotificationToast: FC<NotificationToastProps> = ({
     <div className=" w-96 absolute bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5">
       <a
         onClick={() => toast.dismiss()}
-        href={`/dashboard/chat/${chatHrefConstructor(sessionId, senderId)}`}
+        href={`/chat/${chatHrefConstructor(sessionId, senderId)}`}
         className="flex-1 w-0 p-4"
       >
         <div className="flex items-start">

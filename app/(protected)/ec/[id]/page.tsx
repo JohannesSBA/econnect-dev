@@ -5,6 +5,7 @@ import UserAbout from "@/app/(protected)/components/UserAbout";
 import UserEducation from "@/app/(protected)/components/UserEducation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
+import { chatHrefConstructor } from "@/app/lib/utils";
 import { Button, Card, Image } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
@@ -20,23 +21,25 @@ const page = async ({ params }: { params: { id: string } }) => {
   }
 
   const userInfo = await getUserContent(params.id);
+  const accUser = await getUserContent(session.user.id);
   const stringifiedFriends = JSON.stringify(userInfo.friends);
 
-  const role = userInfo.role as string;
+  const role = accUser.role as string;
   let userActionButton;
   if (role === "EMPLOYER") {
+    const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
     userActionButton = (
       <div>
-        <Button color="primary">
-          <a href={`/ec/${userInfo.id}`}></a>
-          Go to Messages
-        </Button>
+        <a href={`/chat/${chatRoom}`}>
+          <Button color="primary">Send a Messages</Button>
+        </a>
       </div>
     );
   } else if (role === "EMPLOYEE") {
+    const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
     stringifiedFriends.includes(session.user.id)
       ? (userActionButton = (
-          <a href={`/chat/${userInfo.id}`}>
+          <a href={`/chat/${chatRoom}`}>
             <Button color="primary">Send a Message</Button>
           </a>
         ))

@@ -56,7 +56,7 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
   };
 
   return (
-    <div className=" mt-24 mr-12 z-50">
+    <div className=" absolute bottom-8 right-4 mt-24 mr-12 z-50">
       <Button onPress={onOpen} color="primary" variant="ghost">
         <BiPencil />
         <h1>Create New Job Listing</h1>
