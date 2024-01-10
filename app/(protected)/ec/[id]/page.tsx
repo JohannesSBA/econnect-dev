@@ -36,10 +36,9 @@ const page = async ({ params }: { params: { id: string } }) => {
   } else if (role === "EMPLOYEE") {
     stringifiedFriends.includes(session.user.id)
       ? (userActionButton = (
-          <Button color="primary">
-            <a href={`/ec/${userInfo.id}`}></a>
-            Send a Message
-          </Button>
+          <a href={`/chat/${userInfo.id}`}>
+            <Button color="primary">Send a Message</Button>
+          </a>
         ))
       : (userActionButton = <AddFriendButton id={userInfo.id as string} />);
   }

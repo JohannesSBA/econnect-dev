@@ -102,6 +102,8 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     friendRequestCounter();
   }, [userId]);
 
+  console.log(filteredFriends);
+
   return (
     <div
       className={

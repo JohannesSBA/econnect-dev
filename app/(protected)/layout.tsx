@@ -28,24 +28,20 @@ export const metadata: Metadata = {
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const session = await getServerSession(options);
   if (!session) return;
+  console.log(session);
 
   const userInfo = await getUserContent(session.user.id);
-
-  console.log(userInfo);
+  console.log("x", userInfo);
 
   const userRole = userInfo.role as string;
 
-  const getFriends = await prisma.user.findMany({
-    where: {
-      id: session.user.id,
-    },
-    select: {
-      friends: true,
-    },
-  });
+  // console.log(userInfo);
 
-  // const friendsList = getFriends[0].friends as unknown as Friend[];
-  console.log(getFriends);
+  const friends = userInfo.friends as unknown as Friend[];
+  const friendsOf = userInfo.friendsOf as unknown as Friend[];
+  const friendsList = friends.concat(friendsOf);
+
+  // console.log(friendsList);
 
   return (
     <html lang="en">
@@ -70,11 +66,11 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
             </div>
           </div>
           <div className="w-1/4 absolute">
-            {/* <Messages
+            <Messages
               userId={session?.user.id}
               friends={friendsList}
               role={userRole}
-            /> */}
+            />
           </div>
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">

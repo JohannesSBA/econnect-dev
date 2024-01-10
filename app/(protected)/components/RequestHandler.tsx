@@ -1,6 +1,7 @@
 "use client";
 import { Avatar, Button } from "@nextui-org/react";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
@@ -50,15 +51,16 @@ const RequestHandler = ({
               lastName: string | null;
               image: string | null;
             }) => (
-              <div
+              <Link
                 key={pFriends.id as string}
                 className="flex w-full justify-between h-full"
+                href={`/ec/${pFriends.id}`}
               >
                 <div className="flex w-full gap-2 justify-normal">
                   <Avatar
                     radius="lg"
                     size="lg"
-                    src={pFriends.image as string}
+                    src={`https://econnectbucket.s3.amazonaws.com/${pFriends.id}`}
                   />
                   <h1 className="text-black flex flex-col justify-center font-bold">
                     {pFriends.firstName as string} {pFriends.lastName as string}
@@ -94,7 +96,7 @@ const RequestHandler = ({
                     <MdCancel />
                   </Button>
                 </div>
-              </div>
+              </Link>
             )
           )
         : "You have no pending friend Requests"}

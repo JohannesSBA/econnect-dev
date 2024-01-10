@@ -2,6 +2,7 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getListing } from "@/app/helpers/getListing";
 import { getUserContent } from "@/app/helpers/getUser";
+import prisma from "@/app/lib/prisma";
 import { Jobs } from "@/app/types/db";
 import { Button, Card, Image, Link } from "@nextui-org/react";
 import axios from "axios";
@@ -14,21 +15,31 @@ import { toast } from "sonner";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const [listing, setListing] = useState<any>();
+  const [postedBy, setPostedBy] = useState<any>();
 
   useEffect(() => {
-    const jobs = async () => {
-      try {
-        const job = await getListing(params.id);
-        setListing(job);
-      } catch {
-        return toast.error("Sorry, Something went Wrong.");
-      }
+    const fetchData = async () => {
+      const listingData = await axios.post("/api/job/listing", {
+        id: params.id,
+      });
+      setListing(listingData.data);
+
+      const postedByData = await getUserContent(
+        listingData?.data.postedById as string
+      );
+      setPostedBy(postedByData);
     };
 
-    jobs();
+    fetchData();
   }, [params.id]);
 
-  console.log("list", listing);
+  //   useEffect(() => {
+  //     const fetchUser = async () => {
+  //       const postedByData = await getUserContent(listing.postedById);
+  //       setPostedBy(postedByData);
+  //     };
+  //     fetchUser();
+  //   }, [listing]);
 
   const handleSubmit = async () => {
     console.log("clicked");
@@ -49,37 +60,38 @@ const Page = ({ params }: { params: { id: string } }) => {
           </Link>
           <div className="w-full flex flex-col gap-2 py-2 my-4">
             <h1 className="text-5xl text-black font-semibold uppercase">
-              {listing.title}
+              {listing?.title as string}
             </h1>
             <div className="flex gap-8 text-slate-500">
               <h1 className="flex gap-2 items-center">
                 {" "}
                 <FaLocationDot />
-                {listing.location}
+                {listing?.location as string}
               </h1>
               <h1 className="flex gap-2 items-center">
                 {" "}
                 <FaBriefcase />
-                {listing.jobType}
+                {listing?.jobType as string}
               </h1>
             </div>
           </div>
           <h1 className="text-black">
             <span className="font-semibold">Description:</span>{" "}
-            <h2 className="">{listing?.description}</h2>
+            <h2 className="">{listing?.descriptio as string}</h2>
           </h1>
         </div>
-        <div className="w-1/3 h-full overflow-scroll flex flex-col justify-start items-center p-16">
+        {/* <div className="w-1/3 h-full overflow-scroll flex flex-col justify-start items-center p-16">
           <Image
-            src={`https://econnectbucket.s3.amazonaws.com/${listing?.postedBy.id}`}
+            src={`https://econnectbucket.s3.amazonaws.com/${listing?.postedById}`}
             alt="Picture of the author"
           ></Image>
-          <h1 className="font-bold text-xl text-black">
-            {listing?.postedBy.firstName}
-          </h1>
-          <p className="text-slate-700 text-sm">{listing?.postedBy?.title}</p>
+          <h1 className="font-bold text-xl text-black">{postedBy.firstName}</h1>
+          <p className="text-slate-700 text-sm">{postedBy.title}</p>
+          <p className="text-slate-700 text-xs mt-5 text-center">
+            {postedBy.bio}
+          </p>
           <Button onClick={handleSubmit}>Apply Now</Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

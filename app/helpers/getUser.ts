@@ -22,6 +22,7 @@ export const getUserContent = async (id: string) => {
         gotStarted: true,
         role: true,
         friends: true,
+        frinedsOf: true,
       },
     });
 
@@ -41,6 +42,7 @@ export const getUserContent = async (id: string) => {
       gotStarted: user?.gotStarted,
       role: user?.role,
       friends: user?.friends,
+      friendsOf: user?.frinedsOf,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.
