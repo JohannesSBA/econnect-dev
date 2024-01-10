@@ -3,7 +3,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getListing } from "@/app/helpers/getListing";
 import { getUserContent } from "@/app/helpers/getUser";
 import prisma from "@/app/lib/prisma";
-import { Jobs } from "@/app/types/db";
+import { Jobs, User } from "@/app/types/db";
 import { Button, Card, Image, Link } from "@nextui-org/react";
 import axios from "axios";
 import { getServerSession } from "next-auth";
@@ -23,15 +23,24 @@ const Page = ({ params }: { params: { id: string } }) => {
         id: params.id,
       });
       setListing(listingData.data);
-
-      const postedByData = await getUserContent(
-        listingData?.data.postedById as string
-      );
-      setPostedBy(postedByData);
+      const postedBy = await getUserContent(listingData.data.postedById);
+      setPostedBy(postedBy);
     };
 
     fetchData();
   }, [params.id]);
+
+  useEffect(() => {
+    if (!listing) return;
+    const getPoster = async () => {
+      const post = await axios.post("/api/user/get", {
+        id: listing.postedById,
+      });
+      setPostedBy(post.data);
+    };
+
+    getPoster();
+  }, [listing]);
 
   const handleSubmit = async () => {
     console.log("clicked");
@@ -69,21 +78,25 @@ const Page = ({ params }: { params: { id: string } }) => {
           </div>
           <h1 className="text-black">
             <span className="font-semibold">Description:</span>{" "}
-            <h2 className="">{listing?.descriptio as string}</h2>
+            <h2 className="">{listing?.description as string}</h2>
           </h1>
         </div>
-        {/* <div className="w-1/3 h-full overflow-scroll flex flex-col justify-start items-center p-16">
+        <div className="w-1/3 h-full overflow-scroll flex flex-col justify-start items-center p-16">
           <Image
             src={`https://econnectbucket.s3.amazonaws.com/${listing?.postedById}`}
             alt="Picture of the author"
           ></Image>
-          <h1 className="font-bold text-xl text-black">{postedBy.firstName}</h1>
-          <p className="text-slate-700 text-sm">{postedBy.title}</p>
+          <h1 className="font-bold text-xl text-black">
+            {postedBy?.firstName}
+          </h1>
+          <p className="text-slate-700 text-sm">{postedBy?.title}</p>
           <p className="text-slate-700 text-xs mt-5 text-center">
-            {postedBy.bio}
+            {postedBy?.bio}
           </p>
-          <Button onClick={handleSubmit}>Apply Now</Button>
-        </div> */}
+          <Button className="my-5" onClick={handleSubmit}>
+            Apply Now
+          </Button>
+        </div>
       </div>
     </div>
   );
