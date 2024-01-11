@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import UserEducation from "../../components/UserEducation";
 import { redirect } from "next/navigation";
+import UploadResume from "../../components/UploadResume";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -22,6 +23,7 @@ const page = async () => {
       <div className="w-1/3 h-full ">
         <div className="h-2/5 w-full overflow-clip flex flex-col justify-center items-center">
           <ProfileImage image={userInfo.image as string} />
+          {userInfo.role === "EMPLOYEE" ? <UploadResume /> : ""}
           <div className="fixed top-0 right-0">
             <EditContent
               userBio={userInfo.bio as string}

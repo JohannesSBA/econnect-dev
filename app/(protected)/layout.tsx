@@ -13,6 +13,7 @@ import Messages from "./components/Messages";
 import UserPicture from "./components/UserPicture";
 import Search from "./components/Search";
 import SignOutButton from "./components/SignOutButton";
+import axios from "axios";
 
 interface LayoutProps {
   children: ReactNode;
@@ -28,20 +29,14 @@ export const metadata: Metadata = {
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const session = await getServerSession(options);
   if (!session) return;
-  console.log(session);
 
   const userInfo = await getUserContent(session.user.id);
-  console.log("x", userInfo);
 
   const userRole = userInfo.role as string;
-
-  // console.log(userInfo);
 
   const friends = userInfo.friends as unknown as Friend[];
   const friendsOf = userInfo.friendsOf as unknown as Friend[];
   const friendsList = friends.concat(friendsOf);
-
-  // console.log(friendsList);
 
   return (
     <html lang="en">
