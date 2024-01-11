@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Badge, Input } from "@nextui-org/react";
+import { Badge, Input, Skeleton } from "@nextui-org/react";
 import FriendBadge from "./FriendBadge";
 import { FaSearch } from "react-icons/fa";
 import { pusherClient } from "@/app/lib/pusher";
@@ -26,6 +26,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [requestCounter, setRequestCounter] = useState(0);
   const pathName = usePathname();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Filter friends based on the search term
@@ -97,6 +98,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
       const getPending = await axios.post("/api/friends/requests", {});
 
       setRequestCounter(getPending.data[0].pendingFriendRequest.length);
+      setIsLoading(false);
     };
 
     friendRequestCounter();
@@ -104,12 +106,17 @@ export default function Messages({ userId, friends, role }: MessageProps) {
 
   console.log(filteredFriends);
 
+  if (isLoading)
+    return (
+      <Skeleton className="h-[calc(100vh-10rem)] flex flex-col justify-between gap-2 m-4" />
+    );
+
   return (
     <div
       className={
         pathName.includes("profile") || pathName.includes("ec")
           ? `hidden`
-          : `h-[calc(100vh-10rem)] flex flex-col justify-between gap-2 m-4 bg-slate-100`
+          : `h-[calc(100vh-10rem)] hidden md:flex flex-col justify-between gap-2 m-4 bg-slate-100`
       }
     >
       <div className="flex flex-col gap-2">
