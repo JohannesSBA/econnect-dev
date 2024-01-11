@@ -18,7 +18,6 @@ const Page = async () => {
 
   return (
     <div className="bg-slate-100 w-screen h-[calc(100vh-5rem)] flex justify-center">
-      <JobListing />
       <NewJobListing id={session.user.id} />
     </div>
   );

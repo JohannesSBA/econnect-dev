@@ -27,7 +27,7 @@ const JobListing = () => {
   }, []);
 
   return (
-    <div className="flex justify-between mt-4 p-4">
+    <div className="flex flex-col gap-4 mt-4 p-4">
       {jobs.map((job) => (
         <Link
           key={job.id}

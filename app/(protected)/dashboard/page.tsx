@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect } from "next/navigation";
+import JobListing from "../components/JobListing";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -10,7 +11,11 @@ const page = async () => {
 
   if (user.role === "EMPLOYER") redirect("/employer-dashboard");
 
-  return <div className="w-screen h-screen bg-red-50 flex gap-12"></div>;
+  return (
+    <div className="w-screen h-screen bg-red-50 flex gap-12 justify-center">
+      <JobListing />
+    </div>
+  );
 };
 
 export default page;
