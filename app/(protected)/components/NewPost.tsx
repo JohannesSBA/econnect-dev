@@ -13,7 +13,6 @@ import {
   Link,
   Textarea,
 } from "@nextui-org/react";
-import FriendBadge from "./FriendBadge";
 import { IoPencil } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import axios, { AxiosError } from "axios";

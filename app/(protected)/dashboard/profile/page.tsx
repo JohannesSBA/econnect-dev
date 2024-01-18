@@ -19,59 +19,42 @@ const page = async () => {
   }
 
   return (
-    <div className="w-screen h-screen bg-white flex">
-      <div className="w-1/3 h-full ">
-        <div className="h-2/5 w-full overflow-clip flex flex-col justify-center items-center">
+    <div className="w-screen h-[calc(100vh-5rem)] flex flex-col bg-slate-100">
+      <div className="h-1/4 w-full flex ml-12 mt-12 border-b-2 pb-6 justify-between">
+        <div className="flex gap-4">
           <ProfileImage image={userInfo.image as string} />
-          {userInfo.role === "EMPLOYEE" ? <UploadResume /> : ""}
-          <div className="fixed top-0 right-0">
-            <EditContent
-              userBio={userInfo.bio as string}
-              userName={userInfo.firstName as string}
-              userPronouns={userInfo.pronouns}
-              userLocation={userInfo.location as string}
-              userEducation={userInfo.education}
-              userCPosition={userInfo.currentPosition as string}
-              userTitle={userInfo.title as string}
-            />
-          </div>
+          <h1 className="font-bold text-2xl text-black h-full flex flex-col justify-center">
+            {userInfo.fullName}
+            <span className="text-sm font-extralight text-slate-600 ml-2 flex flex-col">
+              <p>{userInfo.email}</p>
+              <p>{userInfo.pronouns}</p>
+              <p>{userInfo.location}</p>
+            </span>
+          </h1>
         </div>
-        <div className="h-3/5 w-full  flex flex-col gap-8 items-center mt-12">
-          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
-            <h1 className="font-bold text-2xl text-black">
-              <p className="uppercase font-extralight text-xs">full name</p>
-              {userInfo.fullName}
-            </h1>
-          </div>
-          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
-            <h1 className="font-bold text-2xl text-black">
-              <p className="uppercase font-extralight text-xs">Pronouns</p>(
-              {userInfo.pronouns})
-            </h1>
-          </div>
-          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
-            <h1 className="font-bold text-2xl text-black">
-              <p className="uppercase font-extralight text-xs">
-                Current Position
-              </p>
-              {userInfo.currentPosition}
-            </h1>
-          </div>
-
-          <div className="mx-4 w-5/6 h-10 bg-slate-50 rounded-md flex items-center p-8">
-            <h1 className="font-bold text-2xl text-black">
-              <p className="uppercase font-extralight text-xs">Location</p>
-              {userInfo.location}
-            </h1>
-          </div>
+        <div className="flex justify-center items-center mr-16">
+          <EditContent
+            userBio={userInfo.bio as string}
+            userName={userInfo.firstName as string}
+            userPronouns={userInfo.pronouns}
+            userLocation={userInfo.location as string}
+            userEducation={userInfo.education}
+            userCPosition={userInfo.currentPosition as string}
+            userTitle={userInfo.title as string}
+          />
         </div>
       </div>
-      <div className="w-1/3 h-full flex flex-col">
-        <UserAbout userBio={userInfo.bio as string} />
-        <UserEducation userInfo={userInfo} />
+      <div className="h-full w-full flex px-6">
+        <div className="w-1/3 h-full flex-1">
+          <UserAbout userBio={userInfo.bio as string} />
+        </div>
+        <div className="w-1/3 h-full flex-1">
+          <UserAbout userBio={userInfo.bio as string} />
+        </div>
+        <div className="w-1/3 h-full flex-1">
+          <UserEducation userInfo={userInfo} />
+        </div>
       </div>
-
-      <div className="w-1/3 h-full flex flex-col"></div>
     </div>
   );
 };
