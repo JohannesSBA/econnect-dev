@@ -105,7 +105,7 @@ const Conversations: FunctionComponent<conversationProps> = ({
         })();
 
         return (
-          <div key={message.id} className="w-full ">
+          <div key={message.id} className="w-full">
             {hasMessageOnNewDay ? (
               <div className="flex justify-center border-l-2 border-r-2 font-semibold text-xs text-slate-500 bg-slate-200">
                 {`${day}/${month}/${year}`}
@@ -121,11 +121,11 @@ const Conversations: FunctionComponent<conversationProps> = ({
               }
             >
               <div className="items-start flex gap-2.5">
-                <div className="flex flex-col gap-1 w-full max-w-[320px]">
+                <div className="flex flex-col gap-1 w-full max-w-[460px]">
                   <div
                     className={
                       isCurrentUser
-                        ? "flex flex-col leading-1.5 p-2 border-gray-200 bg-blue-500 rounded-s-xl rounded-se-xl "
+                        ? "flex flex-col leading-1.5 p-2 border-gray-200 bg-blue-400 rounded-s-xl rounded-se-xl "
                         : "flex flex-col leading-1.5 p-2 border-gray-200 bg-slate-200 rounded-e-xl rounded-es-xl "
                     }
                   >
@@ -145,7 +145,10 @@ const Conversations: FunctionComponent<conversationProps> = ({
                           : "ml-2 text-[10px] p-1 text-gray-400 realtive right-0 w-full text-right"
                       }
                     >
-                      {new Date(message.createdAt).toLocaleTimeString("en-US")}
+                      {new Date(message.createdAt).toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
                     </span>
                   </div>
                 </div>

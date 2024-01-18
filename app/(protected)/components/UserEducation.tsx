@@ -20,7 +20,7 @@ interface userAboutProps {
 
 export default function UserAbout({ userInfo }: userAboutProps) {
   return (
-    <div className="w-full h-1/3 mt-2 rounded-md shadow-sm flex justify-center">
+    <div className="w-full h-full py-4 rounded-md shadow-sm flex justify-center">
       <Card className="w-full bg-transparent ml-6 p-2 flex justify-center">
         <CardHeader className="flex font-semibold justify-between">
           <p className="text-md">Education</p>

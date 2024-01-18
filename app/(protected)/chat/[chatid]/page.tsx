@@ -2,7 +2,7 @@ import ChatInput from "@/app/(protected)/components/ChatInput";
 import Conversations from "@/app/(protected)/components/Conversations";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Link } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -61,9 +61,12 @@ const page = async ({ params }: { params: { chatid: string } }) => {
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
-      <div className="w-1/4 h-full flex flex-col "></div>
-      <div className="w-3/4 h-full rounded-2xl ml-3 border-2 border-slate-300 flex flex-col justify-between">
-        <div className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg">
+      <div className="hidden w-1/4 h-full md:flex flex-col "></div>
+      <div className="w-full md:w-3/4 h-full md:border border-slate-300 flex flex-col justify-between">
+        <Link
+          className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg"
+          href={`/ec/${friendContent.id}`}
+        >
           <div className="flex items-center">
             <Avatar
               radius="lg"
@@ -75,7 +78,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
           <h1 className="text-black flex flex-col justify-center font-bold">
             {friendContent.firstName} {friendContent.lastName}
           </h1>
-        </div>
+        </Link>
         <Conversations
           chatPartner={friendId as string}
           chatId={userId as string}

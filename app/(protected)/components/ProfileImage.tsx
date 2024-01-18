@@ -51,21 +51,21 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
   };
 
   return (
-    <div className="w-full flex justify-center flex-col items-center rounded-2xl">
-      <div className=" w-full flex justify-center my-2">
+    <div className="flex justify-center flex-col items-center rounded-2xl">
+      <div className="flex justify-center my-2">
         <Image
           src={image}
           alt="profile piture"
-          width={450}
-          height={450}
-          className="border-4 h-64 w-full justify-center object-contain rounded-2xl"
+          width={350}
+          height={350}
+          className="border-4 max-h-40 w-full justify-center object-contain rounded-2xl"
         />
       </div>
       <Button
         onPress={onOpen}
         color="primary"
         variant="light"
-        className="font-semibold flex"
+        className="font-semibold flex p-4"
       >
         <CiImageOn />
         Change Profile picture

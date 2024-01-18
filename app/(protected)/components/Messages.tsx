@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Badge, Input, Skeleton } from "@nextui-org/react";
-import FriendBadge from "./FriendBadge";
+import { Avatar, Badge, Button, Input, Skeleton } from "@nextui-org/react";
 import { FaSearch } from "react-icons/fa";
 import { pusherClient } from "@/app/lib/pusher";
 import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { Message } from "@/app/lib/validation";
 import { toast } from "sonner";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Friend } from "@/app/types/db";
 import NotificationToast from "./NotificationToast";
 import Link from "next/link";
@@ -27,6 +26,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
   const [requestCounter, setRequestCounter] = useState(0);
   const pathName = usePathname();
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     // Filter friends based on the search term
@@ -106,7 +106,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
 
   console.log(filteredFriends);
 
-  if (isLoading)
+  if (isLoading && !pathName.includes("profile") && !pathName.includes("ec"))
     return (
       <Skeleton className="h-[calc(100vh-10rem)] flex flex-col justify-between gap-2 m-4" />
     );
@@ -123,7 +123,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
         <Input
           type="text"
           label="Search"
-          className="max-w-xs bg-slate-100"
+          className="max-w-xs bg-slate-100 text-black"
           endContent={<FaSearch />}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -136,12 +136,30 @@ export default function Messages({ userId, friends, role }: MessageProps) {
             lastName: string;
           }) => (
             <div key={friend.key} className="w-full">
-              <FriendBadge
-                firstName={friend.firstName}
-                lastName={friend.lastName}
-                friendId={friend.id as string}
-                user={userId}
-              />
+              <Button
+                onClick={() => {
+                  router.push(
+                    `/chat/${chatHrefConstructor(userId, friend.id)}`
+                  );
+                }}
+                className="w-full h-fit p-4 justify-start bg-slate-100 hover:bg-slate-200 group rounded-none"
+              >
+                <div className="flex w-full justify-between">
+                  <div className="flex w-full gap-2 justify-normal">
+                    <div className="flex items-center">
+                      <Avatar
+                        size="lg"
+                        src={`https://econnectbucket.s3.amazonaws.com/profile/${friend.id}`}
+                        className="flex items-center border-2"
+                      />
+                    </div>
+
+                    <h1 className="text-black flex flex-col justify-center font-bold">
+                      {friend.firstName} {friend.lastName}
+                    </h1>
+                  </div>
+                </div>
+              </Button>
             </div>
           )
         )}
