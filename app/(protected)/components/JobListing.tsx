@@ -38,7 +38,7 @@ const JobListing = () => {
             <div className="flex items-center">
               <User
                 avatarProps={{
-                  src: `https://econnectbucket.s3.amazonaws.com/${job.postedById}`,
+                  src: `https://econnectbucket.s3.amazonaws.com/profile/${job.postedById}`,
                 }}
                 className="transition-transform"
                 description={""}

@@ -60,7 +60,7 @@ const RequestHandler = ({
                   <Avatar
                     radius="lg"
                     size="lg"
-                    src={`https://econnectbucket.s3.amazonaws.com/${pFriends.id}`}
+                    src={`https://econnectbucket.s3.amazonaws.com/profile/${pFriends.id}`}
                   />
                   <h1 className="text-black flex flex-col justify-center font-bold">
                     {pFriends.firstName as string} {pFriends.lastName as string}

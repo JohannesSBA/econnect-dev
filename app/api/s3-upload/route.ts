@@ -21,10 +21,6 @@ export async function POST(req: Request, res: Response) {
     file = new Blob([resume as BlobPart], { type: "application/pdf" });
   }
 
-  const key = image
-    ? `image-${session?.user.id}`
-    : `resume-${session?.user.id}`;
-
   let buffer: Buffer | null = null;
   if (file instanceof Blob) {
     buffer = Buffer.from(await file.arrayBuffer());
@@ -42,13 +38,13 @@ export async function POST(req: Request, res: Response) {
     const fileParams = image
       ? {
           Bucket: process.env.BUCKET_NAME,
-          Key: key,
+          Key: `resume/${session?.user.id}`,
           ContentType: "image/jpg",
           Body: buffer || undefined,
         }
       : {
           Bucket: process.env.BUCKET_NAME,
-          Key: key,
+          Key: `resume/${session?.user.id}`,
           ContentType: "application/pdf",
           Body: buffer || undefined,
         };

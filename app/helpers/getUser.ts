@@ -36,7 +36,7 @@ export const getUserContent = async (userId: string) => {
       education: user?.education as string,
       currentPosition: user?.currentPosition as string,
       title: user?.title as string,
-      image: `https://econnectbucket.s3.amazonaws.com/${user?.id}`,
+      image: `https://econnectbucket.s3.amazonaws.com/profile/${user?.id}`,
       gotStarted: user?.gotStarted,
       role: user?.role,
       friends: user?.friends,

@@ -102,7 +102,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         </div>
         <div className="w-1/3 h-full overflow-scroll flex flex-col justify-start items-center p-16">
           <Image
-            src={`https://econnectbucket.s3.amazonaws.com/${listing?.postedById}`}
+            src={`https://econnectbucket.s3.amazonaws.com/profile${listing?.postedById}`}
             alt="Picture of the author"
           ></Image>
           <h1 className="font-bold text-xl text-black">

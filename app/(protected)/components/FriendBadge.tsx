@@ -33,7 +33,7 @@ export default function App({
             <Avatar
               radius="lg"
               size="sm"
-              src={`https://econnectbucket.s3.amazonaws.com/${friendId}`}
+              src={`https://econnectbucket.s3.amazonaws.com/profile/${friendId}`}
               className="flex items-center border-2"
             />
           </div>

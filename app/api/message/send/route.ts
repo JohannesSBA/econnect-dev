@@ -55,7 +55,7 @@ export async function POST(req: Request, res: Response) {
     "new_message",
     {
       ...messageData,
-      senderImg: `https://econnectbucket.s3.amazonaws.com/${user.id}`,
+      senderImg: `https://econnectbucket.s3.amazonaws.com/profile/${user.id}`,
       senderName: user.fullName,
     }
   );

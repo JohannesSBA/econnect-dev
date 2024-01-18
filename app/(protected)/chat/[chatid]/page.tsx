@@ -68,7 +68,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
             <Avatar
               radius="lg"
               size="lg"
-              src={`https://econnectbucket.s3.amazonaws.com/${friendContent.id}`}
+              src={`https://econnectbucket.s3.amazonaws.com/profile/${friendContent.id}`}
               className="flex items-center border-2"
             />
           </div>
