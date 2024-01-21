@@ -4,14 +4,20 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
 
-const Nav = () => {
+interface NavProps {
+  lang: string;
+}
+
+const Nav = ({ lang }: NavProps) => {
   const router = useRouter();
 
   return (
-    <div className="sticky top-0 w-screen h-20 bg-transparent shadow-md backdrop-blur-lg flex justify-between items-center p-8 z-50">
+    <div className="sticky top-0 w-screen h-20 bg-transparent shadow-md backdrop-blur-lg flex justify-between items-center p-8 z-40">
       <Link href={"/home"} className="flex gap-4 text-white">
         <GiWaterDrop />
-        <p className="font-bold text-inherit">Econnect</p>
+        <p className="font-bold text-inherit">
+          {lang === "en" ? "Econnect" : "E መገናኘት"}
+        </p>
       </Link>
       <Button
         color="primary"
@@ -20,7 +26,7 @@ const Nav = () => {
           router.push("/login");
         }}
       >
-        Login
+        {lang === "en" ? "Login" : "ግባ"}
       </Button>
     </div>
   );
