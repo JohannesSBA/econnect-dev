@@ -5,7 +5,6 @@ import axios from "axios";
 import { preloadFont } from "next/dist/server/app-render/entry-base";
 
 export async function POST(req: Request, res: Response) {
-  console.log("bru");
   const session = await getServerSession(options);
   const body = await req.formData();
   const image = body.get("newImage");
@@ -38,7 +37,7 @@ export async function POST(req: Request, res: Response) {
     const fileParams = image
       ? {
           Bucket: process.env.BUCKET_NAME,
-          Key: `resume/${session?.user.id}`,
+          Key: `image/${session?.user.id}`,
           ContentType: "image/jpg",
           Body: buffer || undefined,
         }
@@ -50,7 +49,6 @@ export async function POST(req: Request, res: Response) {
         };
 
     const command = new PutObjectCommand(fileParams);
-    console.log(command);
     await s3.send(command);
 
     return new Response("OK", { status: 200 });

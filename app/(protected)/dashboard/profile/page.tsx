@@ -23,9 +23,9 @@ const page = async () => {
       <div className="h-1/4 w-full flex ml-12 mt-12 border-b-2 pb-6 justify-between">
         <div className="flex gap-4">
           <ProfileImage image={userInfo.image as string} />
-          <h1 className="font-bold text-2xl text-black h-full flex flex-col justify-center">
+          <h1 className="font-bold text-2xl text-black h-full flex flex-col justify-center capitalize">
             {userInfo.fullName}
-            <span className="text-sm font-extralight text-slate-600 ml-2 flex flex-col">
+            <span className="text-sm font-extralight text-slate-600 ml-2 flex flex-col normal-case">
               <p>{userInfo.email}</p>
               <p>{userInfo.pronouns}</p>
               <p>{userInfo.location}</p>

@@ -21,6 +21,8 @@ export const getUserContent = async (userId: string) => {
         role: true,
         friends: true,
         frinedsOf: true,
+        jobListingsPosted: true,
+        emailVerified: true,
       },
     });
 
@@ -36,11 +38,13 @@ export const getUserContent = async (userId: string) => {
       education: user?.education as string,
       currentPosition: user?.currentPosition as string,
       title: user?.title as string,
-      image: `https://econnectbucket.s3.amazonaws.com/profile/${user?.id}`,
+      image: `https://econnectbucket.s3.amazonaws.com/image/${user?.id}`,
       gotStarted: user?.gotStarted,
       role: user?.role,
       friends: user?.friends,
       friendsOf: user?.frinedsOf,
+      jobListing: user?.jobListingsPosted,
+      emailVerified: user?.emailVerified,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.
