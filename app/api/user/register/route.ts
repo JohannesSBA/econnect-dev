@@ -3,6 +3,9 @@ import hashPassword from "@/app/helpers/hashPass";
 import { Axios, AxiosError } from "axios";
 
 export async function POST(req: Request, res: Response) {
+  if (req.method !== "POST") {
+    return new Response("Method not allowed", { status: 403 });
+  }
   const body = await req.json();
 
   // Check if the user with the given email already exists
@@ -32,12 +35,8 @@ export async function POST(req: Request, res: Response) {
       },
     })
     .catch((e: AxiosError) => {
-      response = e.message;
+      console.log("axios error");
     });
-
-  if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 403 });
-  }
 
   return new Response(response, { status: 200 });
 }

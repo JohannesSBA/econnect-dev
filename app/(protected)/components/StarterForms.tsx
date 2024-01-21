@@ -39,6 +39,12 @@ const StarterForms = ({ user }: starterProps) => {
               );
             case 2:
               return (
+                <div className="w-96 h-96">
+                  <ProfileImage image={"/user-avatar.png"} />
+                </div>
+              );
+            case 3:
+              return (
                 <div className="w-96 h-96 mt-12 flex flex-col justify-center items-center">
                   <h1 className="font-semibold text-center">
                     This is where You get to Talk about who you are as a person.
@@ -71,7 +77,7 @@ const StarterForms = ({ user }: starterProps) => {
       </span>
       <div className="fixed bottom-2 w-screen flex flex-col items-center">
         <Pagination
-          total={2}
+          total={3}
           color="primary"
           page={currentPage}
           onChange={setCurrentPage}
@@ -92,7 +98,7 @@ const StarterForms = ({ user }: starterProps) => {
             variant="flat"
             color="primary"
             onPress={() =>
-              setCurrentPage((prev) => (prev < 4 ? prev + 1 : prev))
+              setCurrentPage((prev) => (prev < 3 ? prev + 1 : prev))
             }
           >
             Next

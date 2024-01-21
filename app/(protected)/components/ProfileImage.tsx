@@ -27,11 +27,12 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
   // const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const formHandler = async () => {
-    toast.loading("Uploading your image");
     if (!newImage) {
       console.error("No image selected");
       toast.dismiss();
       return toast.error("No image Selected");
+    } else {
+      toast.loading("Uploading your image");
     }
 
     const formData = new FormData();

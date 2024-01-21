@@ -23,16 +23,16 @@ const page = async () => {
       <div className="h-1/4 w-full flex ml-12 mt-12 border-b-2 pb-6 justify-between">
         <div className="flex gap-4">
           <ProfileImage image={userInfo.image as string} />
-          <h1 className="font-bold text-2xl text-black h-full flex flex-col justify-center">
+          <h1 className="font-bold text-2xl text-black h-full flex flex-col justify-center capitalize">
             {userInfo.fullName}
-            <span className="text-sm font-extralight text-slate-600 ml-2 flex flex-col">
+            <span className="text-sm font-extralight text-slate-600 ml-2 flex flex-col normal-case">
               <p>{userInfo.email}</p>
               <p>{userInfo.pronouns}</p>
               <p>{userInfo.location}</p>
             </span>
           </h1>
         </div>
-        <div className="flex justify-center items-center mr-16">
+        <div className="flex flex-col justify-center items-center mr-16">
           <EditContent
             userBio={userInfo.bio as string}
             userName={userInfo.firstName as string}
@@ -42,17 +42,29 @@ const page = async () => {
             userCPosition={userInfo.currentPosition as string}
             userTitle={userInfo.title as string}
           />
+
+          <UploadResume />
         </div>
       </div>
       <div className="h-full w-full flex px-6">
         <div className="w-1/3 h-full flex-1">
           <UserAbout userBio={userInfo.bio as string} />
-        </div>
-        <div className="w-1/3 h-full flex-1">
-          <UserAbout userBio={userInfo.bio as string} />
+          <UserEducation userInfo={userInfo} />
         </div>
         <div className="w-1/3 h-full flex-1">
           <UserEducation userInfo={userInfo} />
+        </div>
+        <div className="w-1/3 h-full flex-1 p-8">
+          <object
+            data={`https://econnectbucket.s3.amazonaws.com/resume/${userInfo.id}`}
+            type="application/pdf"
+            width="100%"
+            height="100%"
+          >
+            <p className="text-slate-900">
+              <UploadResume />
+            </p>
+          </object>
         </div>
       </div>
     </div>

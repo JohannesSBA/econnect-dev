@@ -19,6 +19,7 @@ interface User {
   friends: User[];
   pendingFriendRequests: User[];
   gotStarted: boolean;
+  emailVerified: Date;
 }
 
 interface Jobs {
