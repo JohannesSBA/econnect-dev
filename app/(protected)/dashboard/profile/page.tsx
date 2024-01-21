@@ -32,7 +32,7 @@ const page = async () => {
             </span>
           </h1>
         </div>
-        <div className="flex justify-center items-center mr-16">
+        <div className="flex flex-col justify-center items-center mr-16">
           <EditContent
             userBio={userInfo.bio as string}
             userName={userInfo.firstName as string}
@@ -42,17 +42,29 @@ const page = async () => {
             userCPosition={userInfo.currentPosition as string}
             userTitle={userInfo.title as string}
           />
+
+          <UploadResume />
         </div>
       </div>
       <div className="h-full w-full flex px-6">
         <div className="w-1/3 h-full flex-1">
           <UserAbout userBio={userInfo.bio as string} />
-        </div>
-        <div className="w-1/3 h-full flex-1">
-          <UserAbout userBio={userInfo.bio as string} />
+          <UserEducation userInfo={userInfo} />
         </div>
         <div className="w-1/3 h-full flex-1">
           <UserEducation userInfo={userInfo} />
+        </div>
+        <div className="w-1/3 h-full flex-1 p-8">
+          <object
+            data={`https://econnectbucket.s3.amazonaws.com/resume/${userInfo.id}`}
+            type="application/pdf"
+            width="100%"
+            height="100%"
+          >
+            <p className="text-slate-900">
+              <UploadResume />
+            </p>
+          </object>
         </div>
       </div>
     </div>
