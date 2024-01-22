@@ -19,7 +19,7 @@ import { BiPencil } from "react-icons/bi";
 import { userProps } from "@/app/types/db";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/router";
+import { IoIosAdd } from "react-icons/io";
 
 interface NewJobListingProps {
   id: string;
@@ -56,11 +56,16 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
   };
 
   return (
-    <div className=" absolute bottom-8 right-4 mt-24 mr-12 z-50">
-      <Button onPress={onOpen} color="primary" variant="ghost">
-        <BiPencil />
-        <h1>Create New Job Listing</h1>
-      </Button>
+    <div className="z-50">
+      <div
+        onClick={onOpen}
+        className="rounded-lg bg-green-500 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
+      >
+        <span className="rounded-full h-12 w-12 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
+          <IoIosAdd />
+        </span>
+        New Listing
+      </div>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
