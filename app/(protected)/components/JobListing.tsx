@@ -17,7 +17,7 @@ const JobListing = () => {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const res = await axios.post("/api/job/get");
+        const res = await axios.post("/api/job/get/all");
         setJobs(res.data);
       } catch {
         return toast.error("Sorry, something went wrong.");

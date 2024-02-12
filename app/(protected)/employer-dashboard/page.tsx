@@ -36,25 +36,16 @@ const Page = async () => {
         </div>
         <div className="flex flex-col md:flex-row md:justify-evenly">
           <Link
-            className="rounded-lg bg-blue-600 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
-            href={`/employer-dashboard/all-jobs`}
+            className="rounded-lg bg-blue-600 p-8 m-2 w-1/2 h-32 shadow-md flex items-center text-slate-100 group"
+            href={`/employer-dashboard/jobs_active`}
           >
-            <span className="rounded-full h-12 w-12 bg-blue-600 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
+            <span className="rounded-full h-12 w-12 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
               <FaBriefcase />
             </span>
-            All Jobs
+            Active Listings
           </Link>
           <Link
-            className="rounded-lg bg-blue-500 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
-            href={"/employer-dashboard/recieved"}
-          >
-            <span className="rounded-full h-12 w-12 bg-blue-500 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
-              <FaNewspaper />
-            </span>
-            Recieved Application
-          </Link>
-          <Link
-            className="rounded-lg bg-blue-400 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
+            className="rounded-lg bg-blue-400 p-8 m-2 w-1/2 h-32 shadow-md flex items-center text-slate-100 group"
             href={"/employer-dashboard/archived"}
           >
             <span className="rounded-full h-12 w-12 bg-blue-400 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
@@ -62,7 +53,6 @@ const Page = async () => {
             </span>
             Archived Jobs
           </Link>
-          <NewJobListing id={session.user.id} />
         </div>
         <div className=" rounded-md w-full h-full shadow-md flex flex-col">
           <h1 className="w-full h-12 p-4 border-b-2 shadow-md text-slate-900 font-semibold">

@@ -104,8 +104,6 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     friendRequestCounter();
   }, [userId]);
 
-  console.log(filteredFriends);
-
   if (
     isLoading &&
     !pathName.includes("profile") &&

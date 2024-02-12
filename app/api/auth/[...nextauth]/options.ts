@@ -34,6 +34,9 @@ export const options: NextAuthOptions = {
         if (!user) {
           throw new Error("User does not exist");
         }
+        if (user.emailVerified === null) {
+          throw new Error("Email not verified");
+        }
         if (!(await compare(password, user.password))) {
           throw new Error("Password is Incorrect");
         }
@@ -69,6 +72,7 @@ export const options: NextAuthOptions = {
           friends: [],
           pendingFriendRequests: [],
           gotStarted: user.gotStarted,
+          emailVerified: user.emailVerified, // Add the missing emailVerified property
         };
       },
     }),
