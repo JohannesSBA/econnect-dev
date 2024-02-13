@@ -4,10 +4,23 @@ import { Jobs } from "@/app/types/db";
 import axios from "axios";
 import { Session, getServerSession } from "next-auth";
 import React, { useState, useEffect } from "react";
+import { FaLocationDot } from "react-icons/fa6";
 import { toast } from "sonner";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  User,
+  useDisclosure,
+} from "@nextui-org/react";
+import Link from "next/link";
 
 const Page = () => {
   const [jobs, setJobs] = useState<Jobs[]>();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     const getJobs = async () => {
@@ -24,16 +37,108 @@ const Page = () => {
 
   console.log(jobs?.[0]);
 
+  const deleteJob = async (id: string) => {
+    try {
+      const res = await axios.post("/api/job/delete", id);
+      console.log(res.data);
+    } catch {
+      return toast.error("Sorry, something went wrong.");
+    }
+  };
+
   return (
     <div className="flex w-screen h-[calc(100vh-5rem)] bg-slate-100">
       <div className="h-full w-full p-6">
-        <div className="w-full h-full rounded-lg border-2 border-slate-200 shadow-md">
-          <h1 className="font-semibold text-xl p-4 border-b-2 text-slate-800">
-            Active Job Listings
-          </h1>
+        <h1 className="text-black font-bold text-2xl">Active Job Listings</h1>
+        <div className="flex flex-col gap-4 mt-4 p-4">
           {jobs?.map((job) => (
-            <div key={job.id}>
-              <p>{job.title}</p>
+            <div
+              key={job.id}
+              className="w-[28rem] md:w-full h-40 p-2 flex items-center bg-white overflow-clip"
+            >
+              <div className="flex w-full h-full">
+                <Link
+                  className="flex gap-2 h-full w-full"
+                  href={`/job/${job.id}`}
+                >
+                  <div className="flex items-center">
+                    <User
+                      avatarProps={{
+                        src: `https://econnectbucket.s3.amazonaws.com/profile/${job.postedById}`,
+                      }}
+                      className="transition-transform"
+                      description={""}
+                      name={""}
+                    />
+                  </div>
+                  <div>
+                    <span className="text-blue-800 text-sm">{job.title}</span>
+                    <h3 className="font-bold mt-px text-black">
+                      {job.shortDescription}
+                    </h3>
+                    <div className="flex items-center gap-3 mt-2">
+                      <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-sm">
+                        {job.jobType}
+                      </span>
+                      <span className="text-slate-600 text-sm flex gap-1 items-center">
+                        {" "}
+                        <FaLocationDot /> {job.location}
+                      </span>
+                      <span className="text-slate-600 text-sm">
+                        {job.createdAt}
+                      </span>
+                    </div>
+                    <span className="text-slate-400 text-xs">
+                      Over 100 applicants
+                    </span>
+                  </div>
+                </Link>
+                <Button
+                  color="danger"
+                  className="fixed right-0 mr-16 z-50 border-2"
+                  onPress={onOpen}
+                >
+                  Delete Listing
+                </Button>
+                <Modal
+                  backdrop="opaque"
+                  isOpen={isOpen}
+                  onOpenChange={onOpenChange}
+                  classNames={{
+                    backdrop:
+                      "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
+                  }}
+                >
+                  <ModalContent>
+                    {(onClose) => (
+                      <>
+                        <ModalHeader className="flex flex-col gap-1 text-black">
+                          Delete Job Listing
+                        </ModalHeader>
+                        <ModalBody>
+                          <p className="text-black text-center">
+                            By Deleting the job listing, it will no longer be
+                            available to applicants. You can always create a new
+                            job listing, or retrieve this listing from the
+                            archived Page
+                          </p>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button variant="light" onPress={onClose}>
+                            Cancel
+                          </Button>
+                          <Button
+                            color="danger"
+                            onClick={() => deleteJob(job.id)}
+                          >
+                            Delete
+                          </Button>
+                        </ModalFooter>
+                      </>
+                    )}
+                  </ModalContent>
+                </Modal>
+              </div>
             </div>
           ))}
         </div>
