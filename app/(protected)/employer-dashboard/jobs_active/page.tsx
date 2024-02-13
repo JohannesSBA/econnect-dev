@@ -26,7 +26,6 @@ const Page = () => {
     const getJobs = async () => {
       try {
         const res = await axios.post("/api/job/get/business");
-        console.log(res.data);
         setJobs(res.data);
       } catch {
         return toast.error("Sorry, something went wrong.");
@@ -35,14 +34,13 @@ const Page = () => {
     getJobs();
   }, []);
 
-  console.log(jobs?.[0]);
-
   const deleteJob = async (id: string) => {
     try {
-      const res = await axios.post("/api/job/delete", id);
-      console.log(res.data);
+      const res = await axios.post("/api/job/delete", { id });
     } catch {
       return toast.error("Sorry, something went wrong.");
+    } finally {
+      onOpenChange();
     }
   };
 
