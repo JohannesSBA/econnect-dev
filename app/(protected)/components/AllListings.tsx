@@ -10,7 +10,7 @@ const AllListings: React.FC<ListingProps> = ({ id, user }) => {
   if (id === undefined) return;
   if (user === undefined) return;
 
-  return <div>{user.jobListing[0]}</div>;
+  return <div>{user.jobListing}</div>;
 };
 
 export default AllListings;

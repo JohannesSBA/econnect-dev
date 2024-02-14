@@ -1,9 +1,7 @@
 "use client";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
-import Image from "next/image";
-import { Button, User } from "@nextui-org/react";
+import { User } from "@nextui-org/react";
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from "axios";
@@ -17,7 +15,7 @@ const JobListing = () => {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const res = await axios.post("/api/job/get");
+        const res = await axios.post("/api/job/get/all");
         setJobs(res.data);
       } catch {
         return toast.error("Sorry, something went wrong.");

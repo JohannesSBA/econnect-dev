@@ -1,10 +1,10 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
 import { AiOutlineMail, AiFillLock, AiOutlineGithub } from "react-icons/ai";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Image } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
 import { IconContext } from "react-icons";
@@ -13,10 +13,20 @@ export default function Login() {
   const [password, setPassword] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [visible, setVisible] = useState<boolean>();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const location = useSearchParams();
+
+  useEffect(() => {
+    if (location.get("verified")) {
+      toast.success("Email Successfully Verified");
+    }
+  }, [location]);
+
+  loading ? toast.loading("Loading...") : toast.dismiss();
 
   async function loginWithCredentials(e: FormEvent<HTMLFormElement>) {
+    setLoading(true);
     e.preventDefault();
     let res = await signIn("credentials", {
       email,

@@ -49,13 +49,6 @@ export default function Form() {
             phoneNumber: phoneNumber,
             role: role,
           });
-
-          if (resq.status === 200) {
-            toast.loading("Welcome to Econnect");
-            loginWithCredentials(email as string, password as string);
-          } else {
-            toast.error(resq.data);
-          }
         } catch (error: any) {
           // 'any' type is used here, but try to use a more specific type if possible
           toast.error(`Error: ${error.response?.data}`);
@@ -63,21 +56,6 @@ export default function Form() {
       }
     }
   };
-
-  async function loginWithCredentials(email: string, password: string) {
-    let res = await signIn("credentials", {
-      email,
-      password,
-      callbackUrl: "https://localhost:3000/dashboard",
-      redirect: false,
-    });
-    if (!res?.ok) {
-      toast.error(res?.error);
-    }
-    if (res?.ok) {
-      router.push("/dashboard/get-started");
-    }
-  }
 
   return (
     <div className="w-screen h-screen flex">

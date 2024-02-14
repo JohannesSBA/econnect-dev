@@ -69,7 +69,9 @@ model JobListing {
   postedBy      User      @relation("jobListingsPosted",fields: [postedById], references: [id])
   postedById    String
   applicants    User[]    @relation("jobApplications")
-}
+  Expired       Boolean   @default(false)
+  expireDate     DateTime?
+  }
 
 model Post {
   id        String     @default(cuid()) @id

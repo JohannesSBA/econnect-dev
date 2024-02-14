@@ -104,9 +104,12 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     friendRequestCounter();
   }, [userId]);
 
-  console.log(filteredFriends);
-
-  if (isLoading && !pathName.includes("profile") && !pathName.includes("ec"))
+  if (
+    isLoading &&
+    !pathName.includes("profile") &&
+    !pathName.includes("ec") &&
+    !pathName.includes("employer-dashboard")
+  )
     return (
       <Skeleton className="h-[calc(100vh-10rem)] flex flex-col justify-between gap-2 m-4" />
     );
@@ -114,7 +117,9 @@ export default function Messages({ userId, friends, role }: MessageProps) {
   return (
     <div
       className={
-        pathName.includes("profile") || pathName.includes("ec")
+        pathName.includes("profile") ||
+        pathName.includes("ec") ||
+        pathName.includes("employer-dashboard")
           ? `hidden`
           : `h-[calc(100vh-10rem)] hidden md:flex flex-col justify-between gap-2 m-4 bg-slate-100`
       }
