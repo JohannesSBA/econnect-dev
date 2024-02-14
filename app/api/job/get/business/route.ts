@@ -9,6 +9,16 @@ export async function POST(req: Request, res: Response) {
     where: {
       postedById: session?.user.id as string,
     },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      jobType: true,
+      location: true,
+      shortDescription: true,
+      Expired: true,
+      expireDate: true,
+    },
   });
 
   return new Response(JSON.stringify(getJobs), { status: 201 });

@@ -53,6 +53,7 @@ const Page = async () => {
             </span>
             Archived Jobs
           </Link>
+          <NewJobListing id={session?.user.id} />
         </div>
         <div className=" rounded-md w-full h-full shadow-md flex flex-col">
           <h1 className="w-full h-12 p-4 border-b-2 shadow-md text-slate-900 font-semibold">

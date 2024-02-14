@@ -23,7 +23,7 @@ export async function POST(req: Request, res: Response) {
 
   // Create a new joblisting
   const today = new Date();
-  const expiration = today.setMonth(today.getMonth() + 6);
+  today.setMonth(today.getMonth() + 6);
   const newJob = await prisma.jobListing.create({
     data: {
       title: body.title,
@@ -32,7 +32,7 @@ export async function POST(req: Request, res: Response) {
       location: body.location,
       postedById: session.user.id,
       shortDescription: body.shortDescription,
-      expireDate: expiration.toLocaleString(),
+      expireDate: new Date(today).toISOString(),
     },
   });
 

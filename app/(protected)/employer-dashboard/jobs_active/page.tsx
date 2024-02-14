@@ -6,6 +6,7 @@ import { Session, getServerSession } from "next-auth";
 import React, { useState, useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { toast } from "sonner";
+import NewJobListing from "../../components/NewJobListing";
 import {
   Button,
   Modal,
@@ -26,7 +27,8 @@ const Page = () => {
     const getJobs = async () => {
       try {
         const res = await axios.post("/api/job/get/business");
-        setJobs(res.data);
+        const nonExpiredJobs = res.data.filter((job: Jobs) => !job.Expired);
+        setJobs(nonExpiredJobs);
       } catch {
         return toast.error("Sorry, something went wrong.");
       }
@@ -37,6 +39,7 @@ const Page = () => {
   const deleteJob = async (id: string) => {
     try {
       const res = await axios.post("/api/job/delete", { id });
+      console.log(res.data);
     } catch {
       return toast.error("Sorry, something went wrong.");
     } finally {

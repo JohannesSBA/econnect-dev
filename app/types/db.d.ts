@@ -32,6 +32,8 @@ interface Jobs {
   createdAt: string;
   postedBy: User;
   postedById: string;
+  Expired: boolean;
+  expirationDate: string;
 }
 
 interface userProps {
