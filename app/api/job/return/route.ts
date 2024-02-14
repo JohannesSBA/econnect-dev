@@ -9,7 +9,7 @@ export async function POST(req: Request, res: Response) {
         id: body.id,
       },
       data: {
-        Expired: true,
+        Expired: false,
       },
     });
   } catch (error) {
