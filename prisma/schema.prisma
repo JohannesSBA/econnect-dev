@@ -70,7 +70,8 @@ model JobListing {
   postedById    String
   applicants    User[]    @relation("jobApplications")
   Expired       Boolean   @default(false)
-  expireDate     DateTime?
+  expireDate    DateTime?
+  expireCode    String?
   }
 
 model Post {

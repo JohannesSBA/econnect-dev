@@ -60,11 +60,7 @@ const page = async () => {
             type="application/pdf"
             width="100%"
             height="100%"
-          >
-            <p className="text-slate-900">
-              <UploadResume />
-            </p>
-          </object>
+          ></object>
         </div>
       </div>
     </div>

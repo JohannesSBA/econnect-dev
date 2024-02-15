@@ -8,7 +8,6 @@ import { getUserContent } from "@/app/helpers/getUser";
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
   const session = await getServerSession(options);
-  const timeStamp = Date();
 
   // Vallidations for sending a message
   if (!session) return new Response("Unauthorized", { status: 401 });
@@ -24,6 +23,7 @@ export async function POST(req: Request, res: Response) {
   // Create a new joblisting
   const today = new Date();
   today.setMonth(today.getMonth() + 6);
+
   const newJob = await prisma.jobListing.create({
     data: {
       title: body.title,
