@@ -13,6 +13,7 @@ export async function POST(res: Response, req: Request) {
         },
         data: {
           Expired: true,
+          expireCode: "100",
         },
       });
     }
