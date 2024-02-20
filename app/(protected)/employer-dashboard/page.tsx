@@ -9,6 +9,7 @@ import Image from "next/image";
 import { FaArchive, FaBriefcase, FaNewspaper } from "react-icons/fa";
 import Link from "next/link";
 import { MdSpaceDashboard } from "react-icons/md";
+import JobListing from "../components/JobListing";
 
 const Page = async () => {
   const session = await getServerSession(options);
@@ -20,9 +21,13 @@ const Page = async () => {
 
   if (user.role === "EMPLOYEE") redirect("/dashboard");
 
+  console.log(
+    (user.jobListing?.[0] as unknown as { applicants: any })?.applicants
+  );
+
   return (
     <div className="bg-slate-100 w-screen h-[calc(100vh-5rem)] flex justify-center">
-      <div className="hidden md:flex border-r-1 shadow-md w-1/4 h-full flex-col justify-between p-2">
+      <div className="hidden md:flex border-r-1 shadow-md w-1/6 h-full flex-col justify-between">
         <div className="text-slate-800 bg-red-40 mx-auto mt-12"></div>
         <div className="flex flex-col text-slate-400 text-sm">
           <a href="">Privacy</a>
@@ -30,7 +35,7 @@ const Page = async () => {
           <a href="">Accessability</a>
         </div>
       </div>
-      <div className="bg-slate-100 w-full md:w-3/4 h-full flex flex-col p-8 gap-8">
+      <div className="bg-slate-100 w-full md:w-5/6 h-full flex flex-col p-8 gap-8">
         <div className=" text-slate-800 text-2xl md:text-6xl font-bold ">
           Welcome, {user.firstName}
         </div>

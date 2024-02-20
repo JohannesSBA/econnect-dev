@@ -66,7 +66,7 @@ const Page = () => {
                 <div className="flex w-full h-full">
                   <Link
                     className="flex gap-2 h-full w-full"
-                    href={`/job/${job.id}`}
+                    href={`/employer-dashboard/listing/${job.id}`}
                   >
                     <div className="flex items-center">
                       <User

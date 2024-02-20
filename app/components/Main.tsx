@@ -155,7 +155,6 @@ const Main = ({ lang }: MainProps) => {
             <div className="flex gap-4 py-4">
               <Button color="primary" href="#" variant="shadow">
                 {lang === "en" ? "Search" : "ሰርች"}
-                Search
               </Button>
               <Button color="primary" href="#" variant="flat">
                 {lang === "en" ? "Learn More" : "ተጨማሪ እወቅ"}
