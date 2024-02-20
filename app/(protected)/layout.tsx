@@ -54,13 +54,13 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
                 </p>
               </Link>
             </div>
-            <div className="w-5/6 hidden md:flex gap-2 justify-end">
+            <div className="w-5/6 hidden md:flex gap-3 justify-end">
               <Search />
               <UserPicture />
               <SignOutButton />
             </div>
           </div>
-          <div className="w-1/4 absolute">
+          <div className="w-1/5 absolute">
             <Messages
               userId={session?.user.id}
               friends={friendsList}

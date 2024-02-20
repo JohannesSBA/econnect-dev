@@ -59,7 +59,7 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
     <div className="z-50">
       <div
         onClick={onOpen}
-        className="rounded-lg bg-green-500 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
+        className="rounded-lg bg-green-500 p-8 m-2 w-72 h-32 shadow-md flex items-center text-slate-100 group"
       >
         <span className="rounded-full h-12 w-12 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
           <IoIosAdd />

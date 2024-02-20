@@ -14,7 +14,7 @@ const page = async () => {
 
   return (
     <div className="w-screen h-screen bg-red-50 flex gap-12 justify-center">
-      <JobListing />
+      {/* <JobListing /> */}
     </div>
   );
 };

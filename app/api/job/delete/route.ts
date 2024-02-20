@@ -10,6 +10,7 @@ export async function POST(req: Request, res: Response) {
       },
       data: {
         Expired: true,
+        expireCode: "200",
       },
     });
   } catch (error) {
