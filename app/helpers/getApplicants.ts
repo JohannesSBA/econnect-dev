@@ -17,7 +17,6 @@ export const getApplicants = async (id: string) => {
             createdAt: true,
             updatedAt: true,
             phoneNumber: true,
-            password: true,
             bio: true,
             title: true,
             // Add other properties here
