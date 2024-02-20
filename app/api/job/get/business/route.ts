@@ -18,6 +18,8 @@ export async function POST(req: Request, res: Response) {
       shortDescription: true,
       Expired: true,
       expireDate: true,
+      applicants: true,
+      postedById: true,
     },
   });
 

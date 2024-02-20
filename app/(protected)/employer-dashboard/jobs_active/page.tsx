@@ -2,11 +2,9 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Jobs } from "@/app/types/db";
 import axios from "axios";
-import { Session, getServerSession } from "next-auth";
 import React, { useState, useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { toast } from "sonner";
-import NewJobListing from "../../components/NewJobListing";
 import {
   Button,
   Modal,
@@ -96,7 +94,7 @@ const Page = () => {
                         </span>
                       </div>
                       <span className="text-slate-400 text-xs">
-                        Over 100 applicants
+                        {job.applicants.length} Applicants
                       </span>
                     </div>
                   </Link>

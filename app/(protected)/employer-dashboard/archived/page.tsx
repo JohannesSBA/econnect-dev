@@ -96,7 +96,7 @@ const Page = () => {
                         </span>
                       </div>
                       <span className="text-slate-400 text-xs">
-                        Over 100 applicants
+                        {job.applicants.length} applicants
                       </span>
                     </div>
                   </Link>
