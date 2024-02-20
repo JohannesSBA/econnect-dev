@@ -85,7 +85,7 @@ Explain how this feature will be implemented. Highlight the components of your i
 1. **Axios API Calls (Frontend):** Continue to use Axios for making API calls from the front end, maintaining the BFF architecture.
 2. **Backend Functions (Node.js/Express):** Implement backend functions to handle specific API endpoints, ensuring a clean separation of concerns. In the given example, the `**POST**`  function manages friend acceptance logic.
 3. **Prisma ORM (Database Interaction):** Leverage Prisma ORM for efficient database interactions. In this scenario, the `**prisma.user.update**`  function updates user data based on the accepted friend.
-- ![API Flow](https://github.com/JohannesSBA/econnect-dev/assets/76441090/070a76bf-3cb1-471c-9120-529c1627a198)
+- ![API Flow](https://github.com/JohannesSBA/econnect-dev/assets/76441090/78e8e7e7-5caf-44c9-aea4-c18c3fd7eb3a)
 
 ## Constraints
 - **API Flow Clarity:** Ensure that the API flow is well-documented and clear to all developers involved in the project.
