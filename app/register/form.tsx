@@ -17,6 +17,7 @@ export default function Form() {
   const [phoneNumber, setPhoneNumber] = useState<string>();
   const [role, setRole] = useState<string>();
   const [visible, setVisible] = useState<boolean>();
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const router = useRouter();
 
   function passWordMatch(password: string, confirmedPassword: string) {
@@ -49,6 +50,10 @@ export default function Form() {
             phoneNumber: phoneNumber,
             role: role,
           });
+          if (resq.status === 200) {
+            toast.success("An Email was sent to you for verification");
+            setIsDisabled(true);
+          }
         } catch (error: any) {
           // 'any' type is used here, but try to use a more specific type if possible
           toast.error(`Error: ${error.response?.data}`);
@@ -179,8 +184,9 @@ export default function Form() {
             type="submit"
             size="lg"
             className="w-full hover:bg-blue-700 rounded-full"
+            disabled={isDisabled}
           >
-            Sign Up
+            {isDisabled ? "Email Sent" : "Sign Up"}
           </Button>
         </form>
       </div>

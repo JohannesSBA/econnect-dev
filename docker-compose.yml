@@ -9,8 +9,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "6500:5432"
 volumes:
   postgres:
-
 # DATABASE_URL="postgresql://postgres:postgres@localhost:5432:5432/next_auth_prisma_ecconnect_db?schema=public"n

@@ -34,7 +34,7 @@ const NotificationToast: FC<NotificationToastProps> = ({
                 fill
                 referrerPolicy="no-referrer"
                 className="rounded-full"
-                src={`https://econnectbucket.s3.amazonaws.com/profile/${senderId}`}
+                src={`https://econnectbucket.s3.amazonaws.com/image/${senderId}`}
                 alt={`profilePictureAlt`}
               />
             </div>

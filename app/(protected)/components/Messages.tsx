@@ -154,7 +154,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
                     <div className="flex items-center">
                       <Avatar
                         size="lg"
-                        src={`https://econnectbucket.s3.amazonaws.com/profile/${friend.id}`}
+                        src={`https://econnectbucket.s3.amazonaws.com/image/${friend.id}`}
                         className="flex items-center border-2"
                       />
                     </div>

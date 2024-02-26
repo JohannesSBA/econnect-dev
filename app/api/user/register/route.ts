@@ -48,8 +48,6 @@ export async function POST(req: Request, res: Response) {
     }
   );
 
-  console.log("Generated Token", verificationToken);
-
   const mailOptions = {
     from: "johannesseleshi@gmail.com",
     to: body.email,
@@ -61,7 +59,6 @@ export async function POST(req: Request, res: Response) {
     if (error) {
       console.log(error);
     } else {
-      console.log("Generated Token", verificationToken);
       console.log("Email sent: " + info.response);
     }
   });
