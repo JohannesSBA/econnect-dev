@@ -27,23 +27,23 @@ const StarterForms = ({ user }: starterProps) => {
   }
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full flex flex-col justify-between py-12">
       <span className=" w-full flex justify-center">
         {(() => {
           switch (currentPage) {
             case 1:
               return (
-                <div className="w-96 h-96">
-                  <ProfileImage image={"/user-avatar.png"} />
+                <div className="">
+                  <ProfileImage />
+                  <h1 className="font-medium mx-24 text-center">
+                    Welcome to our platform! We invite you to enhance your
+                    experience by uploading a picture. We recommend professional
+                    headshot, or a favorite snapshot, your profile picture adds
+                    character and authenticity to your online presence.
+                  </h1>
                 </div>
               );
             case 2:
-              return (
-                <div className="w-96 h-96">
-                  <ProfileImage image={"/user-avatar.png"} />
-                </div>
-              );
-            case 3:
               return (
                 <div className="w-96 h-96 mt-12 flex flex-col justify-center items-center">
                   <h1 className="font-semibold text-center">
@@ -75,9 +75,9 @@ const StarterForms = ({ user }: starterProps) => {
           }
         })()}
       </span>
-      <div className="fixed bottom-2 w-screen flex flex-col items-center">
+      <div className="flex flex-col gap-2 items-center">
         <Pagination
-          total={3}
+          total={2}
           color="primary"
           page={currentPage}
           onChange={setCurrentPage}

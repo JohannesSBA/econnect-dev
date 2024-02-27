@@ -10,7 +10,7 @@ const page = async () => {
   const user = await getUserContent(session?.user.id as string);
 
   if (user.role === "EMPLOYER") redirect("/employer-dashboard");
-  if (user.gotStarted == false) redirect("/dashboard/get-started");
+  if (user.gotStarted == false) redirect("/get-started");
 
   return (
     <div className="w-screen h-screen bg-red-50 flex gap-12 justify-center">

@@ -11,7 +11,15 @@ export default withAuth(
     const isLoginPage = pathname.startsWith("/login");
     const isHomePage = pathname === "/home";
 
-    const sensitiveRouter = ["/dashboard", "/employer-dashboard"];
+    const sensitiveRouter = [
+      "/dashboard",
+      "/employer-dashboard",
+      "/ec",
+      "/chat",
+      "/job",
+      "/search",
+      "/get-started",
+    ];
     const formattedPathname = pathname.toLowerCase().replace(/\/$/, "");
     const isAccessingSensitiveRoute = sensitiveRouter.some((route) =>
       formattedPathname.startsWith(route.toLowerCase())

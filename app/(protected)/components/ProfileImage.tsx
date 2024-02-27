@@ -13,18 +13,12 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from "sonner";
-// import { useRouter } from "next/navigation";
 import { CiImageOn } from "react-icons/ci";
 
-interface ProfileImageProps {
-  image: string;
-}
-
-const ProfileImage = ({ image }: ProfileImageProps) => {
-  // const router = useRouter();
+const ProfileImage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [newImage, setNewImage] = useState<File | null | undefined>(null);
-  // const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string>("/user-avatar.png");
 
   const formHandler = async () => {
     if (!newImage) {
@@ -33,6 +27,7 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
       return toast.error("No image Selected");
     } else {
       toast.loading("Uploading your image");
+      setPreviewImage(URL.createObjectURL(newImage));
     }
 
     const formData = new FormData();
@@ -48,18 +43,21 @@ const ProfileImage = ({ image }: ProfileImageProps) => {
       toast.dismiss();
     } catch (error) {
       toast.dismiss();
+    } finally {
+      toast.message("Image uploaded successfully");
+      onOpenChange();
     }
   };
 
   return (
     <div className="flex justify-center flex-col items-center rounded-2xl">
-      <div className="flex justify-center my-2">
+      <div className="flex justify-center">
         <Image
-          src={image}
+          src={previewImage}
           alt="profile piture"
           width={350}
           height={350}
-          className="border-4 max-h-40 w-full justify-center object-contain rounded-2xl"
+          className="border-4 border-slate-400 justify-center object-contain rounded-full"
         />
       </div>
       <Button

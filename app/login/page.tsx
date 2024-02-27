@@ -1,6 +1,6 @@
 "use client";
 import React, { FormEvent, useEffect, useState } from "react";
-import { Button, Checkbox, Input, Link } from "@nextui-org/react";
+import { Button, Checkbox, Input, Link, Spinner } from "@nextui-org/react";
 import { AiOutlineMail, AiFillLock, AiOutlineGithub } from "react-icons/ai";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
@@ -28,6 +28,7 @@ export default function Login() {
   async function loginWithCredentials(e: FormEvent<HTMLFormElement>) {
     setLoading(true);
     e.preventDefault();
+
     let res = await signIn("credentials", {
       email,
       password,
@@ -47,13 +48,14 @@ export default function Login() {
       <div className="md:w-1/3 lg:w-2/3 h-screen cs-background hidden md:flex items-center">
         <div className="p-24  rounded-2xl text-center m-12 h-5/6 w-full flex justify-center align-middle"></div>
       </div>
-      <div className="sm:w-full md:w-2/3 lg:w-1/3 flex flex-col justify-center align-middle p-12">
+      <div className="w-screen md:w-2/3 lg:w-1/3 flex flex-col justify-center align-middle p-12 bg-slate-100 text-slate-800">
         <h1 className="py-6 px-2 font-bold text-4xl">Login</h1>
         <form className="flex flex-col gap-3" onSubmit={loginWithCredentials}>
           <Input
             endContent={<AiOutlineMail />}
             required
             label="Email"
+            className="text-slate-800"
             placeholder="Enter your email"
             variant="bordered"
             onChange={(e) => {
@@ -91,7 +93,7 @@ export default function Login() {
               size="lg"
               className="w-full hover:bg-blue-700 rounded-full"
             >
-              Sign in
+              {loading ? <Spinner color="default" /> : "Sign in"}
             </Button>
           </div>
         </form>

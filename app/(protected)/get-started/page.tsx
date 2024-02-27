@@ -2,7 +2,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { getServerSession } from "next-auth";
 import React from "react";
-import StarterForms from "../../components/StarterForms";
+import StarterForms from "../components/StarterForms";
 import { User } from "@/app/types/db";
 import { redirect } from "next/navigation";
 
@@ -17,8 +17,7 @@ const page = async () => {
   }
 
   return (
-    <div className="bg-slate-100 w-screen h-[calc(100vh-5rem)] flex flex-col justify-center items-center text-black">
-      <h1>Get Started</h1>
+    <div className="bg-slate-100 w-screen h-screen flex justify-center items-center text-slate-800">
       <StarterForms user={user} />
     </div>
   );
