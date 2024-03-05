@@ -51,20 +51,29 @@ const ProfileImage = () => {
 
   return (
     <div className="flex justify-center flex-col items-center rounded-2xl">
-      <div className="flex justify-center">
+      <div className="hidden md:flex justify-center">
         <Image
           src={previewImage}
           alt="profile piture"
-          width={350}
-          height={350}
-          className="border-4 border-slate-400 justify-center object-contain rounded-full"
+          width={250}
+          height={250}
+          className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
+        />
+      </div>
+      <div className="md:hidden flex justify-center">
+        <Image
+          src={previewImage}
+          alt="profile piture"
+          width={100}
+          height={100}
+          className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
         />
       </div>
       <Button
         onPress={onOpen}
         color="primary"
         variant="light"
-        className="font-semibold flex p-4"
+        className="font-semibold flex p-4 text-xs md:text-base"
       >
         <CiImageOn />
         Change Profile picture
@@ -72,7 +81,7 @@ const ProfileImage = () => {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        placement="top-center"
+        placement="center"
         className="text-black"
       >
         <ModalContent>
@@ -81,7 +90,7 @@ const ProfileImage = () => {
               <ModalHeader className="flex flex-col gap-1">
                 Upload Picture
               </ModalHeader>
-              <ModalBody>
+              <ModalBody className="p-2">
                 <Input
                   type="file"
                   accept="image/*"

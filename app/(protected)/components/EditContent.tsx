@@ -77,12 +77,12 @@ export default function App({
         onOpenChange={onOpenChange}
         placement="top-center"
         size="3xl"
-        className="m-2 h-screen overflow-scroll"
+        className="m-2 h-[calc(100vh-4rem)] overflow-scroll"
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col text-black font-bold text-4xl">
+              <ModalHeader className="z-50 flex flex-col text-slate-800 font-bold text-4xl sticky border-b-1 bg-white border-slate-200 shadow-sm top-0">
                 Edit Content
               </ModalHeader>
               <form onSubmit={handleSubmit}>
