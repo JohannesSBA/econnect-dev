@@ -35,6 +35,7 @@ export default function Login() {
       callbackUrl: "https://localhost:3000/dashboard",
       redirect: false,
     });
+    setLoading(false);
     if (!res?.ok) {
       toast.error(res?.error);
     }

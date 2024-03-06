@@ -8,7 +8,6 @@ import { GiWaterDrop } from "react-icons/gi";
 import prisma from "@/app/lib/prisma";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
-import { redirect } from "next/navigation";
 import Messages from "../components/Messages";
 import UserPicture from "../components/UserPicture";
 import Search from "../components/Search";
@@ -41,9 +40,9 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="h-screen w-screen overflow-clip">
+        <div className="h-screen w-screen overflow-clip font-PlusJakartaSans">
           <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
-            <div className="w-1/6 flex gap-2">
+            <div className="flex gap-4">
               <Link
                 href={"/employer-dashboard"}
                 className="flex gap-4 text-blue-800"
@@ -53,6 +52,24 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
                   Econnect
                 </p>
               </Link>
+              <Link
+                href="/"
+                className="bg-[#4773C5]/40 rounded-lg p-2 px-4 font-semibold text-[#4773C5]"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/messages"
+                className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
+              >
+                Messages
+              </Link>
+              <Link
+                href="/listings"
+                className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
+              >
+                Listings
+              </Link>
             </div>
             <div className="w-5/6 hidden md:flex gap-3 justify-end">
               <Search />
@@ -60,13 +77,13 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
               <SignOutButton />
             </div>
           </div>
-          <div className="w-1/5 absolute">
+          {/* <div className="w-1/5 absolute">
             <Messages
               userId={session?.user.id}
               friends={friendsList}
               role={userRole}
             />
-          </div>
+          </div> */}
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5">
             {/* <NewPost /> */}

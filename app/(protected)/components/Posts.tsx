@@ -14,8 +14,6 @@ export default function App() {
     };
   }
 
-  // const session = await getServerSession(options);
-
   const [posts, setPosts] = useState([]);
   const [fromUser, setFromUser] = useState<string>("Johannes");
 
