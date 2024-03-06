@@ -59,7 +59,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
                 Dashboard
               </Link>
               <Link
-                href="/messages"
+                href="/chat"
                 className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
               >
                 Messages

@@ -26,6 +26,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
   const [requestCounter, setRequestCounter] = useState(0);
   const pathName = usePathname();
   const [isLoading, setIsLoading] = useState(true);
+  const [messageType, setMessageType] = useState("all");
   const router = useRouter();
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     ? (requestElement = (
         <Badge content={requestCounter} color="primary">
           <Link
-            href="/dashboard/friend-requests"
+            href="/chat/friend-requests"
             className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
           >
             <FaUserFriends />
@@ -85,7 +86,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
       ))
     : (requestElement = (
         <Link
-          href="/dashboard/friend-requests"
+          href="/chat/friend-requests"
           className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
         >
           <FaUserFriends />
@@ -125,49 +126,85 @@ export default function Messages({ userId, friends, role }: MessageProps) {
       }
     >
       <div className="flex flex-col gap-2">
+        <div className="w-full h-12 bg-slate-200 rounded-md flex justify-around items-center gap-2">
+          <div className="">
+            <Button
+              className={messageType === "all" ? "bg-white shadow-md" : ""}
+              variant={messageType === "all" ? "solid" : "light"}
+              onClick={() => setMessageType("all")}
+              disableAnimation
+            >
+              All
+            </Button>
+            <Button
+              className={messageType === "connects" ? "bg-white shadow-md" : ""}
+              variant={messageType === "connects" ? "solid" : "light"}
+              onClick={() => setMessageType("connects")}
+              disableAnimation
+            >
+              Connects
+            </Button>
+            <Button
+              className={messageType === "recruits" ? "bg-white shadow-md" : ""}
+              variant={messageType === "recruits" ? "solid" : "light"}
+              onClick={() => setMessageType("recruits")}
+              disableAnimation
+            >
+              Recruits
+            </Button>
+          </div>
+        </div>
         <Input
           type="text"
-          label="Search"
+          label="Search Messages"
           className="max-w-xs bg-slate-100 text-black"
           endContent={<FaSearch />}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {filteredFriends.map(
-          (friend: {
-            key: React.Key | null | undefined;
-            id: string;
-            firstName: string;
-            lastName: string;
-          }) => (
-            <div key={friend.key} className="w-full">
-              <Button
-                onClick={() => {
-                  router.push(
-                    `/chat/${chatHrefConstructor(userId, friend.id)}`
-                  );
-                }}
-                className="w-full h-fit p-4 justify-start bg-slate-100 hover:bg-slate-200 group rounded-none"
-              >
-                <div className="flex w-full justify-between">
-                  <div className="flex w-full gap-2 justify-normal">
-                    <div className="flex items-center">
-                      <Avatar
-                        size="lg"
-                        src={`https://econnectbucket.s3.amazonaws.com/image/${friend.id}`}
-                        className="flex items-center border-2"
-                      />
-                    </div>
+        {filteredFriends.length === 0 ? (
+          <h1 className="text-black ml-3">
+            &quot;{searchTerm}&quot; not Found
+          </h1>
+        ) : (
+          filteredFriends.map(
+            (friend: {
+              key: React.Key | null | undefined;
+              id: string;
+              firstName: string;
+              lastName: string;
+            }) => (
+              <div key={friend.key} className="w-full">
+                <Button
+                  onClick={() => {
+                    router.push(
+                      `/chat/${chatHrefConstructor(userId, friend.id)}`
+                    );
+                  }}
+                  className="w-full h-fit p-4 justify-start bg-slate-100 hover:bg-slate-200 group rounded-none"
+                >
+                  <div className="flex w-full justify-between">
+                    <div className="flex w-full gap-2 justify-normal">
+                      <div className="flex items-center">
+                        <Avatar
+                          size="lg"
+                          src={`https://econnectbucket.s3.amazonaws.com/image/${friend.id}`}
+                          className="flex items-center border-2"
+                        />
+                      </div>
 
-                    <h1 className="text-black flex flex-col justify-center font-bold">
-                      {friend.firstName} {friend.lastName}
-                    </h1>
+                      <h1 className="text-black flex flex-col justify-center font-bold">
+                        {friend.firstName} {friend.lastName}
+                      </h1>
+                      <p>{}</p>
+                    </div>
                   </div>
-                </div>
-              </Button>
-            </div>
+                </Button>
+              </div>
+            )
           )
         )}
+        {}
       </div>
       {role === "EMPLOYEE" ? (
         <div className="group hover:bg-slate-200 p-4 bottom-0">

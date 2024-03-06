@@ -8,40 +8,16 @@ import { notFound } from "next/navigation";
 import { userInfo } from "os";
 import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
-import Messages from "../../components/Messages";
-import Search from "../../components/Search";
-import SignOutButton from "../../components/SignOutButton";
-import UserPicture from "../../components/UserPicture";
 import { Friend } from "@/app/types/db";
+import Messages from "../components/Messages";
+import Search from "../components/Search";
+import SignOutButton from "../components/SignOutButton";
+import UserPicture from "../components/UserPicture";
 
 interface PageProps {
   params: {
     chatId: string;
   };
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { chatid: string };
-}) {
-  const { chatid } = params;
-  const session = await getServerSession(options);
-  if (!session) notFound();
-
-  const [id1, id2] = chatid.split("--");
-
-  const friendId = id1 === session.user.id ? id2 : id1;
-  const userId = id1 === session.user.id ? id1 : id2;
-
-  const friendContent = await getUserContent(friendId);
-  const userContent = await getUserContent(session.user.id);
-
-  if (session.user.id !== userId) {
-    notFound();
-  }
-
-  return { title: `Connected | ${friendContent.fullName} chat` };
 }
 
 interface PageProps {
@@ -55,21 +31,16 @@ const page = async ({ params }: { params: { chatid: string } }) => {
   const session = await getServerSession(options);
   if (!session) notFound();
 
-  const [id1, id2] = chatid.split("--");
-
-  const friendId = id1 === session.user.id ? id2 : id1;
-  const userId = id1 === session.user.id ? id1 : id2;
-
   const userInfo = await getUserContent(session?.user.id as string);
-  const friendContent = await getUserContent(friendId);
+  //   const friendContent = await getUserContent(friendId);
 
   const friends = userInfo.friends as unknown as Friend[];
   const friendsOf = userInfo.friendsOf as unknown as Friend[];
   const friendsList = friends.concat(friendsOf);
 
-  if (session.user.id !== userId) {
-    notFound();
-  }
+  //   if (session.user.id !== userId) {
+  //     notFound();
+  //   }
 
   return (
     <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
@@ -114,30 +85,6 @@ const page = async ({ params }: { params: { chatid: string } }) => {
             friends={friendsList}
             role={userInfo?.role as string}
           />
-        </div>
-        <div className="w-full md:w-3/4 h-full md:border border-slate-300 flex flex-col justify-between">
-          <Link
-            className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg"
-            href={`/ec/${friendContent.id}`}
-          >
-            <div className="flex items-center">
-              <Avatar
-                radius="lg"
-                size="lg"
-                src={`https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`}
-                className="flex items-center border-2"
-              />
-            </div>
-            <h1 className="text-black flex flex-col justify-center font-bold">
-              {friendContent.firstName} {friendContent.lastName}
-            </h1>
-          </Link>
-          <Conversations
-            chatPartner={friendId as string}
-            chatId={userId as string}
-            chatRoom={chatid}
-          />
-          <ChatInput chatPartner={friendId} chatId={userId} chatRoom={chatid} />
         </div>
       </div>
     </div>
