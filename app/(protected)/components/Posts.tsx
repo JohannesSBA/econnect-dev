@@ -7,7 +7,11 @@ import prisma from "@/app/lib/prisma";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
-export default function App() {
+interface PostProp {
+  id: string;
+}
+
+export default function Posts(id: PostProp) {
   interface PageProps {
     params: {
       posts: string;
@@ -15,13 +19,12 @@ export default function App() {
   }
 
   const [posts, setPosts] = useState([]);
-  const [fromUser, setFromUser] = useState<string>("Johannes");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("/api/user/post/get", {
-          params: { author: fromUser },
+        const res = await axios.post("/api/user/post/get", {
+          userId: id,
         });
         setPosts(res.data);
       } catch (error) {
@@ -30,10 +33,12 @@ export default function App() {
     };
 
     fetchPosts();
-  }, [fromUser]);
+  }, [id]);
+
+  console.log(posts);
 
   return (
-    <div className="flex flex-col flex-wrap gap-4">
+    <div className="w-full h-full flex flex-col flex-wrap gap-4">
       {posts.map(
         (post: {
           id: React.Key | null | undefined;

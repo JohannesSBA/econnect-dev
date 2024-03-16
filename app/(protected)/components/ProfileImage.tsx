@@ -52,32 +52,37 @@ const ProfileImage = () => {
   return (
     <div className="flex justify-center flex-col items-center rounded-2xl">
       <div className="hidden md:flex justify-center">
-        <Image
-          src={previewImage}
-          alt="profile piture"
-          width={250}
-          height={250}
-          className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
-        />
+        <Button
+          onPress={onOpen}
+          color="primary"
+          variant="light"
+          className="w-full h-full"
+        >
+          <Image
+            src={previewImage}
+            alt="profile piture"
+            width={250}
+            height={250}
+            className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
+          />
+        </Button>
       </div>
       <div className="md:hidden flex justify-center">
-        <Image
-          src={previewImage}
-          alt="profile piture"
-          width={100}
-          height={100}
-          className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
-        />
+        <Button
+          onPress={onOpen}
+          color="primary"
+          variant="light"
+          className="w-full h-full"
+        >
+          <Image
+            src={previewImage}
+            alt="profile piture"
+            width={100}
+            height={100}
+            className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
+          />
+        </Button>
       </div>
-      <Button
-        onPress={onOpen}
-        color="primary"
-        variant="light"
-        className="font-semibold flex p-4 text-xs md:text-base"
-      >
-        <CiImageOn />
-        Change Profile picture
-      </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

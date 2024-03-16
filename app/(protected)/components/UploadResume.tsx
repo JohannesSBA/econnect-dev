@@ -47,15 +47,14 @@ const UploadResume = () => {
   };
 
   return (
-    <div className="w-full flex justify-center flex-col items-center rounded-2xl">
+    <div className="w-full flex justify-center flex-col items-end rounded-2xl">
       <Button
         onPress={onOpen}
         color="primary"
         variant="light"
-        className="font-semibold flex"
+        className=" flex text-xl text-end"
       >
-        <CiImageOn />
-        Upload Your Resume
+        <h1 className="text-end">Upload Your Resume</h1>
       </Button>
       <Modal
         isOpen={isOpen}

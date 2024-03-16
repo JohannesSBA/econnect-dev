@@ -2,11 +2,12 @@ import React from "react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import JobListing from "../components/JobListing";
 import NewPost from "../components/NewPost";
 import { User } from "@nextui-org/react";
 import { FiAirplay, FiExternalLink } from "react-icons/fi";
+import Posts from "../components/Posts";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -37,7 +38,9 @@ const page = async () => {
         <h1 className=" font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
           Posts
         </h1>
-        <div className="h-[553px] bg-slate-100 rounded-md border m-4">sr</div>
+        <div className="h-[553px] bg-slate-100 rounded-md m-4">
+          <Posts id={session?.user.id as string} />
+        </div>
         <div className="bg-slate-100 rounded-md mx-2 flex">
           <User
             as="image"
