@@ -41,9 +41,16 @@ interface userProps {
   userName: string;
   userPronouns: stirng;
   userLocation: string;
-  userEducation: stirng;
+  userEducation: educationProps[];
   userCPosition: string;
   userTitle: string;
+}
+
+interface educationProps {
+  school: string;
+  degree: string;
+  GPA: number;
+  major: string;
 }
 
 interface CustomSession {

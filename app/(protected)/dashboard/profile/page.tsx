@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import UploadResume from "../../components/UploadResume";
 import { FiExternalLink, FiMessageSquare, FiUserPlus } from "react-icons/fi";
 import Posts from "../../components/Posts";
+import { educationProps } from "@/app/types/db";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -28,6 +29,20 @@ const page = async () => {
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] flex bg-slate-100">
+      <EditContent
+        userBio={userInfo.bio as string}
+        userName={userInfo.firstName as string}
+        userPronouns={userInfo.pronouns}
+        userLocation={userInfo.location as string}
+        userEducation={(userInfo.education ?? []).map((edu) => ({
+          ...edu,
+          GPA: edu.GPA || 0,
+          major: edu.major || "", // Ensure major is not nullable
+          education: edu.degree || "",
+        }))}
+        userCPosition={userInfo.currentPosition as string}
+        userTitle={userInfo.title as string}
+      />
       <div className="w-1/3 h-full flex flex-col px-8 gap-12">
         <div className="w-full flex flex-col justify-center items-center gap-3">
           <ProfileImage />

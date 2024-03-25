@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useReducer, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -38,31 +38,43 @@ export default function App({
   const [bio, setBio] = useState<string>();
   const [title, setTitle] = useState<string>();
   const [currentPosition, setPosition] = useState<string>();
-  const [education, setEducation] = useState<string>();
+
+  const [educationGPA, setEducationGPA] = useState<number>();
+  const [educationMajor, setEducationMajor] = useState<string>();
+  const [educationSchool, setEducationSchool] = useState<string>();
+  const [educationDegree, setEducationDegree] = useState<string>();
+
   const [country, setCountry] = useState<string>();
   const [city, setCity] = useState<string>();
   const location = country + ":" + city;
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
-    await axios.put("/api/user/update", {
-      bio: bio,
-      firstName: firstName,
-      lastName: lastName,
-      pronouns: proNouns,
-      location: location,
-      education: education,
-      currentPosition: currentPosition,
-      title: title,
-    });
     try {
+      const res = await axios.put("/api/user/update", {
+        bio: bio,
+        firstName: firstName,
+        lastName: lastName,
+        pronouns: proNouns,
+        location: location,
+        education: [
+          {
+            gpa: educationGPA,
+            major: educationMajor,
+            school: educationSchool,
+            degree: educationDegree,
+          },
+        ],
+        currentPosition: currentPosition,
+        title: title,
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error("axios error");
       }
       toast.error(error as string);
     } finally {
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -181,11 +193,35 @@ export default function App({
                     />
                     <Input
                       isRequired
-                      label="Education"
-                      defaultValue={userEducation}
+                      label="School"
                       labelPlacement="outside"
                       onChange={(e) => {
-                        setEducation(e.target.value);
+                        setEducationSchool(e.target.value);
+                      }}
+                    />
+                    <Input
+                      isRequired
+                      label="Degree"
+                      labelPlacement="outside"
+                      onChange={(e) => {
+                        setEducationDegree(e.target.value);
+                      }}
+                    />
+                    <Input
+                      isRequired
+                      label="Major"
+                      labelPlacement="outside"
+                      onChange={(e) => {
+                        setEducationMajor(e.target.value);
+                      }}
+                    />
+                    <Input
+                      isRequired
+                      type="number"
+                      label="GPA"
+                      labelPlacement="outside"
+                      onChange={(e) => {
+                        setEducationGPA(parseFloat(e.target.value));
                       }}
                     />
                   </div>

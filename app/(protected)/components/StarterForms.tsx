@@ -64,7 +64,7 @@ const StarterForms = ({ user }: starterProps) => {
                       userName={user.firstName as string}
                       userPronouns={user.pronouns}
                       userLocation={user.location as string}
-                      userEducation={""}
+                      userEducation={[]}
                       userCPosition={""}
                       userTitle={user.title as string}
                     />
