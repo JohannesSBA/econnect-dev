@@ -29,11 +29,16 @@ const page = async () => {
     .slice(0, 2);
 
   return (
-    <div className="w-screen h-screen bg-slate-100 flex gap-12 justify-center font-PlusJakartSans">
+    <div className="w-screen h-screen bg-slate-100 flex justify-center font-PlusJakartSans">
       <div className="w-1/4 flex flex-col">
         <h1 className="text-2xl text-slate-800 m-8 font-semibold">
           Recent Applications
           <div className="h-[600px] w-full flex flex-col gap-2">
+            {recentApplications?.length === 0 && (
+              <div className="text-sm font-semibold text-slate-400">
+                No recent applications
+              </div>
+            )}
             {recentApplications?.map((application) => (
               <div key={application.id} className="flex items-center gap-4">
                 <div>
@@ -56,14 +61,14 @@ const page = async () => {
           </div>
         </h1>
       </div>
-      <div className="w-2/4 flex flex-col m-4 border rounded-md">
+      <div className="w-2/4 flex flex-col h-[90%] border rounded-md">
         <h1 className=" font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
           Posts
         </h1>
-        <div className="h-[553px] bg-slate-100 rounded-md m-4">
+        <div className="h-[553px] bg-white rounded-md m-4">
           <Posts id={session?.user.id as string} />
         </div>
-        <div className="bg-slate-100 rounded-md mx-2 flex">
+        <div className="bg-white rounded-md mx-2 flex p-2">
           <User
             as="image"
             avatarProps={{
@@ -114,8 +119,8 @@ const page = async () => {
             </Button>
           </a>
         </div>
-        <h1 className="text-xl text-slate-800 py-4 my-2">Recomended Pages</h1>
-        <div className="border roundd-full bg-slate-100 h">hello</div>
+        <h1 className="text-xl text-slate-800 py-4 my-2">Recomended</h1>
+        <div className="border roundd-full bg-slate-100 h"></div>
       </div>
     </div>
   );

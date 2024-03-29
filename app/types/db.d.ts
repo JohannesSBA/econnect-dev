@@ -41,7 +41,6 @@ interface userProps {
   userName: string;
   userPronouns: stirng;
   userLocation: string;
-  userEducation: educationProps[];
   userCPosition: string;
   userTitle: string;
 }

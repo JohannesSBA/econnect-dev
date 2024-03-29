@@ -29,28 +29,14 @@ const page = async () => {
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] flex bg-slate-100">
-      <EditContent
-        userBio={userInfo.bio as string}
-        userName={userInfo.firstName as string}
-        userPronouns={userInfo.pronouns}
-        userLocation={userInfo.location as string}
-        userEducation={(userInfo.education ?? []).map((edu) => ({
-          ...edu,
-          GPA: edu.GPA || 0,
-          major: edu.major || "", // Ensure major is not nullable
-          education: edu.degree || "",
-        }))}
-        userCPosition={userInfo.currentPosition as string}
-        userTitle={userInfo.title as string}
-      />
-      <div className="w-1/3 h-full flex flex-col px-8 gap-12">
-        <div className="w-full flex flex-col justify-center items-center gap-3">
-          <ProfileImage />
-          <h1 className="text-2xl font-semibold text-slate-900">
+      <div className="w-1/3 h-full flex flex-col px-8">
+        <ProfileImage id={session?.user.id as string} />
+        <div className="w-full flex flex-col justify-center items-center mb-12">
+          <h1 className="text-2xl text-slate-800 font-semibold">
             {userInfo.fullName}
           </h1>
-          <h2 className="text-[#4773C5] text-lg">{userInfo.title}</h2>
-          <p className="text-slate-600 text-sm line-clamp-5">{userInfo.bio}</p>
+          <h1 className="text-lg text-blue-400">{userInfo.title}</h1>
+          <h2 className="text-slate-800 line-clamp-4 my-2">{userInfo.bio}</h2>
         </div>
         {pageName !== "profile" ? (
           <div className="w-full flex justify-evenly">
@@ -104,7 +90,7 @@ const page = async () => {
           <div></div>
         </div>
       </div>
-      <div className="w-1/3 h-full p-8">
+      <div className="w-1/3 h-full p-8 text-slate-800">
         <div className="w-full h-1/2 flex flex-col">
           <h1 className="text-[#4773C5] text-2xl text-end">Education</h1>
           <div className="m-2 p-8 h-full w-full rounded-3xl">
@@ -143,6 +129,14 @@ const page = async () => {
               >
                 View Resume
               </a>
+              <EditContent
+                userBio={userInfo.bio as string}
+                userName={userInfo.firstName as string}
+                userPronouns={userInfo.pronouns}
+                userLocation={userInfo.location as string}
+                userCPosition={userInfo.currentPosition as string}
+                userTitle={userInfo.title as string}
+              />
             </div>
           </div>
         </div>

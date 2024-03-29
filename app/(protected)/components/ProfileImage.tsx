@@ -10,15 +10,26 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
+  Avatar,
 } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from "sonner";
-import { CiImageOn } from "react-icons/ci";
+import { set } from "zod";
 
-const ProfileImage = () => {
+interface profileProps {
+  id: string;
+}
+
+const ProfileImage = ({ id }: profileProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [newImage, setNewImage] = useState<File | null | undefined>(null);
-  const [previewImage, setPreviewImage] = useState<string>("/user-avatar.png");
+  const [previewImage, setPreviewImage] = useState<string>(
+    `https://econnectbucket.s3.amazonaws.com/image/${id}`
+  );
+
+  if (!previewImage) {
+    setPreviewImage("/avatar.png");
+  }
 
   const formHandler = async () => {
     if (!newImage) {
@@ -51,20 +62,14 @@ const ProfileImage = () => {
 
   return (
     <div className="flex justify-center flex-col items-center rounded-2xl">
-      <div className="hidden md:flex justify-center">
+      <div className="hidden md:flex justify-center p-8">
         <Button
           onPress={onOpen}
           color="primary"
           variant="light"
           className="w-full h-full"
         >
-          <Image
-            src={previewImage}
-            alt="profile piture"
-            width={250}
-            height={250}
-            className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
-          />
+          <Avatar src={previewImage} className="w-40 h-40 text-6xl border-2" />
         </Button>
       </div>
       <div className="md:hidden flex justify-center">

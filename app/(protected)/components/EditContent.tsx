@@ -24,31 +24,24 @@ import { useRouter } from "next/router";
 export default function App({
   userBio,
   userName,
-  userPronouns,
   userLocation,
-  userEducation,
-  userCPosition,
   userTitle,
 }: userProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [firstName, setFirstName] = useState<string>();
   const [lastName, setLastName] = useState<string>();
-  const fullName = firstName + " " + lastName;
+  const [loading, setLoading] = useState<boolean>(false);
   const [proNouns, setPronouns] = useState<string>("Select one");
   const [bio, setBio] = useState<string>();
   const [title, setTitle] = useState<string>();
-  const [currentPosition, setPosition] = useState<string>();
-
-  const [educationGPA, setEducationGPA] = useState<number>();
-  const [educationMajor, setEducationMajor] = useState<string>();
-  const [educationSchool, setEducationSchool] = useState<string>();
-  const [educationDegree, setEducationDegree] = useState<string>();
 
   const [country, setCountry] = useState<string>();
   const [city, setCity] = useState<string>();
   const location = country + ":" + city;
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
+    setLoading(true);
+    toast.loading("Updating your profile");
     e.preventDefault();
     try {
       const res = await axios.put("/api/user/update", {
@@ -57,15 +50,6 @@ export default function App({
         lastName: lastName,
         pronouns: proNouns,
         location: location,
-        education: [
-          {
-            gpa: educationGPA,
-            major: educationMajor,
-            school: educationSchool,
-            degree: educationDegree,
-          },
-        ],
-        currentPosition: currentPosition,
         title: title,
       });
     } catch (error) {
@@ -74,7 +58,9 @@ export default function App({
       }
       toast.error(error as string);
     } finally {
-      // window.location.reload();
+      setLoading(false);
+      toast.loading("Updating your profile");
+      window.location.reload();
     }
   };
 
@@ -171,92 +157,57 @@ export default function App({
                       setBio(e.target.value);
                     }}
                   />
-                  <h1 className="block">Occuptation</h1>
                   <Input
                     isRequired
                     label="Title"
                     defaultValue={userTitle}
                     labelPlacement="outside"
+                    className="my-2"
                     onChange={(e) => {
                       setTitle(e.target.value);
                     }}
                   />
-                  <div className="flex gap-4">
+                  <h1 className="block">Location</h1>
+                  <div className="flex py-2 px-1 gap-4 justify-between">
                     <Input
                       isRequired
-                      label="Current Position"
-                      defaultValue={userCPosition}
+                      label="Country/Region"
+                      defaultValue={
+                        userLocation !== null
+                          ? userLocation.split(":").at(0)
+                          : ""
+                      }
                       labelPlacement="outside"
                       onChange={(e) => {
-                        setPosition(e.target.value);
+                        setCountry(e.target.value);
                       }}
                     />
                     <Input
                       isRequired
-                      label="School"
+                      label="City"
+                      defaultValue={
+                        userLocation !== null
+                          ? userLocation.split(":").at(0)
+                          : ""
+                      }
                       labelPlacement="outside"
                       onChange={(e) => {
-                        setEducationSchool(e.target.value);
-                      }}
-                    />
-                    <Input
-                      isRequired
-                      label="Degree"
-                      labelPlacement="outside"
-                      onChange={(e) => {
-                        setEducationDegree(e.target.value);
-                      }}
-                    />
-                    <Input
-                      isRequired
-                      label="Major"
-                      labelPlacement="outside"
-                      onChange={(e) => {
-                        setEducationMajor(e.target.value);
-                      }}
-                    />
-                    <Input
-                      isRequired
-                      type="number"
-                      label="GPA"
-                      labelPlacement="outside"
-                      onChange={(e) => {
-                        setEducationGPA(parseFloat(e.target.value));
+                        setCity(e.target.value);
                       }}
                     />
                   </div>
-                  <h1 className="block">Location</h1>
-                  <Input
-                    isRequired
-                    label="Country/Region"
-                    defaultValue={
-                      userLocation !== null ? userLocation.split(":").at(0) : ""
-                    }
-                    labelPlacement="outside"
-                    onChange={(e) => {
-                      setCountry(e.target.value);
-                    }}
-                  />
-                  <Input
-                    isRequired
-                    label="City"
-                    defaultValue={
-                      userLocation !== null ? userLocation.split(":").at(0) : ""
-                    }
-                    labelPlacement="outside"
-                    onChange={(e) => {
-                      setCity(e.target.value);
-                    }}
-                  />
-                  <div className="flex py-2 px-1 justify-between"></div>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Cancel
                   </Button>
-                  <Button color="primary" type="submit">
-                    Submit
-                  </Button>
+                  {loading ? (
+                    <Button>Loading...</Button>
+                  ) : (
+                    <Button color="primary" type="submit">
+                      Submit
+                    </Button>
+                  )}
                 </ModalFooter>
               </form>
             </>

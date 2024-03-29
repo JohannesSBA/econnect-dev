@@ -13,16 +13,6 @@ export async function PUT(req: Request, res: Response) {
 
   try {
     {
-      await prisma.education.create({
-        data: {
-          GPA: body.education.gpa,
-          major: body.education.major,
-          school: body.education.school,
-          degree: body.education.degree,
-          userId: session.user.id,
-        },
-      });
-
       const resq = await prisma.user.update({
         where: {
           id: session.user.id,
@@ -33,7 +23,6 @@ export async function PUT(req: Request, res: Response) {
           lastName: body.lastName,
           pronouns: body.pronouns,
           location: body.location,
-          currentPosition: body.currentPosition,
           title: body.title,
         },
       });
