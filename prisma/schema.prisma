@@ -94,7 +94,10 @@ model Education {
   school String
   degree String
   GPA Float?
-  major String?
+  major String
+  startDate DateTime
+  endDate DateTime
+  description String?
 }
 
 

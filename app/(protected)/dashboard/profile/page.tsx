@@ -12,6 +12,7 @@ import UploadResume from "../../components/UploadResume";
 import { FiExternalLink, FiMessageSquare, FiUserPlus } from "react-icons/fi";
 import Posts from "../../components/Posts";
 import { educationProps } from "@/app/types/db";
+import NewEducation from "../../components/NewEducation";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -26,6 +27,8 @@ const page = async () => {
     (userInfo.friends?.length ?? 0) + (userInfo.friendsOf?.length ?? 0);
 
   const dateJoined = userInfo.emailVerified;
+
+  // TODO: Implement the Education and Experiences as well as posts
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] flex bg-slate-100">
@@ -92,7 +95,10 @@ const page = async () => {
       </div>
       <div className="w-1/3 h-full p-8 text-slate-800">
         <div className="w-full h-1/2 flex flex-col">
-          <h1 className="text-[#4773C5] text-2xl text-end">Education</h1>
+          <div className="flex w-full justify-end">
+            <NewEducation />
+            <h1 className="text-[#4773C5] text-2xl text-end pt-1">Education</h1>
+          </div>
           <div className="m-2 p-8 h-full w-full rounded-3xl">
             <ul>
               <li>
@@ -146,49 +152,3 @@ const page = async () => {
 };
 
 export default page;
-
-{
-  /* <div className="h-1/4 w-full flex ml-12 mt-12 border-b-2 pb-6 justify-between">
-        <div className="flex gap-4">
-          <ProfileImage image={userInfo.image as string} />
-          <h1 className="font-bold text-2xl text-black h-full flex flex-col justify-center capitalize">
-            {userInfo.fullName}
-            <span className="text-sm font-extralight text-slate-600 ml-2 flex flex-col normal-case">
-              <p>{userInfo.email}</p>
-              <p>{userInfo.pronouns}</p>
-              <p>{userInfo.location}</p>
-            </span>
-          </h1>
-        </div>
-        <div className="flex flex-col justify-center items-center mr-16">
-          <EditContent
-            userBio={userInfo.bio as string}
-            userName={userInfo.firstName as string}
-            userPronouns={userInfo.pronouns}
-            userLocation={userInfo.location as string}
-            userEducation={userInfo.education}
-            userCPosition={userInfo.currentPosition as string}
-            userTitle={userInfo.title as string}
-          />
-
-          <UploadResume />
-        </div>
-      </div>
-      <div className="h-full w-full flex px-6">
-        <div className="w-1/3 h-full flex-1">
-          <UserAbout userBio={userInfo.bio as string} />
-          <UserEducation userInfo={userInfo} />
-        </div>
-        <div className="w-1/3 h-full flex-1">
-          <UserEducation userInfo={userInfo} />
-        </div>
-        <div className="w-1/3 h-full flex-1 p-8">
-          <object
-            data={`https://econnectbucket.s3.amazonaws.com/resume/${userInfo.id}`}
-            type="application/pdf"
-            width="100%"
-            height="100%"
-          ></object>
-        </div>
-      </div> */
-}
