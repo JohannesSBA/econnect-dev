@@ -13,6 +13,8 @@ import { FiExternalLink, FiMessageSquare, FiUserPlus } from "react-icons/fi";
 import Posts from "../../components/Posts";
 import { educationProps } from "@/app/types/db";
 import NewEducation from "../../components/NewEducation";
+import axios from "axios";
+import { getEducation } from "@/app/helpers/getEducation";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -22,6 +24,17 @@ const page = async () => {
   if (userInfo.role === "EMPLOYER") {
     redirect("/employer-dashboard/profile");
   }
+
+  const educationList = await getEducation(userInfo.id as string);
+  const parsedEducation = educationList as {
+    school: string;
+    degree: string;
+    GPA: number | null;
+    major: string;
+    startDate: Date;
+    endDate: Date;
+    description: string | null;
+  }[];
 
   const numOfConnection =
     (userInfo.friends?.length ?? 0) + (userInfo.friendsOf?.length ?? 0);
@@ -100,18 +113,17 @@ const page = async () => {
             <h1 className="text-[#4773C5] text-2xl text-end pt-1">Education</h1>
           </div>
           <div className="m-2 p-8 h-full w-full rounded-3xl">
-            <ul>
-              <li>
-                <h1>Fordham University</h1>
-                <p className="ml-2">Bachelors Degree</p>
-                <p className="ml-2">GPA: 3.8</p>
-              </li>
-              <li>
-                <h1>Intercnational Community Schoole</h1>
-                <p className="ml-2">High School</p>
-                <p className="ml-2">GPA: 3.8</p>
-              </li>
-            </ul>
+            {parsedEducation.map((edu, index) => (
+              <div key={index}>
+                <h1>{edu.school}</h1>
+                <h1>
+                  {String(edu.startDate)} -- {String(edu.endDate)}
+                </h1>
+                <h1>{edu.degree}</h1>
+                <h1>{edu.major}</h1>
+                <h1>{edu.description}</h1>
+              </div>
+            ))}
           </div>
         </div>
         <div className="w-full h-1/2">
