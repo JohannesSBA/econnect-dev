@@ -41,11 +41,14 @@ const page = async () => {
 
   const dateJoined = userInfo.emailVerified;
 
-  // TODO: Implement the Education and Experiences as well as posts
+  function formatDate(dateString: string | number | Date) {
+    const date = new Date(dateString);
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  }
 
   return (
-    <div className="w-screen h-[calc(100vh-5rem)] flex bg-slate-100">
-      <div className="w-1/3 h-full flex flex-col px-8">
+    <div className="w-screen h-[calc(100vh-5rem)] flex bg-[#F4F2EE]">
+      <div className="w-1/3 h-full flex flex-col px-8 bg-white/75 m-2 rounded-md">
         <ProfileImage id={session?.user.id as string} />
         <div className="w-full flex flex-col justify-center items-center mb-12">
           <h1 className="text-2xl text-slate-800 font-semibold">
@@ -106,22 +109,26 @@ const page = async () => {
           <div></div>
         </div>
       </div>
-      <div className="w-1/3 h-full p-8 text-slate-800">
+      <div className="w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">
         <div className="w-full h-1/2 flex flex-col">
           <div className="flex w-full justify-end">
             <NewEducation />
             <h1 className="text-[#4773C5] text-2xl text-end pt-1">Education</h1>
           </div>
-          <div className="m-2 p-8 h-full w-full rounded-3xl">
+          <div className="m-2 h-full w-full rounded-3xl overflow-scroll ">
             {parsedEducation.map((edu, index) => (
-              <div key={index}>
-                <h1>{edu.school}</h1>
-                <h1>
-                  {String(edu.startDate)} -- {String(edu.endDate)}
-                </h1>
-                <h1>{edu.degree}</h1>
-                <h1>{edu.major}</h1>
-                <h1>{edu.description}</h1>
+              <div
+                key={index}
+                className="shadow-md my-2 mx-1 rounded-md bg-white p-2"
+              >
+                <div className="flex justify-between">
+                  <h1 className="font-bold">{edu.school}</h1>
+                  <h1 className="text-sm font-light text-slate-600">
+                    {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                  </h1>
+                </div>
+                <h1 className="pl-2 text-sm text-slate-500">{edu.degree}</h1>
+                <h1 className="pl-2 text-sm text-slate-500">{edu.major}</h1>
               </div>
             ))}
           </div>
