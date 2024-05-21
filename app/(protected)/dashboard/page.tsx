@@ -5,7 +5,7 @@ import { getUserContent } from "@/app/helpers/getUser";
 import { redirect, usePathname } from "next/navigation";
 import JobListing from "../components/JobListing";
 import NewPost from "../components/NewPost";
-import { Button, User } from "@nextui-org/react";
+import { Button, User, Image } from "@nextui-org/react";
 import { FiAirplay, FiExternalLink } from "react-icons/fi";
 import Posts from "../components/Posts";
 import UserPicture from "../components/UserPicture";
@@ -40,14 +40,26 @@ const page = async () => {
               </div>
             )}
             {recentApplications?.map((application) => (
-              <div key={application.id} className="flex items-center gap-4">
-                <div>
-                  <h2 className="text-lg font-semibold">{application.title}</h2>
-                  <p className="text-sm">{application.description}</p>
+              <div
+                key={application.id}
+                className="flex items-center gap-4 shadow-md rounded-md"
+              >
+                <div className="flex p-6 gap-2">
+                  <Image
+                    width={50}
+                    className="rounded-full"
+                    alt="NextUI hero Image"
+                    src={`https://econnectbucket.s3.amazonaws.com/image/${application.postedById}`}
+                  />
+                  <h2 className="text-lg font-semibold">
+                    {application.title}
+                    <p className="text-sm text-light">
+                      {application.description}
+                    </p>
+                  </h2>
                 </div>
               </div>
             ))}
-            <div>{recentApplications?.[0]?.title ?? ""}</div>
           </div>
           <div>
             <a className="flex gap-3" href="/">
