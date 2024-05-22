@@ -15,6 +15,8 @@ import { educationProps } from "@/app/types/db";
 import NewEducation from "../../components/NewEducation";
 import axios from "axios";
 import { getEducation } from "@/app/helpers/getEducation";
+import NewExperience from "../../components/NewExperience";
+import { getExperience } from "@/app/helpers/getExperience";
 
 const page = async () => {
     const session = await getServerSession(options);
@@ -34,6 +36,19 @@ const page = async () => {
         startDate: Date;
         endDate: Date;
         description: string | null;
+    }[];
+
+    const experienceList = await getExperience(userInfo.id as string);
+    const parsedExperience = experienceList as unknown as {
+        title: string;
+        EmploymentType: string;
+        CompanyName: string;
+        LocationName: string;
+        LocationType: string;
+        currently: Boolean;
+        startDate: Date;
+        endDate: Date | null;
+        Description: string | null;
     }[];
 
     const numOfConnection =
@@ -160,14 +175,55 @@ const page = async () => {
                     <Posts id={userInfo?.id as string} />
                 </div>
             </div>
-            <div className="w-1/3 h-full p-8">
+            <div className="w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">
                 <div className="w-full h-full flex flex-col">
-                    <h1 className="text-[#4773C5] text-2xl text-end">
-                        Experience
-                    </h1>
-                    <div className="m-2 p-8 h-full w-full rounded-3xl flex flex-col justify-between">
-                        <div></div>
-                        <div className="flex items-end flex-col">
+                    <div className="flex w-full justify-end">
+                        <NewExperience />
+                        <h1 className="text-[#4773C5] text-2xl text-end pt-1">
+                            Experience
+                        </h1>
+                    </div>
+                    <div className="m-2  h-full w-full rounded-3xl flex flex-col justify-between ">
+                        <div className="bg-blue-400 w-full h-full overflow-y-scroll">
+                            {" "}
+                            <div className="m-2 h-full w-full rounded-3xl ">
+                                {parsedExperience.map((exp, index) => (
+                                    <div
+                                        key={index}
+                                        className="shadow-md my-2 mx-1 rounded-md bg-white p-2"
+                                    >
+                                        <div className="flex justify-between">
+                                            <h1 className="font-bold">
+                                                {exp.title}
+                                            </h1>
+                                            <h1 className="text-sm font-light text-slate-600">
+                                                {formatDate(exp.startDate)} -{" "}
+                                                {exp.endDate
+                                                    ? formatDate(exp.endDate)
+                                                    : "Present"}
+                                            </h1>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <h1 className="pl-2 text-sm text-slate-500">
+                                                {exp.EmploymentType}
+                                                {" - "}
+                                                {exp.CompanyName}
+                                            </h1>
+                                            <h1 className="pl-2 text-sm text-slate-500">
+                                                {exp.LocationType}
+                                                {" - "}
+
+                                                {exp.LocationName}
+                                            </h1>
+                                        </div>
+                                        <p className="mt-1 font-semi-bold">
+                                            {exp.Description}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex items-end flex-col p-2 ">
                             <UploadResume />
                             <a
                                 href={`https://econnectbucket.s3.amazonaws.com/resume/${userInfo.id}`}

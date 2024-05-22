@@ -1,5 +1,4 @@
 import prisma from "@/app/lib/prisma";
-import hashPassword from "@/app/helpers/hashPass";
 import { Axios, AxiosError } from "axios";
 import { Session, getServerSession } from "next-auth";
 import { options } from "../../../auth/[...nextauth]/options";
@@ -10,21 +9,23 @@ export async function POST(req: Request, res: Response) {
     let response = "Some data";
     const session = (await getServerSession(options)) as Session;
 
-    await prisma.education
+    await prisma.experience
         .create({
             data: {
                 userId: session.user.id as string,
-                school: body.school,
-                degree: body.degree,
-                GPA: body.GPA,
-                major: body.major,
+                title: body.title,
+                EmploymentType: body.EmploymentType,
+                CompanyName: body.CompanyName,
+                LocationName: body.LocationName,
+                LocationType: body.LocationType,
+                currently: body.currently,
                 startDate: body.startDate,
                 endDate: body.endDate,
-                description: body.description,
+                Description: body.Description,
             },
         })
-        .catch((e: AxiosError) => {
-            response = e.message;
+        .catch(() => {
+            return new Response(response, { status: 200 });
         });
 
     if (req.method !== "POST") {
