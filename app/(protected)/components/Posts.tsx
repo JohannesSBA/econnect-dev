@@ -48,7 +48,7 @@ export default function Posts(id: PostProp) {
                 }) => (
                     <div
                         key={post.id}
-                        className="shadow-md my-2 mx-1 rounded-md bg-white p-2"
+                        className="shadow-md my-2 mx-1 rounded-md bg-white p-2 "
                     >
                         <div className="flex justify-between">
                             <h1 className="font-bold">{post.title}</h1>

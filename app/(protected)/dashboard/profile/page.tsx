@@ -149,7 +149,7 @@ const page = async () => {
                         {parsedEducation.map((edu, index) => (
                             <div
                                 key={index}
-                                className="shadow-md my-2 mx-1 rounded-md bg-white p-2"
+                                className="shadow-md my-2 mx-1 rounded-md bg-white p-2 scrollbar-thin scrollbar-webkit"
                             >
                                 <div className="flex justify-between">
                                     <h1 className="font-bold">{edu.school}</h1>
@@ -168,7 +168,7 @@ const page = async () => {
                         ))}
                     </div>
                 </div>
-                <div className="w-full m-2 h-1/2 overflow-y-scroll overflow-x-hidden">
+                <div className="w-full m-2 h-1/2 overflow-y-scroll scrollbar-thin scrollbar-webkit overflow-x-hidden">
                     <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
                         Posts
                     </h1>
@@ -184,7 +184,7 @@ const page = async () => {
                         </h1>
                     </div>
                     <div className="m-2  h-full w-full rounded-3xl flex flex-col justify-between ">
-                        <div className="bg-blue-400 w-full h-full overflow-y-scroll">
+                        <div className=" w-full h-full overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-webkit">
                             {" "}
                             <div className="m-2 h-full w-full rounded-3xl ">
                                 {parsedExperience.map((exp, index) => (
