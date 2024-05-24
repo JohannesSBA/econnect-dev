@@ -40,38 +40,41 @@ export default function Posts(id: PostProp) {
 
     return (
         <div className="w-full h-full flex flex-col flex-wrap gap-4">
-            {posts.map(
-                (post: {
-                    id: React.Key | null | undefined;
-                    content: any;
-                    title: any;
-                    createdAt: Date;
-                    author: User;
-                }) => (
-                    <div
-                        key={post.id}
-                        className="shadow-md my-2 mx-1 rounded-md bg-white p-2 "
-                    >
-                        <div className="flex justify-between">
-                            <h1 className="font-bold">
-                                {post.author?.firstName}
-                            </h1>
-                            <h1 className="font-bold">{post.title}</h1>
-                            <h1 className="text-sm font-light text-slate-600">
-                                {new Date(post.createdAt).toLocaleDateString(
-                                    "en-us",
-                                    {
+            {posts.length === 0 ? (
+                <h1>You currently have no posts !</h1>
+            ) : (
+                posts.map(
+                    (post: {
+                        id: React.Key | null | undefined;
+                        content: any;
+                        title: any;
+                        createdAt: Date;
+                        author: User;
+                    }) => (
+                        <div
+                            key={post.id}
+                            className="shadow-md my-2 mx-1 rounded-md bg-white p-2 "
+                        >
+                            <div className="flex justify-between">
+                                <h1 className="font-bold">
+                                    {post.author?.firstName}
+                                </h1>
+                                <h1 className="font-bold">{post.title}</h1>
+                                <h1 className="text-sm font-light text-slate-600">
+                                    {new Date(
+                                        post.createdAt
+                                    ).toLocaleDateString("en-us", {
                                         year: "numeric",
                                         month: "short",
                                         day: "numeric",
-                                    }
-                                )}
+                                    })}
+                                </h1>
+                            </div>
+                            <h1 className="pl-2 text-sm text-slate-500">
+                                {parse(post.content)}
                             </h1>
                         </div>
-                        <h1 className="pl-2 text-sm text-slate-500">
-                            {parse(post.content)}
-                        </h1>
-                    </div>
+                    )
                 )
             )}
         </div>

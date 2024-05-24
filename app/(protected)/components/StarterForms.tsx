@@ -80,6 +80,7 @@ const StarterForms = ({ user }: starterProps) => {
                     })()}
                 </span>
                 <div className="w-full flex flex-col gap-2 items-center">
+                    <h1>Hello {user.firstName}</h1>
                     <Pagination
                         total={2}
                         color="primary"

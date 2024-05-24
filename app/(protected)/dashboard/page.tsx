@@ -16,7 +16,8 @@ const page = async () => {
     const user = await getUserContent(session?.user.id as string);
 
     if (user.role === "EMPLOYER") redirect("/employer-dashboard");
-    if (user.gotStarted == false) redirect("/get-started");
+    if (user.gotStarted == false && user.role == "EMPLOYEE")
+        redirect("/get-started");
 
     const connections = (user.friends ?? []).concat(user.friendsOf ?? []);
     const posts = user.posts;
