@@ -6,6 +6,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
 import axios, { AxiosError } from "axios";
 import parse from "html-react-parser";
+import { User } from "@/app/types/db";
 
 interface PostProp {
     id: string;
@@ -45,12 +46,16 @@ export default function Posts(id: PostProp) {
                     content: any;
                     title: any;
                     createdAt: Date;
+                    author: User;
                 }) => (
                     <div
                         key={post.id}
                         className="shadow-md my-2 mx-1 rounded-md bg-white p-2 "
                     >
                         <div className="flex justify-between">
+                            <h1 className="font-bold">
+                                {post.author?.firstName}
+                            </h1>
                             <h1 className="font-bold">{post.title}</h1>
                             <h1 className="text-sm font-light text-slate-600">
                                 {new Date(post.createdAt).toLocaleDateString(
