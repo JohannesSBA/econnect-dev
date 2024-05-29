@@ -52,7 +52,7 @@ export const getUserContent = async (userId: string) => {
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.
-    console.error("Error in getUserBio:", error);
+    console.error("Error Getting Content:", error);
     return { error: "Unable to retrieve user bio" };
   }
 };

@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require("path");
+
 const nextConfig = {
   reactStrictMode: true,
   i18n: {
@@ -8,7 +10,6 @@ const nextConfig = {
   images: {
     domains: ["econnectbucket.s3.amazonaws.com"],
   },
-  webpack: true,
   webpack: (config) => {
     config.resolve.fallback = {
       fs: false,
@@ -16,6 +17,15 @@ const nextConfig = {
       dns: false,
       child_process: false,
       tls: false,
+    };
+
+    config.cache = {
+      type: "filesystem",
+      buildDependencies: {
+        config: [__filename],
+      },
+      cacheDirectory: path.resolve(__dirname, ".next_cache"),
+      name: "my-next-cache",
     };
 
     return config;

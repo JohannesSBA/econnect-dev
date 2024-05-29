@@ -14,7 +14,9 @@ import {
   useDisclosure,
   ModalHeader,
   Textarea,
+  Avatar,
 } from "@nextui-org/react";
+import parse from "html-react-parser";
 import axios from "axios";
 import React, { useEffect, useState, Suspense } from "react";
 import { FaArrowLeft, FaBriefcase } from "react-icons/fa";
@@ -30,6 +32,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [postedBy, setPostedBy] = useState<any>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [company, setCompany] = useState<any>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +60,19 @@ const Page = ({ params }: { params: { id: string } }) => {
     getPoster();
   }, [listing]);
 
+  // useEffect(() => {
+  //   if (!postedBy) return;
+  //   const getPoster = async () => {
+  //     const company = await axios.post("/api/user/get", {
+  //       id: postedBy.id,
+  //     });
+  //     setCompany(company);
+  //     setIsLoading(false);
+  //   };
+
+  //   getPoster();
+  // }, [postedBy]);
+
   const handleSubmit = async () => {
     const res = await axios.post("/api/job/apply", {
       listingId: params.id,
@@ -74,82 +90,73 @@ const Page = ({ params }: { params: { id: string } }) => {
     return <Loading />;
   }
 
-  return (
-    <div className="w-screen h-screen bg-white flex ">
-      <div className="absolute flex right-0 w-screen md:w-[calc(100vw-25rem)] h-[calc(100vh-5rem)] items-end overflow-scroll">
-        <div className="w-2/3 h-full overflow-scroll flex flex-col p-8 border-l">
-          <div className="w-full flex flex-col gap-2 py-2 my-4">
-            <h1 className="text-5xl text-black font-semibold uppercase">
-              {listing?.title as string}
-            </h1>
-            <div className="flex gap-8 text-slate-500">
-              <h1 className="flex gap-2 items-center">
-                {" "}
-                <FaLocationDot />
-                {listing?.location as string}
-              </h1>
-              <h1 className="flex gap-2 items-center">
-                {" "}
-                <FaBriefcase />
-                {listing?.jobType as string}
-              </h1>
-            </div>
-          </div>
-          <h1 className="text-black">
-            <span className="font-semibold">Description:</span>{" "}
-            <h2 className="">{listing?.description as string}</h2>
-          </h1>
-        </div>
-        <div className="w-1/3 h-full overflow-scroll flex flex-col justify-start items-center p-16">
-          <Image
-            src={`https://econnectbucket.s3.amazonaws.com/image/${listing?.postedById}`}
-            alt="Picture of the author"
-          ></Image>
-          <h1 className="font-bold text-xl text-black">
-            {postedBy?.firstName}
-          </h1>
-          <p className="text-slate-700 text-sm">{postedBy?.title}</p>
-          <p className="text-slate-700 text-xs mt-5 text-center">
-            {postedBy?.bio}
-          </p>
+  console.log(postedBy);
 
-          <Button onPress={onOpen} className="mt-6">
-            Apply
-          </Button>
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent>
-              {(onClose) => (
-                <>
-                  <ModalHeader className="flex flex-col gap-1 text-black">
-                    Apply Now
-                  </ModalHeader>
-                  <ModalBody className="text-slate-900">
-                    <label htmlFor="Textarea">
-                      Please give a reason as to why you want to work at{" "}
-                      {postedBy?.firstName}
-                    </label>
-                    <Textarea
-                      label="Cover Letter"
-                      value={letter}
-                      onValueChange={setLetter}
-                    ></Textarea>
-                    <p className="text-xs text-slate-400">
-                      Word Count: {letter?.split(" ")?.length - 1} / 300
-                    </p>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="default" variant="light" onPress={onClose}>
-                      Close
-                    </Button>
-                    <Button color="primary" onPress={handleSubmit}>
-                      Submit
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
-        </div>
+  return (
+    <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
+      <div className="w-2/3 h-full bg-slate-200 flex flex-col p-4">
+        <h1 className="text-xl text-[#1E40AF] font-bold w-full flex justify-between">
+          Join {postedBy.firstName} &lsquo;s Team as
+        </h1>
+        <h1 className="w-full overflow-ellipsis text-slate-800 text-7xl font-bold">
+          {listing?.title}
+        </h1>
+        <p className="overflow-y-scroll overflow-x-hidden p-2 scrollbar-thin scrollbar-webkit">
+          {parse(listing?.description as string)}
+        </p>
+      </div>
+      <div className="w-1/3 h-full  flex flex-col items-center pt-4">
+        <h1 className="w-full text-center text-2xl font-light mb-8">
+          Learn about the company
+        </h1>
+        <Avatar
+          src={`https://econnectbucket.s3.amazonaws.com/image/${postedBy.id}`}
+          className="w-40 h-40 text-large"
+        />
+        <h1 className="font-bold text-lg">{postedBy.fullName}</h1>
+        <h1>{postedBy.location}</h1>
+        <p className="w-[30rem] h-[20rem] overflow-clip text-center mt-2">
+          {postedBy.bio}
+        </p>
+        <Link href={`/ec/${postedBy.id}`}>
+          <Button variant="flat">Comapny Page</Button>
+        </Link>
+        <Button onPress={onOpen} className="mt-6">
+          Apply
+        </Button>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1 text-black">
+                  Apply Now
+                </ModalHeader>
+                <ModalBody className="text-slate-900">
+                  <label htmlFor="Textarea">
+                    Please give a reason as to why you want to work at{" "}
+                    {postedBy?.firstName}
+                  </label>
+                  <Textarea
+                    label="Cover Letter"
+                    value={letter}
+                    onValueChange={setLetter}
+                  ></Textarea>
+                  <p className="text-xs text-slate-400">
+                    Word Count: {letter?.split(" ")?.length - 1} / 300
+                  </p>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="default" variant="light" onPress={onClose}>
+                    Close
+                  </Button>
+                  <Button color="primary" onPress={handleSubmit}>
+                    Submit
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );

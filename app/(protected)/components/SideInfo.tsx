@@ -47,7 +47,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
           View Your Profile
         </Button>
       </a>
-      <div className="my-6">
+      <div className="my-6 p-4">
         <Image
           width={400}
           alt="Advertisement"
