@@ -2,10 +2,9 @@ import ChatInput from "@/app/(protected)/components/ChatInput";
 import Conversations from "@/app/(protected)/components/Conversations";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Avatar, Link } from "@nextui-org/react";
+import { Avatar, Link, Image } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { userInfo } from "os";
 import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
 import Messages from "../../components/Messages";
@@ -13,6 +12,7 @@ import Search from "../../components/Search";
 import SignOutButton from "../../components/SignOutButton";
 import UserPicture from "../../components/UserPicture";
 import { Friend } from "@/app/types/db";
+import SideInfo from "../../components/SideInfo";
 
 interface PageProps {
   params: {
@@ -115,29 +115,42 @@ const page = async ({ params }: { params: { chatid: string } }) => {
             role={userInfo?.role as string}
           />
         </div>
-        <div className="w-full md:w-3/4 h-full md:border border-slate-300 flex flex-col justify-between">
-          <Link
-            className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg"
-            href={`/ec/${friendContent.id}`}
-          >
-            <div className="flex items-center">
-              <Avatar
-                radius="lg"
-                size="lg"
-                src={`https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`}
-                className="flex items-center border-2"
-              />
-            </div>
-            <h1 className="text-black flex flex-col justify-center font-bold">
-              {friendContent.firstName} {friendContent.lastName}
-            </h1>
-          </Link>
-          <Conversations
-            chatPartner={friendId as string}
-            chatId={userId as string}
-            chatRoom={chatid}
-          />
-          <ChatInput chatPartner={friendId} chatId={userId} chatRoom={chatid} />
+        <div className="w-full md:w-4/5 h-full md:border border-slate-300 flex">
+          <div className="w-full h-full md:w-2/3 flex flex-col justify-between border border-slate-300 shadow-md m-1 p-1">
+            <Link
+              className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg"
+              href={`/ec/${friendContent.id}`}
+            >
+              <div className="flex items-center">
+                <Avatar
+                  radius="lg"
+                  size="lg"
+                  src={`https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`}
+                  className="flex items-center border-2"
+                />
+              </div>
+              <h1 className="text-black flex flex-col justify-center font-bold">
+                {friendContent.firstName} {friendContent.lastName}
+              </h1>
+            </Link>
+            <Conversations
+              chatPartner={friendId as string}
+              chatId={userId as string}
+              chatRoom={chatid}
+            />
+            <ChatInput
+              chatPartner={friendId}
+              chatId={userId}
+              chatRoom={chatid}
+            />
+          </div>
+          <div className="w-1/3 m-2 p-2 flex flex-col gap-3 items-center justify-between">
+            <SideInfo
+              user={userInfo}
+              posts={userInfo.posts}
+              applications={userInfo.jobApplications}
+            />
+          </div>
         </div>
       </div>
     </div>
