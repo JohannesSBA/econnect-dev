@@ -53,7 +53,6 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    console.log(posts);
     const stringifiedPosts = JSON.stringify(posts);
     console.log("here", stringifiedPosts);
     return new Response(stringifiedPosts, { status: 200 });

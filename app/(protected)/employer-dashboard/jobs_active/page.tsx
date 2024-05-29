@@ -41,7 +41,6 @@ const Page = () => {
   const deleteJob = async (id: string) => {
     try {
       const res = await axios.post("/api/job/delete", { id });
-      console.log(res.data);
     } catch {
       return toast.error("Sorry, something went wrong.");
     } finally {

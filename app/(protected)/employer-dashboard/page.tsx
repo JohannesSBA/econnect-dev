@@ -21,10 +21,6 @@ const Page = async () => {
 
   if (user.role === "EMPLOYEE") redirect("/dashboard");
 
-  console.log(
-    (user.jobListing?.[0] as unknown as { applicants: any })?.applicants
-  );
-
   return (
     <div className="bg-slate-100 w-screen h-[calc(100vh-5rem)] flex justify-center">
       <div className="hidden md:flex border-r-1 shadow-md w-1/6 h-full flex-col justify-between">

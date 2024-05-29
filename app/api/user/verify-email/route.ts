@@ -9,8 +9,6 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
   const { query } = parse(req.url || "", true);
   const { token } = query;
 
-  console.log("verifying token:", token);
-
   if (!token) {
     return new Response("No token provided", { status: 400 });
   }
