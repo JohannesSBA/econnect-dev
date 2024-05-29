@@ -1,7 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SessionProvider session={pageProps.session}>
       <Component {...pageProps} />

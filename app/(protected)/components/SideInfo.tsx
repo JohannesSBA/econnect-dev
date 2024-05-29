@@ -65,7 +65,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
           </div>
           <p>Contact</p>
         </div>
-        <div className="text-center gap-2 text-black text-xs font-light pt-4 flex justify-center">
+        <div className="text-center gap-2 pb-4 text-black text-xs font-light pt-4 flex justify-center">
           <GiWaterDrop />
           Econnect Corporation © 2024
         </div>

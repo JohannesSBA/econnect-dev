@@ -5,7 +5,7 @@ import hashPassword from "@/app/helpers/hashPass";
 import { parse } from "url";
 import { redirect } from "next/navigation";
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: Request, res: Response) {
   const { query } = parse(req.url || "", true);
   const { token } = query;
 
