@@ -35,12 +35,14 @@ export async function POST(req: Request, res: Response) {
       const posts = await prisma.post.findMany({
         where: { authorId: { in: friendIds } },
       });
+      const myPosts = await prisma.post.findMany({
+        where: { authorId: session.user.id },
+      });
       const stringifiedPosts = JSON.stringify(posts);
+      stringifiedPosts.concat(JSON.stringify(myPosts));
       return new Response(stringifiedPosts, { status: 200 });
-      console.log(posts);
     } catch (error) {
       return new Response("Something went wrong", { status: 500 });
     }
   }
-  return new Response("Something went wrong", { status: 500 });
 }

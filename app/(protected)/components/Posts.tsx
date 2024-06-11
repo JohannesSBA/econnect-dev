@@ -4,6 +4,7 @@ import { Card, CardHeader, CardBody, Image, Skeleton } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "@/app/lib/prisma";
+import "@/app/rich.css";
 import axios, { AxiosError } from "axios";
 import parse from "html-react-parser";
 import { User } from "@/app/types/db";
@@ -39,6 +40,7 @@ export default function Posts(id: PostProp) {
     fetchPosts();
   }, [id]);
 
+  console.log("posts", posts);
   if (isLoading)
     return (
       <div className="flex flex-col gap-4 w-full h-full">
@@ -58,15 +60,17 @@ export default function Posts(id: PostProp) {
         ) : (
           posts.map(
             (post: {
+              images: any;
               id: React.Key | null | undefined;
               content: any;
               title: any;
               createdAt: Date;
               author: User;
+              authorId: string;
             }) => (
               <div
                 key={post.id}
-                className="shadow-md my-2 mx-1 rounded-md bg-white p-2 "
+                className="shadow-md my-2 mx-1 rounded-md bg-white p-2 max-w-full overflow-x-clip text-wrap whitespace-normal"
               >
                 <div className="flex justify-between">
                   <h1 className="font-bold">{post.author?.firstName}</h1>
@@ -79,9 +83,24 @@ export default function Posts(id: PostProp) {
                     })}
                   </h1>
                 </div>
-                <h1 className="pl-2 text-sm text-slate-500">
-                  {parse(post.content)}
-                </h1>
+                <div>{parse(post.content)}</div>
+                <div className="flex gap-4 m-3">
+                  <Image
+                    width={200}
+                    alt="Application Image"
+                    src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/0`}
+                  />
+                  <Image
+                    width={200}
+                    alt="Application Image"
+                    src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/1`}
+                  />
+                  <Image
+                    width={200}
+                    alt="Application Image"
+                    src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/2`}
+                  />
+                </div>
               </div>
             )
           )
