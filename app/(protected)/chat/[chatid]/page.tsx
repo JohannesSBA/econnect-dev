@@ -1,5 +1,5 @@
-import ChatInput from "@/app/(protected)/components/ChatInput";
-import Conversations from "@/app/(protected)/components/Conversations";
+import ChatInput from "@/app/(protected)/components/(messaging)/ChatInput";
+import Conversations from "@/app/(protected)/components/(messaging)/Conversations";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Avatar, Link, Image } from "@nextui-org/react";
@@ -7,12 +7,13 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
-import Messages from "../../components/Messages";
-import Search from "../../components/Search";
-import SignOutButton from "../../components/SignOutButton";
-import UserPicture from "../../components/UserPicture";
+import Messages from "../../components/(messaging)/Messages";
+import Seach from "../../components/(misc)/Search";
+import SignOutButton from "../../components/(misc)/SignOutButton";
+import UserPicture from "../../components/(profile)/UserPicture";
 import { Friend } from "@/app/types/db";
-import SideInfo from "../../components/SideInfo";
+import SideInfo from "../../components/(misc)/SideInfo";
+import Search from "../../components/(misc)/Search";
 
 interface PageProps {
   params: {

@@ -1,9 +1,9 @@
 import React from "react";
-import AllListings from "../components/AllListings";
+import AllListings from "../components/(jobs)/AllListings";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import JobListing from "../components/JobListing";
+import JobListing from "../components/(jobs)/JobListing";
 
 const page = async () => {
   const session = await getServerSession(options);

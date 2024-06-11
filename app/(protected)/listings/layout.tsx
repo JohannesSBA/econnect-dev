@@ -9,9 +9,9 @@ import prisma from "@/app/lib/prisma";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
 import Messages from "../components/Messages";
-import UserPicture from "../components/UserPicture";
-import Search from "../components/Search";
-import SignOutButton from "../components/SignOutButton";
+import UserPicture from "../components/(profile)/UserPicture";
+import Search from "../components/(misc)/Search";
+import SignOutButton from "../components/(misc)/SignOutButton";
 import axios from "axios";
 
 interface LayoutProps {

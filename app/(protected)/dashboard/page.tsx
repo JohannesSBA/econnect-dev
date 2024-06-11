@@ -3,15 +3,15 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect, usePathname } from "next/navigation";
-import JobListing from "../components/JobListing";
-import NewPost from "../components/NewPost";
+import JobListing from "../components/(jobs)/JobListing";
+import NewPost from "../components/(posts)/NewPost";
 import { Button, User, Image } from "@nextui-org/react";
 import { FiAirplay, FiExternalLink } from "react-icons/fi";
-import Posts from "../components/Posts";
-import UserPicture from "../components/UserPicture";
+import Posts from "../components/(posts)/Posts";
+import UserPicture from "../components/(profile)/UserPicture";
 import { MdGroups } from "react-icons/md";
 import Link from "next/link";
-import SideInfo from "../components/SideInfo";
+import SideInfo from "../components/(misc)/SideInfo";
 
 const Page = async () => {
   const session = await getServerSession(options);

@@ -8,11 +8,11 @@ import { userInfo } from "os";
 import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
 import { Friend } from "@/app/types/db";
-import Messages from "../components/Messages";
-import Search from "../components/Search";
-import SignOutButton from "../components/SignOutButton";
-import UserPicture from "../components/UserPicture";
-import SideInfo from "../components/SideInfo";
+import Messages from "../components/(messaging)/Messages";
+import Search from "../components/(misc)/Search";
+import SignOutButton from "../components/(misc)/SignOutButton";
+import UserPicture from "../components/(profile)/UserPicture";
+import SideInfo from "../components/(misc)/SideInfo";
 
 interface PageProps {
   params: {

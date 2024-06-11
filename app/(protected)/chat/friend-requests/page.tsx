@@ -7,9 +7,9 @@ import Link from "next/link";
 import { userInfo } from "os";
 import { GiWaterDrop } from "react-icons/gi";
 import Messages from "../../components/Messages";
-import Search from "../../components/Search";
-import SignOutButton from "../../components/SignOutButton";
-import UserPicture from "../../components/UserPicture";
+import Search from "../../components/(misc)/Search";
+import SignOutButton from "../../components/(misc)/SignOutButton";
+import UserPicture from "../../components/(profile)/UserPicture";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Friend } from "@/app/types/db";
 

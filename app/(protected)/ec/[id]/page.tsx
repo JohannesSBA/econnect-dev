@@ -1,8 +1,8 @@
-import AddFriendButton from "@/app/(protected)/components/AddFriendButton";
-import EditContent from "@/app/(protected)/components/EditContent";
-import ProfileImage from "@/app/(protected)/components/ProfileImage";
-import UserAbout from "@/app/(protected)/components/UserAbout";
-import UserEducation from "@/app/(protected)/components/UserEducation";
+import AddFriendButton from "@/app/(protected)/components/(misc)/AddFriendButton";
+import EditContent from "@/app/(protected)/components/(profile)/EditContent";
+import ProfileImage from "@/app/(protected)/components/(profile)/ProfileImage";
+import UserAbout from "@/app/(protected)/components/(profile)/UserAbout";
+import UserEducation from "@/app/(protected)/components/(profile)/UserEducation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { chatHrefConstructor } from "@/app/lib/utils";
@@ -50,7 +50,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     <div className="w-screen h-screen bg-white flex">
       <div className="w-1/3 h-full ">
         <div className="h-2/5 w-full overflow-clip flex flex-col justify-center items-center">
-          <ProfileImage />
+          <ProfileImage id={""} />
           {userActionButton}
         </div>
         <div className="h-3/5 w-full  flex flex-col gap-8 items-center mt-12">

@@ -4,12 +4,12 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import NewJobListing from "../components/NewJobListing";
+import NewJobListing from "../components/(jobs)/NewJobListing";
 import Image from "next/image";
 import { FaArchive, FaBriefcase, FaNewspaper } from "react-icons/fa";
 import Link from "next/link";
 import { MdSpaceDashboard } from "react-icons/md";
-import JobListing from "../components/JobListing";
+import JobListing from "../components/(jobs)/JobListing";
 
 const Page = async () => {
   const session = await getServerSession(options);
