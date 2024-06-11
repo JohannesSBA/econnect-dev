@@ -20,8 +20,6 @@ import { toast } from "sonner";
 import { FiImage } from "react-icons/fi";
 import { EditorProvider, useCurrentEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
 
 export default function CreatePost() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -66,7 +64,7 @@ export default function CreatePost() {
       toast.dismiss();
       toast.success("Post Created");
       onOpenChange();
-      //   window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -104,15 +102,6 @@ export default function CreatePost() {
           }`}
         >
           <s>strike</s>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          disabled={!editor.can().chain().focus().toggleCode().run()}
-          className={`px-3 py-1 rounded ${
-            editor.isActive("code") ? "bg-gray-300" : ""
-          }`}
-        >
-          code
         </button>
         <button
           onClick={() => editor.chain().focus().setParagraph().run()}

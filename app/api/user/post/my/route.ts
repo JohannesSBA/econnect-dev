@@ -12,6 +12,7 @@ export async function POST(req: Request, res: Response) {
     return new Response("Unauthorized", { status: 401 });
   }
   const body = await req.json();
+  const offset = body.page * body.limit;
 
   if (body.userId.id === session.user.id) {
     try {
@@ -33,14 +34,22 @@ export async function POST(req: Request, res: Response) {
       });
       const friendIds = user?.friends.map((friend) => friend.id); // Add null check for user
       const posts = await prisma.post.findMany({
-        where: { authorId: { in: friendIds } },
+        where: {
+          authorId: { in: friendIds },
+        },
+        skip: offset,
+        take: body.limit,
+        orderBy: { createdAt: "desc" },
+      });
+
+      const myPosts = await prisma.post.findMany({
+        where: { authorId: session.user.id },
       });
       const stringifiedPosts = JSON.stringify(posts);
+      stringifiedPosts.concat(JSON.stringify(myPosts));
       return new Response(stringifiedPosts, { status: 200 });
-      console.log(posts);
     } catch (error) {
       return new Response("Something went wrong", { status: 500 });
     }
   }
-  return new Response("Something went wrong", { status: 500 });
 }
