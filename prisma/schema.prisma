@@ -84,6 +84,7 @@ model Post {
   updatedAt  DateTime   @updatedAt
   title     String
   content   String?
+  images    String?
   published Boolean @default(false)
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  String?

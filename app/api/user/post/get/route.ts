@@ -54,7 +54,6 @@ export async function POST(req: Request, res: Response) {
     });
 
     const stringifiedPosts = JSON.stringify(posts);
-    console.log("here", stringifiedPosts);
     return new Response(stringifiedPosts, { status: 200 });
   } catch (error) {
     return new Response("Something went wrong", { status: 500 });

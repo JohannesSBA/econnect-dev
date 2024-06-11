@@ -15,6 +15,7 @@ export async function POST(req: Request, res: Response) {
         title: body.title,
         content: body.post,
         authorId: session.user.id as string,
+        images: body.imageId,
       },
     })
     .catch((e: AxiosError) => {

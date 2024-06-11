@@ -49,7 +49,6 @@ const page = async ({ params }: { params: { listing: string } }) => {
 
   const userInfo = await getUserContent(session.user.id);
   const listing = await getListing(params.listing);
-  console.log(listing?.postedById);
   const comp = await getUserContent(listing?.postedById as string);
 
   return (
