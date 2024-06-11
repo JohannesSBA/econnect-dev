@@ -90,8 +90,6 @@ const Page = ({ params }: { params: { id: string } }) => {
     return <Loading />;
   }
 
-  console.log(postedBy);
-
   return (
     <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
       <div className="w-2/3 h-full bg-slate-200 flex flex-col p-4">

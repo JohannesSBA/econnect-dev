@@ -45,7 +45,6 @@ export default function CreatePost() {
     }
 
     try {
-      console.log(formData);
       await axios.post("/api/user/post/create", {
         title: title,
         post: post,

@@ -4,10 +4,8 @@ import { options } from "../auth/[...nextauth]/options";
 import axios from "axios";
 
 export async function POST(req: Request, res: Response) {
-  console.log("hreeeee");
   const session = await getServerSession(options);
   const body = await req.formData();
-  console.log(body);
   const image = body.get("newImage");
   const resume = body.get("newResume");
   const ImageId = body.get("Imageid");
@@ -15,7 +13,6 @@ export async function POST(req: Request, res: Response) {
   const newPostImages = entries.filter(([key]) =>
     key.startsWith("newPostImage")
   );
-  console.log(newPostImages);
 
   if (!image && !resume && newPostImages.length === 0) {
     return new Response("File is required.", { status: 400 });
