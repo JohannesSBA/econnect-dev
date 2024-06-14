@@ -3,15 +3,15 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect, usePathname } from "next/navigation";
-import JobListing from "../components/JobListing";
-import NewPost from "../components/NewPost";
+
 import { Button, User, Image } from "@nextui-org/react";
 import { FiAirplay, FiExternalLink } from "react-icons/fi";
-import Posts from "../components/Posts";
-import UserPicture from "../components/UserPicture";
+
 import { MdGroups } from "react-icons/md";
 import Link from "next/link";
-import SideInfo from "../components/SideInfo";
+import NewPost from "../../components/NewPost";
+import SideInfo from "../../components/SideInfo";
+import Posts from "../../components/Posts";
 
 const Page = async () => {
   const session = await getServerSession(options);
@@ -86,10 +86,10 @@ const Page = async () => {
       </div>
       <div className="w-2/4 flex flex-col h-[90%] border rounded-md">
         <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
-          Posts
+          Your Activity
         </h1>
         <div className="h-[553px] bg-white rounded-md m-4 text-black overflow-scroll">
-          <Posts id={""} />
+          <Posts id={session.user.id} />
         </div>
         <div className="bg-white rounded-md mx-2 flex p-2">
           <User
@@ -101,8 +101,8 @@ const Page = async () => {
             className="transition-transform ml-4 translate-x-4"
           />
           <NewPost />
-          <Link href="dashboard/my-posts" className="text-blue-400 font-light">
-            Your Posts
+          <Link href="/dashboard/" className="text-blue-400 font-light">
+            All Posts
           </Link>
         </div>
       </div>

@@ -11,6 +11,7 @@ export async function POST(req: Request, res: Response) {
   if (!session) {
     return new Response("Unauthorized", { status: 401 });
   }
+
   const body = await req.json();
   const offset = body.page * body.limit;
 
@@ -19,6 +20,21 @@ export async function POST(req: Request, res: Response) {
       const userId = body.userId.id;
       const posts = await prisma.post.findMany({
         where: { authorId: userId },
+        skip: offset,
+        take: body.limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              email: true,
+              location: true,
+              lastName: true,
+              title: true,
+            },
+          },
+        }, // Include only the id and name of the author
       });
       const stringifiedPosts = JSON.stringify(posts);
 
@@ -40,13 +56,21 @@ export async function POST(req: Request, res: Response) {
         skip: offset,
         take: body.limit,
         orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              email: true,
+              location: true,
+              lastName: true,
+              title: true,
+            },
+          },
+        }, // Include only the id and name of the author
       });
 
-      const myPosts = await prisma.post.findMany({
-        where: { authorId: session.user.id },
-      });
       const stringifiedPosts = JSON.stringify(posts);
-      stringifiedPosts.concat(JSON.stringify(myPosts));
       return new Response(stringifiedPosts, { status: 200 });
     } catch (error) {
       return new Response("Something went wrong", { status: 500 });
