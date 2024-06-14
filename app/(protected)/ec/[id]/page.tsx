@@ -88,7 +88,6 @@ const page = async ({ params }: { params: { id: string } }) => {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   }
 
-  console.log(stringifiedFriends);
   let areFriends = false;
   if (stringifiedFriends) {
     areFriends = stringifiedFriends.includes(session.user.id);
