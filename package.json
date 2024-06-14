@@ -25,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.2.0",
     "draft-js": "^0.11.7",
+    "encoding": "^0.1.13",
     "framer-motion": "^10.16.4",
     "html-react-parser": "^5.1.10",
     "js-sha256": "^0.10.1",

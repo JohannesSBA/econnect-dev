@@ -1,13 +1,7 @@
-import { SessionProvider } from "next-auth/react";
-import { AppProps } from "next/app";
-import { FC } from "react";
+import React from "react";
 
-const Page: FC<AppProps> = ({ Component, pageProps: { session, ...rest } }) => {
-  return (
-    <SessionProvider session={session}>
-      {session ? <Component {...rest} /> : <div>Loading...</div>}
-    </SessionProvider>
-  );
+const page = () => {
+  return <div></div>;
 };
 
-export default Page;
+export default page;
