@@ -33,6 +33,7 @@ export default function Posts(id: PostProp) {
   const [page, setPage] = useState(0);
   const sentinelRef = useRef(null);
   const [openModalId, setOpenModalId] = useState<string | null>(null);
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false); // Step 1
 
   const onOpen = (postId: string) => {
     setOpenModalId(postId);
@@ -45,6 +46,8 @@ export default function Posts(id: PostProp) {
   const pageName = usePathname();
 
   const fetchPosts = useCallback(async () => {
+    if (allPostsLoaded) return; // Prevent fetching if all posts are loaded
+
     setIsLoading(true);
     try {
       const res = await axios.post("/api/user/post/my", {
@@ -52,6 +55,10 @@ export default function Posts(id: PostProp) {
         page: page,
         limit: 5, // or any other number you want to use as the limit
       });
+      if (res.data.length < 5) {
+        // Step 2
+        setAllPostsLoaded(true); // No more posts to load
+      }
       setPosts((prevPosts) => {
         // Filter out duplicate posts based on their ID
         const newPosts = res.data.filter(
@@ -64,7 +71,7 @@ export default function Posts(id: PostProp) {
     } finally {
       setIsLoading(false);
     }
-  }, [id, page]);
+  }, [allPostsLoaded, id, page]);
 
   useEffect(() => {
     fetchPosts();
@@ -72,7 +79,8 @@ export default function Posts(id: PostProp) {
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !isLoading) {
+      if (entries[0].isIntersecting && !isLoading && !allPostsLoaded) {
+        // Step 3
         setPage((prevPage) => prevPage + 1);
       }
     });
@@ -88,7 +96,7 @@ export default function Posts(id: PostProp) {
         observer.unobserve(currentRef);
       }
     };
-  }, [isLoading]);
+  }, [allPostsLoaded, isLoading]);
 
   async function handleDeletePost(postId: string, images: string) {
     try {
@@ -104,7 +112,7 @@ export default function Posts(id: PostProp) {
   console.log("posts", posts);
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
-      {posts.length === 0 ? (
+      {posts.length === 0 && !isLoading ? (
         <h1>
           No Posts Currently Available. Add some friends to see their posts.
         </h1>
