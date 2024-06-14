@@ -32,7 +32,16 @@ export default function Posts(id: PostProp) {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const sentinelRef = useRef(null);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [openModalId, setOpenModalId] = useState<string | null>(null);
+
+  const onOpen = (postId: string) => {
+    setOpenModalId(postId);
+  };
+
+  const onClose = () => {
+    setOpenModalId(null);
+  };
+
   const pageName = usePathname();
 
   const fetchPosts = useCallback(async () => {
@@ -81,15 +90,14 @@ export default function Posts(id: PostProp) {
     };
   }, [isLoading]);
 
-  async function handleDeletePost(postId: string) {
-    console.log("postId", postId);
+  async function handleDeletePost(postId: string, images: string) {
     try {
-      await axios.post("/api/user/post/delete", { postId });
+      // await axios.post("/api/user/post/delete", { postId });
+      await axios.post("/api/s3-delete", { ImageId: images });
     } catch (error) {
       console.log(error);
     } finally {
-      onOpenChange();
-      // window.location.reload();
+      window.location.reload();
     }
   }
 
@@ -141,10 +149,13 @@ export default function Posts(id: PostProp) {
                   })}
                   {pageName === "/dashboard/my-posts" ? (
                     <div>
-                      <Button onPress={onOpen}>
+                      <Button onPress={() => onOpen(post.id as string)}>
                         <MdDelete />
                       </Button>
-                      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                      <Modal
+                        isOpen={openModalId === post.id}
+                        onOpenChange={onClose}
+                      >
                         <ModalContent className="">
                           {(onClose) => (
                             <>
@@ -156,6 +167,7 @@ export default function Posts(id: PostProp) {
                                   Are you sure you want to delete the post? Once
                                   deleted, it cannot be recovered.
                                 </p>
+                                <p>{post.title}</p>
                               </ModalBody>
                               <ModalFooter>
                                 <Button
@@ -168,7 +180,10 @@ export default function Posts(id: PostProp) {
                                 <Button
                                   color="primary"
                                   onPress={() =>
-                                    handleDeletePost(post.id as string)
+                                    handleDeletePost(
+                                      post.id as string,
+                                      post.images as string
+                                    )
                                   }
                                 >
                                   Delete
