@@ -7,12 +7,21 @@ import {
   Image,
   Skeleton,
   user,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
 } from "@nextui-org/react";
 import axios from "axios";
 import parse from "html-react-parser";
 import { User } from "@/app/types/db";
 import "@/app/rich.css";
 import { getUserContent } from "@/app/helpers/getUser";
+import { usePathname } from "next/navigation";
+import { MdDelete } from "react-icons/md";
 
 interface PostProp {
   id: string;
@@ -23,6 +32,8 @@ export default function Posts(id: PostProp) {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const sentinelRef = useRef(null);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const pageName = usePathname();
 
   const fetchPosts = useCallback(async () => {
     setIsLoading(true);
@@ -70,6 +81,18 @@ export default function Posts(id: PostProp) {
     };
   }, [isLoading]);
 
+  async function handleDeletePost(postId: string) {
+    console.log("postId", postId);
+    try {
+      await axios.post("/api/user/post/delete", { postId });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      onOpenChange();
+      // window.location.reload();
+    }
+  }
+
   console.log("posts", posts);
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
@@ -116,9 +139,52 @@ export default function Posts(id: PostProp) {
                     month: "short",
                     day: "numeric",
                   })}
+                  {pageName === "/dashboard/my-posts" ? (
+                    <div>
+                      <Button onPress={onOpen}>
+                        <MdDelete />
+                      </Button>
+                      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                        <ModalContent className="">
+                          {(onClose) => (
+                            <>
+                              <ModalHeader className="flex flex-col gap-1 text-black">
+                                Delete Post
+                              </ModalHeader>
+                              <ModalBody className="text-black">
+                                <p>
+                                  Are you sure you want to delete the post? Once
+                                  deleted, it cannot be recovered.
+                                </p>
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button
+                                  color="danger"
+                                  variant="light"
+                                  onPress={onClose}
+                                >
+                                  Close
+                                </Button>
+                                <Button
+                                  color="primary"
+                                  onPress={() =>
+                                    handleDeletePost(post.id as string)
+                                  }
+                                >
+                                  Delete
+                                </Button>
+                              </ModalFooter>
+                            </>
+                          )}
+                        </ModalContent>
+                      </Modal>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </h1>
               </div>
-              <h1 className="font-bold mt-2">{post.title}</h1>
+              <h1 className="font-bold">{post.title}</h1>
               <div>{parse(post.content)}</div>
               <div className="flex gap-4 m-3">
                 <Image

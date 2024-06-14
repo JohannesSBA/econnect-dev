@@ -101,8 +101,8 @@ const Page = async () => {
             className="transition-transform ml-4 translate-x-4"
           />
           <NewPost />
-          <Link href="dashboard/my-posts" className="text-blue-400 font-light">
-            Your Posts
+          <Link href="/dashboard/" className="text-blue-400 font-light">
+            All Posts
           </Link>
         </div>
       </div>

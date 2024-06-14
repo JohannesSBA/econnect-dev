@@ -20,6 +20,21 @@ export async function POST(req: Request, res: Response) {
       const userId = body.userId.id;
       const posts = await prisma.post.findMany({
         where: { authorId: userId },
+        skip: offset,
+        take: body.limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              email: true,
+              location: true,
+              lastName: true,
+              title: true,
+            },
+          },
+        }, // Include only the id and name of the author
       });
       const stringifiedPosts = JSON.stringify(posts);
 
