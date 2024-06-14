@@ -12,6 +12,7 @@ import axios from "axios";
 import parse from "html-react-parser";
 import { User } from "@/app/types/db";
 import "@/app/rich.css";
+import { getUserContent } from "@/app/helpers/getUser";
 
 interface PostProp {
   id: string;
@@ -43,7 +44,7 @@ export default function Posts(id: PostProp) {
     } finally {
       setIsLoading(false);
     }
-  }, [page]);
+  }, [id, page]);
 
   useEffect(() => {
     fetchPosts();
@@ -92,8 +93,23 @@ export default function Posts(id: PostProp) {
               className="shadow-md my-2 mx-1 rounded-md bg-white p-2 max-w-full overflow-x-clip text-wrap whitespace-normal"
             >
               <div className="flex justify-between">
-                <h1 className="font-bold">{post.author?.firstName}</h1>
-                <h1 className="font-bold">{post.title}</h1>
+                <div className="flex gap-2">
+                  <Image
+                    src={`https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`}
+                    alt=""
+                    className="rounded-full border"
+                    width={50}
+                  />
+                  <div className="flex flex-col m-0 p-0">
+                    <h1 className="font-bold">{`${post.author.firstName} ${post.author.lastName}`}</h1>
+                    <h1 className="text-slate-600 pl-2 text-[0.65rem] font-light">
+                      {post.author.email}
+                    </h1>
+                    <h1 className="text-slate-600 pl-2 text-[0.65rem] font-light">
+                      {post.author.title}
+                    </h1>
+                  </div>
+                </div>
                 <h1 className="text-sm font-light text-slate-600">
                   {new Date(post.createdAt).toLocaleDateString("en-us", {
                     year: "numeric",
@@ -102,6 +118,7 @@ export default function Posts(id: PostProp) {
                   })}
                 </h1>
               </div>
+              <h1 className="font-bold mt-2">{post.title}</h1>
               <div>{parse(post.content)}</div>
               <div className="flex gap-4 m-3">
                 <Image
