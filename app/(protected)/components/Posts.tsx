@@ -27,7 +27,7 @@ export default function Posts(id: PostProp) {
     setIsLoading(true);
     try {
       const res = await axios.post("/api/user/post/my", {
-        userId: "",
+        userId: id,
         page: page,
         limit: 5, // or any other number you want to use as the limit
       });

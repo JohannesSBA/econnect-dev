@@ -11,9 +11,9 @@ export async function POST(req: Request, res: Response) {
   if (!session) {
     return new Response("Unauthorized", { status: 401 });
   }
+
   const body = await req.json();
   const offset = body.page * body.limit;
-
   if (body.userId.id === session.user.id) {
     try {
       const userId = body.userId.id;
