@@ -32,10 +32,22 @@ export default function Posts(id: PostProp) {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const sentinelRef = useRef(null);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [openModalId, setOpenModalId] = useState<string | null>(null);
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false); // Step 1
+
+  const onOpen = (postId: string) => {
+    setOpenModalId(postId);
+  };
+
+  const onClose = () => {
+    setOpenModalId(null);
+  };
+
   const pageName = usePathname();
 
   const fetchPosts = useCallback(async () => {
+    if (allPostsLoaded) return; // Prevent fetching if all posts are loaded
+
     setIsLoading(true);
     try {
       const res = await axios.post("/api/user/post/my", {
@@ -43,6 +55,10 @@ export default function Posts(id: PostProp) {
         page: page,
         limit: 5, // or any other number you want to use as the limit
       });
+      if (res.data.length < 5) {
+        // Step 2
+        setAllPostsLoaded(true); // No more posts to load
+      }
       setPosts((prevPosts) => {
         // Filter out duplicate posts based on their ID
         const newPosts = res.data.filter(
@@ -55,7 +71,7 @@ export default function Posts(id: PostProp) {
     } finally {
       setIsLoading(false);
     }
-  }, [id, page]);
+  }, [allPostsLoaded, id, page]);
 
   useEffect(() => {
     fetchPosts();
@@ -63,7 +79,8 @@ export default function Posts(id: PostProp) {
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !isLoading) {
+      if (entries[0].isIntersecting && !isLoading && !allPostsLoaded) {
+        // Step 3
         setPage((prevPage) => prevPage + 1);
       }
     });
@@ -79,24 +96,23 @@ export default function Posts(id: PostProp) {
         observer.unobserve(currentRef);
       }
     };
-  }, [isLoading]);
+  }, [allPostsLoaded, isLoading]);
 
-  async function handleDeletePost(postId: string) {
-    console.log("postId", postId);
+  async function handleDeletePost(postId: string, images: string) {
     try {
       await axios.post("/api/user/post/delete", { postId });
+      await axios.post("/api/s3-delete", { ImageId: images });
     } catch (error) {
       console.log(error);
     } finally {
-      onOpenChange();
-      // window.location.reload();
+      window.location.reload();
     }
   }
 
   console.log("posts", posts);
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
-      {posts.length === 0 ? (
+      {posts.length === 0 && !isLoading ? (
         <h1>
           No Posts Currently Available. Add some friends to see their posts.
         </h1>
@@ -141,10 +157,13 @@ export default function Posts(id: PostProp) {
                   })}
                   {pageName === "/dashboard/my-posts" ? (
                     <div>
-                      <Button onPress={onOpen}>
+                      <Button onPress={() => onOpen(post.id as string)}>
                         <MdDelete />
                       </Button>
-                      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                      <Modal
+                        isOpen={openModalId === post.id}
+                        onOpenChange={onClose}
+                      >
                         <ModalContent className="">
                           {(onClose) => (
                             <>
@@ -156,6 +175,7 @@ export default function Posts(id: PostProp) {
                                   Are you sure you want to delete the post? Once
                                   deleted, it cannot be recovered.
                                 </p>
+                                <p>{post.title}</p>
                               </ModalBody>
                               <ModalFooter>
                                 <Button
@@ -168,7 +188,10 @@ export default function Posts(id: PostProp) {
                                 <Button
                                   color="primary"
                                   onPress={() =>
-                                    handleDeletePost(post.id as string)
+                                    handleDeletePost(
+                                      post.id as string,
+                                      post.images as string
+                                    )
                                   }
                                 >
                                   Delete
