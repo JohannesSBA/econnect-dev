@@ -22,7 +22,7 @@ const JobListing = () => {
     } catch {
       return toast.error("Sorry, something went wrong.");
     }
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     fetchJobs();
