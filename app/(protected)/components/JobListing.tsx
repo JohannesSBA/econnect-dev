@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { User } from "@nextui-org/react";
 import Link from "next/link";
@@ -9,23 +9,47 @@ import { Jobs } from "@/app/types/db";
 
 const JobListing = () => {
   // Your component logic here
-
+  const [page, setPage] = useState(0);
+  const sentinelRef = useRef(null);
   const [jobs, setJobs] = useState<Jobs[]>([]);
-
-  useEffect(() => {
-    const getJobs = async () => {
-      try {
-        const res = await axios.post("/api/job/get/all");
-        setJobs(res.data);
-      } catch {
-        return toast.error("Sorry, something went wrong.");
-      }
-    };
-    getJobs();
+  const fetchJobs = useCallback(async () => {
+    try {
+      const res = await axios.post("/api/job/get/all", {
+        page: page,
+        limit: 5,
+      });
+      setJobs(res.data);
+    } catch {
+      return toast.error("Sorry, something went wrong.");
+    }
   }, []);
 
+  useEffect(() => {
+    fetchJobs();
+  }, [fetchJobs]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        fetchJobs();
+      }
+    });
+
+    const currentRef = sentinelRef.current;
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [fetchJobs]);
+
   return (
-    <div className="flex flex-col gap-4 mt-4 p-4">
+    <div className="flex flex-col gap-4 mt-4 p-4 w-full items-center">
       {jobs.map((job) => (
         <Link
           key={job.id}
