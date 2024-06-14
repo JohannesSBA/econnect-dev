@@ -92,7 +92,7 @@ export default function Posts(id: PostProp) {
 
   async function handleDeletePost(postId: string, images: string) {
     try {
-      // await axios.post("/api/user/post/delete", { postId });
+      await axios.post("/api/user/post/delete", { postId });
       await axios.post("/api/s3-delete", { ImageId: images });
     } catch (error) {
       console.log(error);
