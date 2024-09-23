@@ -98,6 +98,7 @@ const Main = ({ lang }: MainProps) => {
           <Section delay={0.7}>
             <div className="hidden md:flex mt-4 p-4 justify-around">
               <CustomCard
+                image="date1.webp"
                 main={
                   (lang = "en"
                     ? "Find The Perfect Job For You"
@@ -111,6 +112,7 @@ const Main = ({ lang }: MainProps) => {
               />
               <Spacer x={4} />
               <CustomCard
+                image="dale2.webp"
                 main={(lang = "en" ? "Apply with Ease" : "በቀላሉ ማመልከት")}
                 text={
                   (lang = "en"
@@ -120,6 +122,7 @@ const Main = ({ lang }: MainProps) => {
               />
               <Spacer x={4} />
               <CustomCard
+                image=""
                 main={(lang = "en" ? "Stay Organized" : "ተደራጅተው ይቆዩ")}
                 text={
                   (lang = "en"
@@ -132,7 +135,7 @@ const Main = ({ lang }: MainProps) => {
         </div>
       </div>
       <Section delay={0.5}>
-        <div className="w-full h-screen flex bg-gradient-to-b dark:from-blue-900 dark:to-blue-950 from-blue-600 to-indigo-400">
+        <div className="w-full h-screen flex justify-between bg-gradient-to-b dark:from-blue-900 dark:to-blue-950 from-blue-600 to-indigo-400">
           <div className="flex flex-col align-middle justify-center ml-24 w-1/2 p-4">
             <IconContext.Provider
               value={{
@@ -143,26 +146,30 @@ const Main = ({ lang }: MainProps) => {
               <GiWaterDrop />
             </IconContext.Provider>
             <h1 className="text-4xl md:text-6xl font-bold py-4 text-center">
-              {lang === "en"
-                ? "Discover Exciting Job Opportunites Near You"
-                : "በአጠገብዎ ያሉ አስደሳች የስራ እድሎችን ያግኙ"}
+              {
+                (lang = "en"
+                  ? "Discover Exciting Job Opportunites Near You"
+                  : "በአጠገብዎ ያሉ አስደሳች የስራ እድሎችን ያግኙ")
+              }
             </h1>
             <p className="font-light py-4 text-center md:text-start">
-              {lang === "en"
-                ? "Find you Dream Job with our comprehensive job listings. We connect you with top employers in your area"
-                : "ከአጠቃላይ የስራ ዝርዝሮቻችን ጋር ህልምህን አግኝ። እንገናኛለን እርስዎ በአካባቢዎ ካሉ ከፍተኛ አሠሪዎች ጋር"}
+              {
+                (lang = "en"
+                  ? "Find you Dream Job with our comprehensive job listings. We connect you with top employers in your area"
+                  : "ከአጠቃላይ የስራ ዝርዝሮቻችን ጋር ህልምህን አግኝ። እንገናኛለን እርስዎ በአካባቢዎ ካሉ ከፍተኛ አሠሪዎች ጋር")
+              }
             </p>
             <div className="flex gap-4 py-4">
               <Button color="primary" href="#" variant="shadow">
-                {lang === "en" ? "Search" : "ሰርች"}
+                {(lang = "en" ? "Search" : "ሰርች")}
               </Button>
               <Button color="primary" href="#" variant="flat">
-                {lang === "en" ? "Learn More" : "ተጨማሪ እወቅ"}
+                {(lang = "en" ? "Learn More" : "ተጨማሪ እወቅ")}
               </Button>
             </div>
           </div>
           <div className="w-1/2 hidden md:flex justify-center items-center">
-            <Image src="dale.png" className="w-1/2" alt="sd"></Image>
+            <Image src="dale.png" className="flex ml-24 w-1/2" alt="sd"></Image>
           </div>
         </div>
       </Section>
