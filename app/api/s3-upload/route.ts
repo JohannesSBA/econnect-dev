@@ -21,8 +21,8 @@ export async function POST(req: Request, res: Response) {
   const s3 = new S3({
     region: "us-east-1",
     credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+      accessKeyId: process.env.AWACCESS_KEY_ID as string,
+      secretAccessKey: process.env.AWSECRET_ACCESS_KEY as string,
     },
   });
 
