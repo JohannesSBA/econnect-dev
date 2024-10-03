@@ -36,7 +36,9 @@ export async function POST(req: Request, res: Response) {
   let response = "Some data";
 
   let transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465, // Use 587 if TLS is required
+    secure: true,
     auth: {
       user: process.env.NODDEMAILER_EMAIL as string, // Your Gmail email address
       pass: process.env.NODEMAILER_PASS as string,
@@ -59,7 +61,7 @@ export async function POST(req: Request, res: Response) {
   );
 
   const mailOptions = {
-    from: "johannesseleshi@gmail.com",
+    from: process.env.NODDEMAILER_EMAIL as string,
     to: body.email,
     subject: "Email Verification",
     text: `Please verify your email by clicking on the following link: https://main.d1lrbytgl21u6i.amplifyapp.com/api/user/verify-email?token=${verificationToken}`,
