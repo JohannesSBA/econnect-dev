@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scrollbar-thin scrollbar-webkit">
+    <html lang="en" className="scrollbar-thin scrollbar-webkit dark">
       <Toaster position="top-center" />
       <body className={inter.className}>{children}</body>
     </html>
