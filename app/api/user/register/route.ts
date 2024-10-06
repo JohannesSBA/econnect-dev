@@ -98,8 +98,10 @@ export async function POST(req: Request, res: Response) {
       (error: any, info: { response: string }) => {
         if (error) {
           console.log(error);
+          resolve(new Response("Email not sent", { status: 500 }));
         } else {
           console.log("Email sent: " + info.response);
+          resolve(new Response("Email sent", { status: 200 }));
         }
       }
     );
