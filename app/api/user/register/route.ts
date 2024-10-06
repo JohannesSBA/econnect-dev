@@ -60,6 +60,51 @@ export async function POST(req: Request, res: Response) {
     }
   );
 
+  const mailOptions = {
+    from: process.env.NODDEMAILER_EMAIL as string,
+    to: body.email,
+    subject: "Email Verification",
+    text: `Please verify your email by clicking on the following link: https://main.d1lrbytgl21u6i.amplifyapp.com/api/user/verify-email?token=${verificationToken}`,
+    html: `<section className="max-w-2xl px-6 py-8 mx-auto bg-white dark:bg-gray-900">
+      <header>
+          <a href="#">
+              <img className="w-auto h-7 sm:h-8" src="" alt="">
+          </a>
+      </header>
+
+      <main className="mt-8">
+          <h2 className="text-gray-700 dark:text-gray-200">Hi ${body.firstName},</h2>
+
+          <p className="mt-4 leading-loose text-gray-600 dark:text-gray-300">
+              This code will only be valid for the next 5 minutes. If the code does not work, you can use this login verification link:
+          </p>
+
+          <a href="https://main.d1lrbytgl21u6i.amplifyapp.com/api/user/verify-email?token=${verificationToken}" className="px-6 py-2 mt-6 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+              Verify email
+          </a>
+
+          <p className="mt-8 text-gray-600 dark:text-gray-300">
+              Thanks, <br>
+              Econnect Team
+          </p>
+      </main>
+
+  </section>`,
+  };
+
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(
+      mailOptions,
+      (error: any, info: { response: string }) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      }
+    );
+  });
+
   // const sgMail = require("@sendgrid/mail");
   // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   // const msg = {
@@ -119,49 +164,6 @@ export async function POST(req: Request, res: Response) {
   //     .catch((error: any) => {
   //       console.error(error);
   //     });
-
-  const mailOptions = {
-    from: process.env.NODDEMAILER_EMAIL as string,
-    to: body.email,
-    subject: "Email Verification",
-    text: `Please verify your email by clicking on the following link: https://main.d1lrbytgl21u6i.amplifyapp.com/api/user/verify-email?token=${verificationToken}`,
-    html: `<section className="max-w-2xl px-6 py-8 mx-auto bg-white dark:bg-gray-900">
-      <header>
-          <a href="#">
-              <img className="w-auto h-7 sm:h-8" src="" alt="">
-          </a>
-      </header>
-
-      <main className="mt-8">
-          <h2 className="text-gray-700 dark:text-gray-200">Hi ${body.firstName},</h2>
-
-          <p className="mt-4 leading-loose text-gray-600 dark:text-gray-300">
-              This code will only be valid for the next 5 minutes. If the code does not work, you can use this login verification link:
-          </p>
-
-          <a href="https://main.d1lrbytgl21u6i.amplifyapp.com/api/user/verify-email?token=${verificationToken}" className="px-6 py-2 mt-6 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
-              Verify email
-          </a>
-
-          <p className="mt-8 text-gray-600 dark:text-gray-300">
-              Thanks, <br>
-              Econnect Team
-          </p>
-      </main>
-
-  </section>`,
-  };
-
-  transporter.sendMail(
-    mailOptions,
-    (error: any, info: { response: string }) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    }
-  );
 
   return new Response(response, { status: 200 });
 }
