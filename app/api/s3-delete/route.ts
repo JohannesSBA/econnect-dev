@@ -5,8 +5,8 @@ import { getServerSession } from "next-auth";
 const client = new S3({
   region: "us-east-1",
   credentials: {
-    accessKeyId: process.env.AWACCESS_KEY_ID as string,
-    secretAccessKey: process.env.AWSECRET_ACCESS_KEY as string,
+    accessKeyId: process.env.S3ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.S3SECRET_ACCESS_KEY as string,
   },
 });
 
