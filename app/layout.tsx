@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Econnect",
   description: "Get a job with Us",
+  icons: "water-drop.svg",
 };
 
 export default function RootLayout({

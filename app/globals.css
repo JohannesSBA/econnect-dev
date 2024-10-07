@@ -39,3 +39,10 @@ body {
     ),
     repeating-linear-gradient(#0014a855, #0016a8);
 }
+
+.about-bg {
+  background-color: #e5e5f7;
+  opacity: 1;
+  background-image: radial-gradient(#444cf7 1.25px, #e5e5f7 1.25px);
+  background-size: 25px 25px;
+}

@@ -3,12 +3,12 @@ import { AiFillFacebook, AiFillInstagram, AiFillYoutube } from "react-icons/ai";
 
 const Footer = () => {
   return (
-    <div className="w-full flex flex-col gap-2 h-64 dark:bg-blue-950 bg-indigo-400">
+    <div className="w-full flex flex-col gap-2 h-64 dark:bg-blue-900 ">
       <div className="flex flex-col md:flex-row justify-between w-full px-24 mt-12">
         <div className="md:w-24 text-center">Econnnect</div>
         <div className="flex gap-4 w-full text-sm text-center justify-center m-4 -translate-x-6 md:translate-x-6">
           <h1>Job Listings</h1>
-          <h1>About Us</h1>
+          <a href="/about">About Us</a>
           <h1>Contact Us</h1>
           <h1>FAQs</h1>
         </div>

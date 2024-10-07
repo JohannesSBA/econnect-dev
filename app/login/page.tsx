@@ -5,6 +5,8 @@ import { AiOutlineMail, AiFillLock, AiOutlineGithub } from "react-icons/ai";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { GiWaterDrop } from "react-icons/gi";
+import Nav from "../components/Nav";
 
 export default function Login() {
   const [password, setPassword] = useState<string>();
@@ -47,6 +49,9 @@ export default function Login() {
   return (
     <div className="w-screen h-screen flex">
       <div className="md:w-1/3 lg:w-2/3 h-screen cs-background hidden md:flex items-center">
+        <div className="absolute top-0 w-screen">
+          <Nav lang={"en"} />
+        </div>
         <div className="p-24  rounded-2xl text-center m-12 h-5/6 w-full flex justify-center align-middle"></div>
       </div>
       <div className="w-screen md:w-2/3 lg:w-1/3 flex flex-col justify-center align-middle p-12 bg-slate-100 text-slate-800">

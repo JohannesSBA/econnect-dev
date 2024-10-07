@@ -14,19 +14,19 @@ interface MainProps {
 
 const Main = ({ lang }: MainProps) => {
   return (
-    <div className="w-full overflow-hidden">
-      <div className="w-full h-screen flex bg-gradient-to-b dark:from-blue-900 dark:to-blue-950 from-blue-600 to-indigo-400">
+    <div className="w-full overflow-hidden dark text-white">
+      <div className="w-full h-screen flex bg-gradient-to-b dark:from-blue-900 dark:to-blue-950 ">
         <div className="w-full md:w-1/2 p-12 flex flex-col gap-6 mt-12">
           {/* Section creates the animation to  the incoming object*/}
           <Section delay={0.2}>
-            <h1 className="font-bold text-6xl md:text-8xl bg-gradient-to-r from-blue-900 to-blue-950 dark:from-blue-600 dark:to-indigo-400 text-transparent bg-clip-text mb-3">
+            <h1 className="font-bold text-6xl md:text-8xl bg-gradient-to-r dark:from-blue-600 dark:to-indigo-400 text-transparent bg-clip-text mb-3">
               {lang === "en"
                 ? "Find Your Dream Job With Us"
                 : "የህልም ስራዎን ከእኛ ጋር ያግኙ"}
             </h1>
           </Section>
           <Section delay={0.7}>
-            <p className="mt-4">
+            <p className="mt-4 text-white">
               {lang === "en"
                 ? "Discover a wide range of job opportunities and take the next step in your career. "
                 : "ሰፊ የስራ እድሎችን ያግኙ እና ቀጣዩን እርምጃ ይውሰዱ በሙያዎ ውስጥ."}
@@ -43,9 +43,10 @@ const Main = ({ lang }: MainProps) => {
                 {lang === "en" ? "Sign Up" : "ይመዝገቡ"}
               </Button>
               <Button
-                // as={Link}
+                as={Link}
                 color="primary"
-                href="#"
+                href="/about"
+                target="_blank"
                 variant="ghost"
               >
                 {lang === "en" ? "Learn More" : "ተጨማሪ ለመረዳት"}
@@ -78,7 +79,7 @@ const Main = ({ lang }: MainProps) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-screen flex flex-col align-middle bg-gradient-to-b dark:from-blue-950 dark:to-blue-900 from-indigo-400 to-blue-600">
+      <div className="w-full md:h-screen flex flex-col align-middle bg-gradient-to-b dark:from-blue-950 dark:to-blue-900 ">
         <div className="mt-8">
           <Section delay={0.5}>
             <p className="text-center">
@@ -134,7 +135,7 @@ const Main = ({ lang }: MainProps) => {
           </Section>
         </div>
       </div>
-      <Section delay={0.5}>
+      {/* <Section delay={0.5}>
         <div className="w-full h-screen flex justify-between bg-gradient-to-b dark:from-blue-900 dark:to-blue-950 from-blue-600 to-indigo-400">
           <div className="flex flex-col align-middle justify-center ml-24 w-1/2 p-4">
             <IconContext.Provider
@@ -172,7 +173,7 @@ const Main = ({ lang }: MainProps) => {
             <Image src="dale.png" className="flex ml-24 w-1/2" alt="sd"></Image>
           </div>
         </div>
-      </Section>
+      </Section> */}
       <Footer />
     </div>
   );
