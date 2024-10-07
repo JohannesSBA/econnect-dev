@@ -34,25 +34,25 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   const role = accUser.role as string;
   let userActionButton;
-  // if (role === "EMPLOYER") {
-  //   const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
-  //   userActionButton = (
-  //     <div>
-  //       <a href={`/chat/${chatRoom}`}>
-  //         <Button color="primary">Send a Messages</Button>
-  //       </a>
-  //     </div>
-  //   );
-  // } else if (role === "EMPLOYEE") {
-  //   const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
-  //   stringifiedFriends.includes(session.user.id)
-  //     ? (userActionButton = (
-  //         <a href={`/chat/${chatRoom}`}>
-  //           <Button color="primary">Send a Message</Button>
-  //         </a>
-  //       ))
-  //     : (userActionButton = <AddFriendButton id={userInfo.id as string} />);
-  // }
+  if (role === "EMPLOYER") {
+    const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
+    userActionButton = (
+      <div>
+        <a href={`/chat/${chatRoom}`}>
+          <Button color="primary">Send a Messages</Button>
+        </a>
+      </div>
+    );
+  } else if (role === "EMPLOYEE") {
+    const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
+    stringifiedFriends.includes(session.user.id)
+      ? (userActionButton = (
+          <a href={`/chat/${chatRoom}`}>
+            <Button color="primary">Send a Message</Button>
+          </a>
+        ))
+      : (userActionButton = <AddFriendButton id={userInfo.id as string} />);
+  }
 
   const educationList = await getEducation(userInfo.id as string);
   const parsedEducation = educationList as {
@@ -125,7 +125,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             ) : (
               <Button className="w-44 border-[#A39999]" variant="bordered">
                 {" "}
-                <FiUserPlus /> Connect
+                {userActionButton}
               </Button>
             )}
 

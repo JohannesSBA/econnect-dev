@@ -30,7 +30,12 @@ const AddFriendComponent: React.FC<addFriend> = ({ id }) => {
   };
 
   return (
-    <Button color="primary" variant="shadow" onClick={handleAddFriend}>
+    <Button
+      color="primary"
+      className="w-full"
+      variant="shadow"
+      onClick={handleAddFriend}
+    >
       Add Friend
     </Button>
   );
