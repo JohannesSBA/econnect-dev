@@ -4,7 +4,7 @@
 // import { GiWaterDrop } from "react-icons/gi";
 import SignOutButton from "../SignOutButton";
 import UserPicture from "../UserPicture";
-import Search from "../Search";
+import Search from "../SearchComponents/Search";
 
 // const PNav = () => {
 //   return (

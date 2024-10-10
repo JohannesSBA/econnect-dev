@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
 import Messages from "../../components/Messages";
-import Search from "../../components/Search";
+import Search from "../../components/SearchComponents/Search";
 import SignOutButton from "../../components/SignOutButton";
 import UserPicture from "../../components/UserPicture";
 import { Friend } from "@/app/types/db";

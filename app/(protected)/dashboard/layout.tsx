@@ -3,16 +3,8 @@ import { ReactNode } from "react";
 import { Inter } from "next/font/google";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { Avatar, Badge, Link } from "@nextui-org/react";
-import { GiWaterDrop } from "react-icons/gi";
-import prisma from "@/app/lib/prisma";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
-import Messages from "../components/Messages";
-import UserPicture from "../components/UserPicture";
-import Search from "../components/Search";
-import SignOutButton from "../components/SignOutButton";
-import axios from "axios";
 import PNav from "../components/visualComponents/PNav";
 
 interface LayoutProps {

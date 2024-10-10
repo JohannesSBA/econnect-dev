@@ -9,7 +9,7 @@ import React from "react";
 import { GiWaterDrop } from "react-icons/gi";
 import { Friend } from "@/app/types/db";
 import Messages from "../components/Messages";
-import Search from "../components/Search";
+import Search from "../components/SearchComponents/Search";
 import SignOutButton from "../components/SignOutButton";
 import UserPicture from "../components/UserPicture";
 import SideInfo from "../components/SideInfo";
