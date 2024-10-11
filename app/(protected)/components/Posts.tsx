@@ -113,8 +113,9 @@ export default function Posts(id: PostProp) {
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
       {posts.length === 0 && !isLoading ? (
-        <h1>
-          No Posts Currently Available. Add some friends to see their posts.
+        <h1 className="w-full flex justify-center text-center pt-4">
+          No Posts Currently Available. <br />
+          Add some friends to see their posts.
         </h1>
       ) : (
         posts.map(

@@ -91,9 +91,9 @@ const Page = async () => {
         <div className="h-[553px] flex w-full md:w-auto bg-white rounded-md m-4 text-black overflow-scroll">
           <Posts id={""} />
         </div>
-        <div className="bg-white rounded-md mx-2 flex p-2">
+        <div className="bg-white text-black rounded-md mx-2 flex p-2 items-center">
           <User
-            name="User Name" // Add the 'name' property with a value
+            name={""} // Add the 'name' property with a value
             avatarProps={{
               isBordered: true,
               src: `https://econnectbucket.s3.amazonaws.com/image/${user.id}`,
@@ -101,7 +101,10 @@ const Page = async () => {
             className="transition-transform ml-4 translate-x-4"
           />
           <NewPost />
-          <Link href="dashboard/my-posts" className="text-blue-400 font-light">
+          <Link
+            href="dashboard/my-posts"
+            className="text-blue-400 text-sm font-light text-center pr-2"
+          >
             Your Posts
           </Link>
         </div>

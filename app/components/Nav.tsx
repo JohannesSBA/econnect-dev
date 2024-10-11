@@ -12,8 +12,8 @@ const Nav = ({ lang }: NavProps) => {
   const router = useRouter();
 
   return (
-    <div className="sticky top-0 w-screen h-20 bg-transparent shadow-md backdrop-blur-lg flex justify-between items-center p-8 z-40 dark">
-      <Link href={"/home"} className="flex gap-4 text-white">
+    <div className="sticky top-0 w-screen h-20 bg-transparent shadow-md bg-blue-900 backdrop-blur-lg flex justify-between items-center p-8 z-40 dark">
+      <Link href={"/home"} className="flex gap-4 p-4">
         <GiWaterDrop />
         <p className="font-bold text-inherit">
           {lang === "en" ? "Econnect" : "E መገናኘት"}
