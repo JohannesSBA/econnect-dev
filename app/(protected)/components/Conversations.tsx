@@ -76,7 +76,7 @@ const Conversations: FunctionComponent<conversationProps> = ({
 
   return (
     <div
-      className="w-full h-full px-4 overflow-scroll flex flex-col"
+      className="w-full h-full mb-44 px-4 overflow-scroll flex flex-col"
       id="messages"
     >
       {messages.map((message, index) => {
