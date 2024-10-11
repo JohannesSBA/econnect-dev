@@ -43,7 +43,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
         href="/dashboard/profile"
         className="w-full h-full flex justify-center"
       >
-        <Button variant="light" className=" w-full" href="/profile">
+        <Button variant="solid" className=" w-full" href="/profile">
           View Your Profile
         </Button>
       </a>
