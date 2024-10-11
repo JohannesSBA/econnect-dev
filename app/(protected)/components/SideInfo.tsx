@@ -56,7 +56,9 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
       </div>
       <div className="">
         <div className="grid grid-cols-4 text-center gap-2 text-black font-light text-xs">
-          <p>About</p>
+          <a href="/about" target="_blank">
+            About
+          </a>
           <p>Accessibility</p>
           <p>Privacy & Terms</p>
           <p>FAQ&apos;s</p>

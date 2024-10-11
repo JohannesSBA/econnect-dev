@@ -42,7 +42,7 @@ const RequestHandler = ({
   }
 
   return (
-    <div className="w-full flex flex-col gap-24">
+    <div className="w-full text-black flex flex-col mt-4 items-center gap-24">
       {incomingFriendRequest.length > 0
         ? incomingFriendRequest.map(
             (pFriends: {
