@@ -163,6 +163,7 @@ export default function Posts(id: PostProp) {
                       <Modal
                         isOpen={openModalId === post.id}
                         onOpenChange={onClose}
+                        className="light"
                       >
                         <ModalContent className="">
                           {(onClose) => (

@@ -60,7 +60,7 @@ const UploadResume = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="top-center"
-        className="text-black"
+        className="text-black light"
       >
         <ModalContent>
           {(onClose) => (

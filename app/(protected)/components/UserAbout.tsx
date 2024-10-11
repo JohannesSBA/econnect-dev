@@ -57,7 +57,12 @@ export default function UserAbout({ userBio }: bioProps) {
               {showMore ? "Show Less" : "Show More"}
             </Button>
           )}
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+          <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            size="5xl"
+            className="light"
+          >
             <ModalContent>
               {(onClose) => (
                 <>

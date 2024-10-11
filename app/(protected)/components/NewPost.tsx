@@ -203,6 +203,7 @@ export default function CreatePost() {
         onOpenChange={onOpenChange}
         placement="top"
         size="5xl"
+        className="light"
       >
         <ModalContent>
           {(onClose) => (
