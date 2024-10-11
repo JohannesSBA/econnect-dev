@@ -84,7 +84,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
           />
         </div>
         <div className="w-full md:w-4/5 h-full md:border border-slate-300 flex">
-          <div className="w-full h-full md:w-2/3 flex flex-col justify-between border border-slate-300 shadow-md m-1 p-1">
+          <div className="w-full h-full md:w-2/3 flex flex-col justify-between border border-slate-300 shadow-md m-1 p-1 py-10">
             <Link
               className="flex gap-4 p-4 rounded-2xl shadow-sm bg-zinc-100 backdrop-blur-lg"
               href={`/ec/${friendContent.id}`}
@@ -106,13 +106,15 @@ const page = async ({ params }: { params: { chatid: string } }) => {
               chatId={userId as string}
               chatRoom={chatid}
             />
-            <ChatInput
-              chatPartner={friendId}
-              chatId={userId}
-              chatRoom={chatid}
-            />
+            <div className="absolute bottom-0 w-2/4 bg-zinc-100">
+              <ChatInput
+                chatPartner={friendId}
+                chatId={userId}
+                chatRoom={chatid}
+              />
+            </div>
           </div>
-          <div className="w-1/3 m-2 p-2 flex flex-col gap-3 items-center justify-between">
+          <div className="w-1/3 m-2 p-2 md:flex flex-col gap-3 items-center justify-between hidden">
             <SideInfo
               user={userInfo}
               posts={userInfo.posts}

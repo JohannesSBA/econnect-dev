@@ -122,14 +122,18 @@ export default function Messages({ userId, friends, role }: MessageProps) {
         pathName.includes("ec") ||
         pathName.includes("employer-dashboard")
           ? `hidden`
-          : `h-[calc(100vh-10rem)] hidden md:flex flex-col justify-between gap-2 m-4 bg-slate-100`
+          : `h-[calc(100vh-10rem)] flex flex-col justify-between gap-2 m-4 bg-slate-100`
       }
     >
       <div className="flex flex-col gap-2">
         <div className="w-full h-12 bg-slate-200 rounded-md flex justify-around items-center gap-2">
           <div className="">
             <Button
-              className={messageType === "all" ? "bg-white shadow-md" : ""}
+              className={
+                messageType === "all"
+                  ? "bg-white shadow-md text-black"
+                  : "text-black"
+              }
               variant={messageType === "all" ? "solid" : "light"}
               onClick={() => setMessageType("all")}
               disableAnimation
@@ -137,7 +141,11 @@ export default function Messages({ userId, friends, role }: MessageProps) {
               All
             </Button>
             <Button
-              className={messageType === "connects" ? "bg-white shadow-md" : ""}
+              className={
+                messageType === "connects"
+                  ? "bg-white shadow-md text-black"
+                  : "text-black"
+              }
               variant={messageType === "connects" ? "solid" : "light"}
               onClick={() => setMessageType("connects")}
               disableAnimation
@@ -145,7 +153,11 @@ export default function Messages({ userId, friends, role }: MessageProps) {
               Connects
             </Button>
             <Button
-              className={messageType === "recruits" ? "bg-white shadow-md" : ""}
+              className={
+                messageType === "recruits"
+                  ? "bg-white shadow-md text-black"
+                  : "text-black"
+              }
               variant={messageType === "recruits" ? "solid" : "light"}
               onClick={() => setMessageType("recruits")}
               disableAnimation
@@ -157,7 +169,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
         <Input
           type="text"
           label="Search Messages"
-          className="max-w-xs bg-slate-100 text-black"
+          className="max-w-xs light bg-slate-100 text-black"
           endContent={<FaSearch />}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

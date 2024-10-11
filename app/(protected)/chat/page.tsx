@@ -47,18 +47,18 @@ const page = async ({ params }: { params: { chatid: string } }) => {
     <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
       <PNav />
       <div className="w-screen h-full overflow-clip flex bg-slate-100">
-        <div className="w-1/5">
+        <div className="w-full md:w-1/5">
           <Messages
             userId={session?.user.id as string}
             friends={friendsList}
             role={userInfo?.role as string}
           />
         </div>
-        <div className="w-4/5 flex">
-          <div className="w-2/3 text-black p-4">
+        <div className="w-full md:w-4/5 hidden md:flex ">
+          <div className="hidden md:flex w-2/3 text-black p-4">
             <h1 className="text-bold text-2xl">Start Chatting</h1>
           </div>
-          <div className="w-1/3 m-2 p-2 flex flex-col gap-3 items-center justify-between">
+          <div className="hidden w-1/3 m-2 p-2 md:flex flex-col gap-3 items-center justify-between">
             <SideInfo
               user={userInfo}
               posts={userInfo.posts}
