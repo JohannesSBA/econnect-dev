@@ -7,12 +7,12 @@ import PusherPushNotifications from "@pusher/push-notifications-web";
 
 export const pusherServer = new PusherServer({
   appId: process.env.PUSHER_APP_ID!,
-  key: process.env.PUSHER_APP_KEY!,
+  key: "86f9e0cbdc7267622503",
   secret: process.env.PUSHER_APP_SECRET!,
-  cluster: process.env.PUSHER_CLUSTER!,
+  cluster: "us2",
   useTLS: true,
 });
 
-export const pusherClient = new PusherClient("b0ae9f10b344ae0b7b00", {
-  cluster: process.env.PUSHER_CLUSTER!,
+export const pusherClient = new PusherClient("86f9e0cbdc7267622503", {
+  cluster: "us2",
 });
