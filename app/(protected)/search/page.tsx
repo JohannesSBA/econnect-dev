@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import parse from "html-react-parser";
 import { User } from "@nextui-org/react";
+import Search from "../components/SearchComponents/Search";
 
 const SearchPage = () => {
   const search = useSearchParams();
@@ -46,7 +47,10 @@ const SearchPage = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col items-center bg-white">
-      <div className="flex flex-col items-center h-full w-1/2 overflow-scroll scrollbar-webkit scrollbar-thin">
+      <div className="flex flex-col items-center h-full md:w-1/2 overflow-scroll scrollbar-webkit scrollbar-thin">
+        <div className="flex md:hidden pt-4 rounded-md">
+          <Search />
+        </div>
         {users.map(
           (user: {
             key: React.Key | string | null | undefined;
