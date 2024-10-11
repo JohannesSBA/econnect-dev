@@ -71,7 +71,7 @@ const NewJobListing: React.FC<NewJobListingProps> = ({ id }) => {
         onOpenChange={onOpenChange}
         placement="top-center"
         size="3xl"
-        className="m-2 h-screen overflow-scroll"
+        className="m-2 h-screen light overflow-scroll"
       >
         <ModalContent>
           {(onClose) => (

@@ -123,7 +123,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           Apply
         </Button>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent>
+          <ModalContent className="light">
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1 text-black">

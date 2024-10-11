@@ -11,7 +11,7 @@ export async function POST(req: Request, res: Response) {
   try {
     const getUser = await prisma.user.findUnique({
       where: {
-        id: body.id,
+        id: session.user.id,
       },
     });
     return new Response(JSON.stringify(getUser), { status: 200 });

@@ -92,7 +92,7 @@ const ProfileImage = ({ id }: profileProps) => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="center"
-        className="text-black"
+        className="text-black light"
       >
         <ModalContent>
           {(onClose) => (

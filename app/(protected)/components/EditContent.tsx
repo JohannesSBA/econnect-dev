@@ -75,7 +75,7 @@ export default function App({
         onOpenChange={onOpenChange}
         placement="top-center"
         size="3xl"
-        className="m-2 h-[calc(100vh-4rem)] overflow-scroll"
+        className="m-2 h-[calc(100vh-4rem)] overflow-scroll light"
       >
         <ModalContent>
           {(onClose) => (

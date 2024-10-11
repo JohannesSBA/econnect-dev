@@ -40,7 +40,7 @@ const Page = async () => {
     .slice(0, 2);
 
   return (
-    <div className="w-screen h-screen overflow-clip bg-slate-100 flex justify-center font-PlusJakartSans">
+    <div className="w-screen md:h-screen overflow-clip bg-slate-100 flex flex-col md:flex-row justify-center font-PlusJakartSans">
       <div className="w-1/4 flex flex-col">
         <div className="text-2xl text-slate-800 m-8 font-semibold">
           Recent Applications
@@ -88,7 +88,7 @@ const Page = async () => {
         <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
           Posts
         </h1>
-        <div className="h-[553px] bg-white rounded-md m-4 text-black overflow-scroll">
+        <div className="h-[553px] flex w-full md:w-auto bg-white rounded-md m-4 text-black overflow-scroll">
           <Posts id={""} />
         </div>
         <div className="bg-white rounded-md mx-2 flex p-2">
