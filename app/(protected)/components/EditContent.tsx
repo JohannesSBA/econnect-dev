@@ -65,7 +65,7 @@ export default function App({
   };
 
   return (
-    <div className="z-50">
+    <div className="z-50 light">
       <Button onPress={onOpen} color="primary" variant="ghost">
         <BiPencil />
         <h1>Edit Content</h1>
@@ -113,7 +113,7 @@ export default function App({
                       <Button
                         variant="bordered"
                         size="sm"
-                        className="rounded-md"
+                        className="rounded-md light"
                       >
                         {proNouns}
                       </Button>
@@ -121,7 +121,7 @@ export default function App({
                     <DropdownMenu
                       variant="flat"
                       aria-label="Dropdown menu with shortcut"
-                      className="text-black align-start"
+                      className="text-black bg-white rounded-lg light align-start"
                     >
                       <DropdownItem
                         onClick={() => {

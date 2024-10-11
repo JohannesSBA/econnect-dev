@@ -76,7 +76,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
     <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
       <PNav />
       <div className="w-screen h-full overflow-clip flex bg-slate-100">
-        <div className="w-1/5">
+        <div className="w-1/5 hidden md:flex">
           <Messages
             userId={session?.user.id as string}
             friends={friendsList}
@@ -106,7 +106,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
               chatId={userId as string}
               chatRoom={chatid}
             />
-            <div className="absolute bottom-0 w-2/4 bg-zinc-100">
+            <div className="absolute bottom-0 w-full md:w-2/4 bg-zinc-100">
               <ChatInput
                 chatPartner={friendId}
                 chatId={userId}

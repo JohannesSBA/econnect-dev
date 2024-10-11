@@ -64,6 +64,8 @@ export default function App() {
   const menuItems = [
     ["Profile", "/dashboard/profile"],
     ["Dashboard", "/dashboard"],
+    ["Messages", "/chat"],
+    ["Search", "/search"],
     ["My Settings", "/dashboard/settings"],
     ["Help & Feedback", "/help"],
   ];
@@ -71,7 +73,7 @@ export default function App() {
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
-      className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md justify-between"
+      className="sticky z-50 bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md justify-between"
     >
       <NavbarContent>
         <NavbarMenuToggle
@@ -108,7 +110,7 @@ export default function App() {
           </Link>
         </NavbarContent>
       </NavbarContent>
-      <NavbarContent className="hidden sm:flex gap-4">
+      <NavbarContent className="hidden md:flex gap-4">
         <NavbarItem>
           <Search />
         </NavbarItem>

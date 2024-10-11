@@ -114,7 +114,7 @@ export default function App() {
                   <Input
                     isRequired
                     label="GPA"
-                    type="number"
+                    type="float"
                     placeholder="GPA"
                     labelPlacement="outside"
                     className="my-2"
