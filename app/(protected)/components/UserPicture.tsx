@@ -1,55 +1,38 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { User, Link, Skeleton } from "@nextui-org/react";
-import { getServerSession } from "next-auth/next";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getUserContent } from "@/app/helpers/getUser";
-import prisma from "@/app/lib/prisma";
-import axios from "axios";
-
-interface UserInfo {
-  id: string;
-  email: string | null | undefined;
-  fullName: string;
-}
+import { useUser } from "./functionComponents/UserContext";
 
 export default function UserPicture() {
-  const [userInfo, setUserInfo] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const userContext = useUser();
+  const userInfo = userContext ? userContext.userInfo : null;
+  const isLoading = userContext ? !userInfo : true; // Adjust loading state based on context
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await axios.post("/api/user/get", {});
-      if (res.status === 200) {
-        const data = await res.data;
-        setUserInfo(data);
-      }
-      setIsLoading(false);
+    if (userInfo) {
+      console.log("User Info:", userInfo); // Log user info for debugging
     }
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <Skeleton className="w-12 h-12 rounded-md flex flex-col justify-between gap-2 m-4" />
-    );
-  }
+  }, [userInfo]);
 
   return (
     <div className="flex items-center gap-4">
       <Link href={"/dashboard/profile"}>
         {isLoading ? (
-          <Skeleton className="w-full h-24 rounded-md  " />
+          <Skeleton className="w-full h-24 rounded-md" />
         ) : (
           <User
             as="button"
             avatarProps={{
               isBordered: true,
-              src: `https://econnectbucket.s3.amazonaws.com/image/${userInfo?.id}`,
+              src:
+                userInfo.image ||
+                `https://econnectbucket.s3.amazonaws.com/image/${userInfo.id}`, // Fallback image logic
             }}
             className="transition-transform"
-            description={userInfo?.email}
-            name={userInfo.firstName + " " + userInfo.lastName}
+            description={userInfo.email || "No email available"} // Handle null email
+            name={`${
+              userInfo.firstName + " " + userInfo.lastName || "Anonymous"
+            }`} // Handle null name
           />
         )}
       </Link>
