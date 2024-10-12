@@ -80,7 +80,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
           <Messages
             userId={session?.user.id as string}
             friends={friendsList}
-            role={userInfo?.role as string}
+            role={userInfo.role ?? ""}
           />
         </div>
         <div className="w-full md:w-4/5 h-full md:border border-slate-300 flex">

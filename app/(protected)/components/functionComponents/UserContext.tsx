@@ -4,10 +4,10 @@ import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
 import { pusherClient } from "@/app/lib/pusher";
 import { toPusherKey, chatHrefConstructor } from "@/app/lib/utils";
-import { Message } from "postcss";
 import { toast } from "sonner";
 import NotificationToast from "../NotificationToast";
 import { User } from "@/app/types/db";
+import { Message } from "@/app/lib/validation";
 
 interface UserContextType {
   userInfo: any;
@@ -41,7 +41,6 @@ export const UserProvider = ({ children }: any) => {
   }, []);
 
   const router = useRouter();
-
   const pathName = usePathname();
 
   useEffect(() => {

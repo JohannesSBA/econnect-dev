@@ -15,4 +15,5 @@ export const pusherServer = new PusherServer({
 
 export const pusherClient = new PusherClient("86f9e0cbdc7267622503", {
   cluster: "us2",
+  forceTLS: true,
 });
