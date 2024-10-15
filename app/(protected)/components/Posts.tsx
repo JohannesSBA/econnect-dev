@@ -228,6 +228,33 @@ export default function Posts(id: PostProp) {
                   src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/2`}
                 />
               </div>
+              <div className="flex justify-between">
+                <div className="flex gap-2">
+                  <Button
+                    color="success"
+                    variant="light"
+                    className="rounded-md"
+                  >
+                    Like
+                  </Button>
+                  <Button
+                    color="warning"
+                    variant="light"
+                    className="rounded-md"
+                  >
+                    Comment
+                  </Button>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    color="warning"
+                    variant="light"
+                    className="rounded-md"
+                  >
+                    Report
+                  </Button>
+                </div>
+              </div>
             </div>
           )
         )
