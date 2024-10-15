@@ -3,7 +3,7 @@ import { chatHrefConstructor } from "@/app/lib/utils";
 import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { usePathname } from "next/navigation";
+import parse from "html-react-parser";
 
 interface NotificationToastProps {
   sessionId: string;
@@ -42,7 +42,7 @@ const NotificationToast: FC<NotificationToastProps> = ({
 
           <div className="ml-3 flex-1">
             <p className="text-sm font-medium text-gray-900">{"senderName"}</p>
-            <p className="mt-1 text-sm text-gray-500">{senderMessage}</p>
+            <p className="mt-1 text-sm text-gray-500">{parse(senderMessage)}</p>
           </div>
         </div>
       </a>
