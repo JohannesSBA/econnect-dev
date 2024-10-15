@@ -1,48 +1,7 @@
 "use client";
-// import { Link } from "@nextui-org/react";
-// import React from "react";
-// import { GiWaterDrop } from "react-icons/gi";
 import SignOutButton from "../SignOutButton";
 import UserPicture from "../UserPicture";
 import Search from "../SearchComponents/Search";
-
-// const PNav = () => {
-//   return (
-//     <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
-//       <div className="flex gap-4">
-//         <Link href={"/employer-dashboard"} className="flex gap-4 text-blue-800">
-//           <GiWaterDrop />
-//           <p className="hidden md:flex font-bold text-inherit">Econnect</p>
-//         </Link>
-//         <Link
-//           href="/dashboard"
-//           className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-//         >
-//           Dashboard
-//         </Link>
-//         <Link
-//           href="/chat"
-//           className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-//         >
-//           Messages
-//         </Link>
-//         <Link
-//           href="/listings"
-//           className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-//         >
-//           Listings
-//         </Link>
-//       </div>
-//       <div className="w-5/6 hidden md:flex gap-3 justify-end">
-//         <Search />
-//         {/* <UserPicture /> */}
-//         <SignOutButton />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PNav;
 
 import React from "react";
 import {

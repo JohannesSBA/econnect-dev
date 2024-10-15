@@ -60,18 +60,18 @@ const Page = ({ params }: { params: { id: string } }) => {
     getPoster();
   }, [listing]);
 
-  // useEffect(() => {
-  //   if (!postedBy) return;
-  //   const getPoster = async () => {
-  //     const company = await axios.post("/api/user/get", {
-  //       id: postedBy.id,
-  //     });
-  //     setCompany(company);
-  //     setIsLoading(false);
-  //   };
+  useEffect(() => {
+    if (!postedBy) return;
+    const getPoster = async () => {
+      const company = await axios.post("/api/user/get", {
+        id: postedBy.id,
+      });
+      setCompany(company);
+      setIsLoading(false);
+    };
 
-  //   getPoster();
-  // }, [postedBy]);
+    getPoster();
+  }, [postedBy]);
 
   const handleSubmit = async () => {
     const res = await axios.post("/api/job/apply", {
