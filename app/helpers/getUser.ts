@@ -25,6 +25,7 @@ export const getUserContent = async (userId: string) => {
         emailVerified: true,
         posts: true,
         jobApplications: true,
+        pendingFriendRequest: true,
       },
     });
 
