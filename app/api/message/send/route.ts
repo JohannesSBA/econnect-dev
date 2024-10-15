@@ -44,13 +44,13 @@ export async function POST(req: Request, res: Response) {
 
   const chatRoom = body.chatRoom;
 
-  pusherServer.trigger(
+  await pusherServer.trigger(
     toPusherKey(`chat:${chatRoom}`),
     "incoming-message",
     messageData
   );
 
-  pusherServer.trigger(
+  await pusherServer.trigger(
     toPusherKey(`user:${messageData.recipientId}:chats`),
     "new_message",
     {
