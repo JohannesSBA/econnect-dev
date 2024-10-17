@@ -21,7 +21,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const [jobs, setJobs] = useState<Jobs[]>();
+  const [jobs, setJobs] = useState<any[]>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
@@ -95,7 +95,13 @@ const Page = () => {
                         </span>
                       </div>
                       <span className="text-slate-400 text-xs">
-                        Over 100 applicants
+                        {job.applicants.length > 100
+                          ? "Over 100 applicants"
+                          : job.applicants.length == 0
+                          ? "No applicants"
+                          : job.applicants.length == 1
+                          ? "1 applicant"
+                          : `${job.applicants.length} applicants`}
                       </span>
                     </div>
                   </Link>
