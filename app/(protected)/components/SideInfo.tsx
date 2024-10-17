@@ -51,6 +51,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
       <div className="my-6 p-4">
         <Image
           width={400}
+          height={400}
           alt="Advertisement"
           src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
         />
