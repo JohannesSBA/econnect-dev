@@ -109,7 +109,6 @@ export default function Posts(id: PostProp) {
     }
   }
 
-  console.log("posts", posts);
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
       {posts.length === 0 && !isLoading ? (

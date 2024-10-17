@@ -9,12 +9,6 @@ export default function UserPicture() {
   const userInfo = userContext ? userContext.userInfo : null;
   const isLoading = userContext ? !userInfo : true; // Adjust loading state based on context
 
-  useEffect(() => {
-    if (userInfo) {
-      console.log("User Info:", userInfo); // Log user info for debugging
-    }
-  }, [userInfo]);
-
   return (
     <div className="flex items-center gap-4">
       <Link href={"/dashboard/profile"}>

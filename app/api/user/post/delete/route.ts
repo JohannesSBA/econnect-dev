@@ -24,18 +24,12 @@ export async function POST(req: Request, res: Response) {
     select: { posts: { select: { id: true } } },
   });
 
-  console.log(user?.posts.includes(post));
-  console.log(user?.posts, post);
-  console.log(user?.posts[0].id);
-
   let flag = false;
   user?.posts.forEach((p) => {
     if (p.id === post) {
       flag = true;
     }
   });
-
-  console.log(flag);
 
   if (flag === false) {
     return new Response("You can't delete someone else's post", {
