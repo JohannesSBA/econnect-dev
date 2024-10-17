@@ -35,9 +35,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
   const userInfo = await getUserContent(session?.user.id as string);
   //   const friendContent = await getUserContent(friendId);
 
-  const friends = userInfo.friends as unknown as Friend[];
-  const friendsOf = userInfo.friendsOf as unknown as Friend[];
-  const friendsList = friends.concat(friendsOf);
+  const friendsList = userInfo.friends as unknown as Friend[];
 
   //   if (session.user.id !== userId) {
   //     notFound();

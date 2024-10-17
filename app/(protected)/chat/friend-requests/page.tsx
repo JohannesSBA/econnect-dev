@@ -19,9 +19,7 @@ const page = async () => {
   const userInfo = await getUserContent(session?.user.id as string);
   //   const friendContent = await getUserContent(friendId);
 
-  const friends = userInfo.friends as unknown as Friend[];
-  const friendsOf = userInfo.friendsOf as unknown as Friend[];
-  const friendsList = friends.concat(friendsOf);
+  const friendsList = userInfo.friends as unknown as Friend[];
 
   const getPending = await prisma.user.findMany({
     where: {

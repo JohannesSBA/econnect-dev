@@ -2,6 +2,8 @@ import { stringList } from "aws-sdk/clients/datapipeline";
 import { Session } from "next-auth";
 
 interface User {
+  applications: any;
+  posts: any;
   id: string;
   firstName: string | null;
   lastName: string | null;

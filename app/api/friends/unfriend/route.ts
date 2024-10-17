@@ -1,11 +1,7 @@
 import prisma from "@/app/lib/prisma";
-import { options } from "../../auth/[...nextauth]/options";
-import { getServerSession } from "next-auth/next";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
-  const session = await getServerSession(options);
-  if (!session) return new Response("Unauthorized", { status: 401 });
 
   try {
     // Update the user's friends list by adding the accepted friend
@@ -13,12 +9,6 @@ export async function POST(req: Request, res: Response) {
       where: { email: body.email },
       data: {
         friends: {
-          connect: { id: body.id },
-        },
-        frinedsOf: {
-          connect: { id: session.user.id },
-        },
-        pendingFriendRequest: {
           disconnect: { id: body.id },
         },
       },

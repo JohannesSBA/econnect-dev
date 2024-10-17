@@ -29,7 +29,7 @@ const Page = async () => {
     redirect("/get-started");
   }
 
-  const connections = (user.friends ?? []).concat(user.friendsOf ?? []);
+  const connections = user.friends ?? [];
   const posts = user.posts;
   const applications = user.jobApplications;
   const recentApplications = applications
