@@ -7,7 +7,7 @@ import { options } from "../../auth/[...nextauth]/options";
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
   let response = "Some data";
-  console.log(body);
+
   const session = (await getServerSession(options)) as Session;
   const { OldPassword, newPassword } = body;
   const checkUserPass = await prisma.user.findMany({
@@ -21,7 +21,6 @@ export async function POST(req: Request, res: Response) {
 
   const serverPass = checkUserPass[0].password;
   const isMatch = (await hashPassword(OldPassword)) === serverPass;
-  console.log(serverPass, await hashPassword(OldPassword), isMatch);
 
   if (isMatch === false) {
     return new Response("Incorrect password", { status: 400 });

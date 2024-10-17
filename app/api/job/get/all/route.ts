@@ -7,6 +7,22 @@ export async function POST(req: Request, res: Response) {
     skip: offset,
     take: body.limit,
     orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      location: true,
+      createdAt: true,
+      updatedAt: true,
+      applicants: true,
+      description: true,
+      jobType: true,
+      postedById: true,
+      shortDescription: true,
+      expireCode: true,
+      Expired: true,
+      expireDate: true,
+      postedBy: true,
+    },
   });
 
   return new Response(JSON.stringify(getJobs), { status: 201 });

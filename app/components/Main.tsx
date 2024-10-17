@@ -27,7 +27,7 @@ const Main = ({ lang }: MainProps) => {
           </Section>
           <Section delay={0.7}>
             <p className="mt-4 text-white">
-              {lang === "en"
+              {lang == "en"
                 ? "Discover a wide range of job opportunities and take the next step in your career. "
                 : "ሰፊ የስራ እድሎችን ያግኙ እና ቀጣዩን እርምጃ ይውሰዱ በሙያዎ ውስጥ."}
             </p>
@@ -101,34 +101,34 @@ const Main = ({ lang }: MainProps) => {
               <CustomCard
                 image="date1.webp"
                 main={
-                  (lang = "en"
+                  lang === "en"
                     ? "Find The Perfect Job For You"
-                    : "ለእርስዎ ትክክለኛውን ሥራ ያግኙ")
+                    : "ለእርስዎ ትክክለኛውን ሥራ ያግኙ"
                 }
                 text={
-                  (lang = "en"
+                  lang === "en"
                     ? "Filter your search results based on location, industry, and job type to find the the ideal match for youe skills and preferences"
-                    : "ለእርስዎ ችሎታዎች እና ምርጫዎች ተስማሚ የሆነ ተዛማጅ ለማግኘት የእርስዎን የፍለጋ ውጤቶች በአካባቢ፣ በኢንዱስትሪ እና በስራ አይነት ያጣሩ")
+                    : "ለእርስዎ ችሎታዎች እና ምርጫዎች ተስማሚ የሆነ ተዛማጅ ለማግኘት የእርስዎን የፍለጋ ውጤቶች በአካባቢ፣ በኢንዱስትሪ እና በስራ አይነት ያጣሩ"
                 }
               />
               <Spacer x={4} />
               <CustomCard
                 image="dale2.webp"
-                main={(lang = "en" ? "Apply with Ease" : "በቀላሉ ማመልከት")}
+                main={lang === "en" ? "Apply with Ease" : "በቀላሉ ማመልከት"}
                 text={
-                  (lang = "en"
+                  lang === "en"
                     ? "Submit your application directly through our platform and track your progress all in one place"
-                    : "ማመልከቻዎን በቀጥታ በእኛ መድረክ በኩል ያስገቡ እና ሁሉንም ሂደትዎን በአንድ ቦታ ይከታተሉ")
+                    : "ማመልከቻዎን በቀጥታ በእኛ መድረክ በኩል ያስገቡ እና ሁሉንም ሂደትዎን በአንድ ቦታ ይከታተሉ"
                 }
               />
               <Spacer x={4} />
               <CustomCard
                 image=""
-                main={(lang = "en" ? "Stay Organized" : "ተደራጅተው ይቆዩ")}
+                main={lang === "en" ? "Stay Organized" : "ተደራጅተው ይቆዩ"}
                 text={
-                  (lang = "en"
+                  lang === "en"
                     ? "Keep track of your job applications, interviews, and offers, and recieve notification for any updates or new opportunities"
-                    : "የእርስዎን የስራ ማመልከቻዎች፣ ቃለመጠይቆች እና ቅናሾች ይከታተሉ እና ለማንኛውም ማሻሻያ ወይም አዲስ እድሎች ማሳወቂያ ይቀበሉ")
+                    : "የእርስዎን የስራ ማመልከቻዎች፣ ቃለመጠይቆች እና ቅናሾች ይከታተሉ እና ለማንኛውም ማሻሻያ ወይም አዲስ እድሎች ማሳወቂያ ይቀበሉ"
                 }
               />
             </div>

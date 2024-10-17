@@ -14,6 +14,22 @@ export async function POST(req: Request, res: Response) {
     where: {
       id: body.id,
     },
+    select: {
+      id: true,
+      title: true,
+      location: true,
+      createdAt: true,
+      updatedAt: true,
+      applicants: true,
+      description: true,
+      jobType: true,
+      postedById: true,
+      shortDescription: true,
+      expireCode: true,
+      Expired: true,
+      expireDate: true,
+      postedBy: true,
+    },
   });
 
   return new Response(JSON.stringify(listing), { status: 200 });

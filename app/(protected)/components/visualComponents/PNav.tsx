@@ -16,6 +16,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
+import { IoBriefcase, IoChatbox, IoHome, IoLink } from "react-icons/io5";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -33,7 +34,7 @@ export default function App() {
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
-      className="sticky z-50 bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md justify-between"
+      className="sticky z-50 bg-zinc-100 h-16 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md justify-between"
     >
       <NavbarContent>
         <NavbarMenuToggle
@@ -41,37 +42,51 @@ export default function App() {
           className="sm:hidden text-black"
         />
         <NavbarContent className="hidden md:flex gap-2" justify="start">
-          <Link
-            href={"/employer-dashboard"}
-            className="flex gap-4 text-blue-800"
-          >
-            <GiWaterDrop />
-            <p className="flex font-bold text-inherit">Econnect</p>
-          </Link>
-          <Link
-            href="/dashboard"
-            className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/chat"
-            className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-          >
-            Messages
-          </Link>
-          <Link
-            href="/listings"
-            className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-          >
-            Listings
-          </Link>
-          <Link
-            href="/dashboard/connections"
-            className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
-          >
-            Connections
-          </Link>
+          <div className="flex justify-between w-64 h-full">
+            <Link
+              href={"/employer-dashboard"}
+              className="flex text-blue-800 mr-3"
+            >
+              <GiWaterDrop />
+              <p className="flex font-bold text-inherit">Econnect</p>
+            </Link>
+            <Link
+              href="/dashboard"
+              className="rounded-lg p-2 px-4 justify-center h-16   font-semibold hover:text-black text-[#6C6C6C]"
+            >
+              <div className="flex flex-col items-center  rounded-md">
+                <IoHome />
+                <h1 className="hidden md:flex text-xs">Dashboard</h1>
+              </div>
+            </Link>
+            <Link
+              className="rounded-lg p-2 px-4 justify-center h-16   font-semibold hover:text-black text-[#6C6C6C]"
+              href="/chat"
+            >
+              <div className="flex flex-col items-center  rounded-md">
+                <IoChatbox />
+                <h1 className="hidden md:flex text-xs">Messeging</h1>
+              </div>
+            </Link>
+            <Link
+              href="/listings"
+              className="rounded-lg p-2 px-4 justify-center h-16   font-semibold hover:text-black text-[#6C6C6C]"
+            >
+              <div className="flex flex-col items-center rounded-md">
+                <IoBriefcase />
+                <h1 className="hidden md:flex text-xs">Listings</h1>
+              </div>
+            </Link>
+            <Link
+              href="/dashboard/connections"
+              className="rounded-lg p-2 px-4 w-20 justify-center h-16 hover:text-black font-semibold text-[#6C6C6C]"
+            >
+              <div className="flex flex-col items-center  rounded-md">
+                <IoLink />
+                <h1 className="hidden md:flex text-xs">Connects</h1>
+              </div>
+            </Link>
+          </div>
         </NavbarContent>
       </NavbarContent>
       <NavbarContent className="justify-end gap-2 fixed right-4">
