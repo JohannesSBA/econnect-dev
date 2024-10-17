@@ -4,7 +4,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Image,
   Skeleton,
   user,
   Button,
@@ -19,7 +18,7 @@ import axios from "axios";
 import parse from "html-react-parser";
 import { User } from "@/app/types/db";
 import "@/app/rich.css";
-import { getUserContent } from "@/app/helpers/getUser";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MdDelete } from "react-icons/md";
 

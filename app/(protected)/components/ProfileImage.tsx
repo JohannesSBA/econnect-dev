@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   Button,
   Input,
-  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -15,6 +14,7 @@ import {
 import axios from "axios";
 import { toast } from "sonner";
 import { set } from "zod";
+import Image from "next/image";
 
 interface profileProps {
   id: string;
@@ -69,7 +69,13 @@ const ProfileImage = ({ id }: profileProps) => {
           variant="light"
           className="w-full h-full"
         >
-          <Avatar src={previewImage} className="w-40 h-40 text-6xl border-2" />
+          <Image
+            src={previewImage}
+            width={200}
+            height={200}
+            alt="user profile picture"
+            className="w-40 h-40 text-6xl border-2 rounded-full"
+          />
         </Button>
       </div>
       <div className="md:hidden flex justify-center">

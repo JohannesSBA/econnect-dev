@@ -1,8 +1,9 @@
-import { Button, Image } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import React from "react";
 import { MdGroups } from "react-icons/md";
 import UserPicture from "./UserPicture";
 import { GiWaterDrop } from "react-icons/gi";
+import Image from "next/image";
 
 interface sideProps {
   user: any;
