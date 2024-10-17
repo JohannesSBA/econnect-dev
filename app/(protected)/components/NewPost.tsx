@@ -11,8 +11,8 @@ import {
   useDisclosure,
   Checkbox,
   Input,
-  Image,
 } from "@nextui-org/react";
+import Image from "next/image";
 import TextStyle from "@tiptap/extension-text";
 import ListItem from "@tiptap/extension-list-item";
 import axios, { AxiosError } from "axios";
@@ -258,6 +258,7 @@ export default function CreatePost() {
                         src={image}
                         alt="preview"
                         width={200}
+                        height={200}
                       />
                     ))}
                   </div>

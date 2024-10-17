@@ -1,8 +1,9 @@
-import { Button, Image } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import React from "react";
 import { MdGroups } from "react-icons/md";
 import UserPicture from "./UserPicture";
 import { GiWaterDrop } from "react-icons/gi";
+import Image from "next/image";
 
 interface sideProps {
   user: any;
@@ -48,11 +49,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
         </Button>
       </a>
       <div className="my-6 p-4">
-        <Image
-          width={400}
-          alt="Advertisement"
-          src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-        />
+        {/* <Image width={400} height={400} alt="Advertisement" src="" /> */}
       </div>
       <div className="">
         <div className="grid grid-cols-4 text-center gap-2 text-black font-light text-xs">

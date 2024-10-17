@@ -1,4 +1,3 @@
-import { Button, Image } from "@nextui-org/react";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Avatar, Link, user } from "@nextui-org/react";

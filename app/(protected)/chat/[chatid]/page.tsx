@@ -2,7 +2,7 @@ import ChatInput from "@/app/(protected)/components/ChatInput";
 import Conversations from "@/app/(protected)/components/Conversations";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Avatar, Link, Image } from "@nextui-org/react";
+import { Avatar, Link } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import React from "react";

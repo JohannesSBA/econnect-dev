@@ -7,6 +7,7 @@ import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface requestProps {
   incomingFriendRequest: any[];
@@ -58,10 +59,11 @@ const RequestHandler = ({
                 href={`/ec/${pFriends.id}`}
               >
                 <div className="flex w-full gap-2 justify-normal">
-                  <Avatar
-                    radius="lg"
-                    size="lg"
+                  <Image
+                    width={200}
+                    height={200}
                     src={`https://econnectbucket.s3.amazonaws.com/image/${pFriends.id}`}
+                    alt="user profile picture"
                   />
                   <h1 className="text-black flex flex-col justify-center font-bold">
                     {pFriends.firstName as string} {pFriends.lastName as string}

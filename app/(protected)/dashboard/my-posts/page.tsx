@@ -4,8 +4,9 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect, usePathname } from "next/navigation";
 
-import { Button, User, Image } from "@nextui-org/react";
+import { Button, User } from "@nextui-org/react";
 import { FiAirplay, FiExternalLink } from "react-icons/fi";
+import Image from "next/image";
 
 import { MdGroups } from "react-icons/md";
 import Link from "next/link";
@@ -58,6 +59,7 @@ const Page = async () => {
                 <div className="flex p-6 gap-2">
                   <Image
                     width={50}
+                    height={50}
                     className="rounded-full"
                     alt="Application Image"
                     src={`https://econnectbucket.s3.amazonaws.com/image/${application.postedById}`}

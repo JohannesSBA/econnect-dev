@@ -6,7 +6,7 @@ import UserEducation from "@/app/(protected)/components/UserEducation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { chatHrefConstructor } from "@/app/lib/utils";
-import { Avatar, Button, Card, Image, Link } from "@nextui-org/react";
+import { Avatar, Button, Card, Link } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
@@ -146,10 +146,10 @@ const page = async ({ params }: { params: { id: string } }) => {
               <h1 className="text-[#727171]">Gender</h1>
               <h1 className="text-black">{userInfo.pronouns}</h1>
             </div>
-            <div className="flex justify-between ">
+            {/* <div className="flex justify-between ">
               <h1 className="text-[#727171]">Languages</h1>
               <h1 className="text-black">{userInfo.pronouns}</h1>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col w-full">
             <div className="flex justify-between ">

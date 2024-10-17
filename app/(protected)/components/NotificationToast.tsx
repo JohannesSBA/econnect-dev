@@ -36,6 +36,8 @@ const NotificationToast: FC<NotificationToastProps> = ({
                 className="rounded-full"
                 src={`https://econnectbucket.s3.amazonaws.com/image/${senderId}`}
                 alt={`profilePictureAlt`}
+                height={200}
+                width={200}
               />
             </div>
           </div>

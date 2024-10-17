@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { User, Link, Skeleton } from "@nextui-org/react";
 import { useUser } from "./functionComponents/UserContext";
+import Image from "next/image";
 
 export default function UserPicture() {
   const userContext = useUser();
@@ -20,20 +21,24 @@ export default function UserPicture() {
         {isLoading ? (
           <Skeleton className="w-full h-24 rounded-md" />
         ) : (
-          <User
-            as="button"
-            avatarProps={{
-              isBordered: true,
-              src:
-                userInfo.image ||
-                `https://econnectbucket.s3.amazonaws.com/image/${userInfo.id}`, // Fallback image logic
-            }}
-            className="transition-transform"
-            description={userInfo.email || "No email available"} // Handle null email
-            name={`${
-              userInfo.firstName + " " + userInfo.lastName || "Anonymous"
-            }`} // Handle null name
-          />
+          <div className="flex gap-1">
+            <Image
+              src={`https://econnectbucket.s3.amazonaws.com/image/${userInfo.id}`}
+              alt="profile piture"
+              width={50}
+              height={50}
+              className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
+            />
+
+            <div className="flex flex-col">
+              <h3 className=" text-sm">
+                {userInfo.firstName + " " + userInfo.lastName}
+              </h3>
+              <p className="text-xs text-light text-slate-600">
+                {userInfo.email}
+              </p>
+            </div>
+          </div>
         )}
       </Link>
     </div>

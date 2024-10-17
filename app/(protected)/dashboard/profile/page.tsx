@@ -1,7 +1,7 @@
 import React from "react";
 import EditContent from "../../components/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Button, Card, Image, Link } from "@nextui-org/react";
+import { Button, Card, Link } from "@nextui-org/react";
 import ProfileImage from "../../components/ProfileImage";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -95,10 +95,10 @@ const page = async () => {
               <h1 className="text-[#727171]">Gender</h1>
               <h1 className="text-black">{userInfo.pronouns}</h1>
             </div>
-            <div className="flex justify-between ">
+            {/* <div className="flex justify-between ">
               <h1 className="text-[#727171]">Languages</h1>
               <h1 className="text-black">{userInfo.pronouns}</h1>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col w-full">
             <div className="flex justify-between ">
@@ -144,7 +144,7 @@ const page = async () => {
           </div>
         </div>
         <div className="w-full m-2 h-1/2 overflow-y-scroll scrollbar-thin scrollbar-webkit overflow-x-hidden">
-          <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
+          <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-sm z-20">
             Posts
           </h1>
           <Posts id={userInfo?.id as string} />
@@ -209,6 +209,13 @@ const page = async () => {
                 userCPosition={userInfo.currentPosition as string}
                 userTitle={userInfo.title as string}
               />
+              <a
+                href={"/dashboard/settings"}
+                target="_blank"
+                className="mr-4 cursor-pointer text-[#4773C5] text-sm font-semibold"
+              >
+                Settings
+              </a>
             </div>
           </div>
         </div>

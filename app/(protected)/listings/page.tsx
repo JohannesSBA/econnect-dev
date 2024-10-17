@@ -58,6 +58,7 @@ const Page = async () => {
                 <div className="flex p-6 gap-2">
                   <Image
                     width={50}
+                    height={50}
                     className="rounded-full"
                     alt="Application Image"
                     src={`https://econnectbucket.s3.amazonaws.com/image/${application.postedById}`}
