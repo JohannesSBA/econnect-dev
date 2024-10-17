@@ -44,6 +44,7 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-icons": "^4.11.0",
     "react-query": "^3.39.3",
+    "sharp": "^0.33.5",
     "sonner": "^1.0.3",
     "universal-cookie": "^6.1.1",
     "uploadthing": "^6.0.1",

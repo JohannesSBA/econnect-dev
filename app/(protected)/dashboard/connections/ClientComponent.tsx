@@ -21,7 +21,7 @@ import NotificationToast from "../../components/NotificationToast";
 import { toast } from "sonner";
 
 interface ClientComponentProps {
-  user: User;
+  user: any;
   sessionId: string;
 }
 
@@ -37,21 +37,29 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
   const router = useRouter();
 
   const connections = user.friends ?? [];
-  const filteredConnections = connections.filter((connection) =>
-    `${connection.firstName} ${connection.lastName}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+  const filteredConnections = connections.filter(
+    (connection: { firstName: any; lastName: any }) =>
+      `${connection.firstName} ${connection.lastName}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
-  const sortedConnections = filteredConnections.sort((a, b) => {
-    if (sortOption === "recent") {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  const sortedConnections = filteredConnections.sort(
+    (
+      a: { createdAt: string | number | Date; lastName: any },
+      b: { createdAt: string | number | Date; lastName: any }
+    ) => {
+      if (sortOption === "recent") {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }
+      if (sortOption === "lastName") {
+        return (a.lastName ?? "").localeCompare(b.lastName ?? "");
+      }
+      return 0;
     }
-    if (sortOption === "lastName") {
-      return (a.lastName ?? "").localeCompare(b.lastName ?? "");
-    }
-    return 0;
-  });
+  );
 
   const handleOpenModal = (connection: any) => {
     setSelectedFriend(connection);
@@ -107,92 +115,114 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
         </div>
 
         {/* Render sorted connections */}
-        {sortedConnections.map((connection) => (
-          <div
-            className="flex p-6 gap-2 justify-between border shadow-sm mb-4"
-            key={connection.id}
-          >
-            <div>
-              <Image
-                src={`https://econnectbucket.s3.amazonaws.com/image/${connection.id}`}
-                alt="Application Image"
-                width={50}
-                height={50}
-                className="rounded-full"
-              />
+        {sortedConnections.map(
+          (connection: {
+            id: React.Key | null | undefined;
+            firstName: string;
+            lastName: string;
+            email:
+              | string
+              | number
+              | boolean
+              | React.ReactElement<
+                  any,
+                  string | React.JSXElementConstructor<any>
+                >
+              | Iterable<React.ReactNode>
+              | React.ReactPortal
+              | React.PromiseLikeOfReactNode
+              | null
+              | undefined;
+          }) => (
+            <div
+              className="flex p-6 gap-2 justify-between border shadow-sm mb-4"
+              key={connection.id}
+            >
+              <div>
+                <Image
+                  src={`https://econnectbucket.s3.amazonaws.com/image/${connection.id}`}
+                  alt="Application Image"
+                  width={50}
+                  height={50}
+                  className="rounded-full"
+                />
 
-              <div className="flex flex-col">
-                <p className="text-lg font-semibold">
-                  {connection.firstName + " " + connection.lastName}
-                </p>
-                <p className="text-sm text-slate-400">{connection.email}</p>
+                <div className="flex flex-col">
+                  <p className="text-lg font-semibold">
+                    {connection.firstName + " " + connection.lastName}
+                  </p>
+                  <p className="text-sm text-slate-400">{connection.email}</p>
+                </div>
+              </div>
+              <div className="flex gap-2 justify-center items-center">
+                <Button
+                  color="primary"
+                  as={Link}
+                  href={`/chat/${chatHrefConstructor(
+                    connection.id as string,
+                    sessionId
+                  )}`}
+                >
+                  Message
+                </Button>
+                <Button color="default" href={`/ec/${connection.id}`} as={Link}>
+                  Profile
+                </Button>
+                <Button
+                  onPress={() => handleOpenModal(connection)}
+                  color="warning"
+                >
+                  Unfriend
+                </Button>
+                <Modal
+                  isOpen={isOpen}
+                  onOpenChange={onOpenChange}
+                  backdrop="blur"
+                  className="light"
+                >
+                  <ModalContent>
+                    {(onClose) => (
+                      <>
+                        <ModalHeader className="flex flex-col gap-1 text-black ">
+                          Are You Sure?
+                        </ModalHeader>
+                        <ModalBody>
+                          <p className="text-black">
+                            This action cannot be undone! Are you sure you want
+                            to remove {selectedFriend?.firstName} from your
+                            friends list?
+                          </p>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button
+                            color="default"
+                            variant="light"
+                            className="z-50"
+                            onPress={onClose}
+                          >
+                            Close
+                          </Button>
+                          <Button
+                            color="danger"
+                            className="z-50"
+                            onPress={() =>
+                              removeFriend(
+                                selectedFriend?.id as string,
+                                selectedFriend?.email
+                              )
+                            }
+                          >
+                            Confirm
+                          </Button>
+                        </ModalFooter>
+                      </>
+                    )}
+                  </ModalContent>
+                </Modal>
               </div>
             </div>
-            <div className="flex gap-2 justify-center items-center">
-              <Button
-                color="primary"
-                as={Link}
-                href={`/chat/${chatHrefConstructor(connection.id, sessionId)}`}
-              >
-                Message
-              </Button>
-              <Button color="default" href={`/ec/${connection.id}`} as={Link}>
-                Profile
-              </Button>
-              <Button
-                onPress={() => handleOpenModal(connection)}
-                color="warning"
-              >
-                Unfriend
-              </Button>
-              <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                backdrop="blur"
-                className="light"
-              >
-                <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalHeader className="flex flex-col gap-1 text-black ">
-                        Are You Sure?
-                      </ModalHeader>
-                      <ModalBody>
-                        <p className="text-black">
-                          This action cannot be undone! Are you sure you want to
-                          remove {selectedFriend?.firstName} from your friends
-                          list?
-                        </p>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          color="default"
-                          variant="light"
-                          className="z-50"
-                          onPress={onClose}
-                        >
-                          Close
-                        </Button>
-                        <Button
-                          color="danger"
-                          className="z-50"
-                          onPress={() =>
-                            removeFriend(
-                              selectedFriend?.id as string,
-                              selectedFriend?.email
-                            )
-                          }
-                        >
-                          Confirm
-                        </Button>
-                      </ModalFooter>
-                    </>
-                  )}
-                </ModalContent>
-              </Modal>
-            </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
       <div className="w-1/4 h-[90%]">
         <SideInfo
