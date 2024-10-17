@@ -17,7 +17,6 @@ import {
 import Link from "next/link";
 import SideInfo from "../../components/SideInfo";
 import axios from "axios";
-import NotificationToast from "../../components/NotificationToast";
 import { toast } from "sonner";
 
 interface ClientComponentProps {
@@ -170,7 +169,7 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
                 </Button>
                 <Button
                   onPress={() => handleOpenModal(connection)}
-                  color="warning"
+                  color="danger"
                 >
                   Unfriend
                 </Button>
