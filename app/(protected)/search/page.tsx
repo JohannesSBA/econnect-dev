@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import parse from "html-react-parser";
 import { Button, Link, Image, User, divider } from "@nextui-org/react";
@@ -23,7 +23,7 @@ const SearchPage = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
 
@@ -37,20 +37,19 @@ const SearchPage = () => {
         listings: newListings = [],
       } = response.data;
 
-      // Ensure that newUsers, newPosts, and newListings are arrays
-      setUsers(response.data.users);
-      setPosts(response.data.posts);
-      setListings(response.data.listings);
+      setUsers(newUsers);
+      setPosts(newPosts);
+      setListings(newListings);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [encodedSearchQuery, hasMore, loading]);
 
   useEffect(() => {
     fetchData();
-  }, [encodedSearchQuery]);
+  }, [fetchData]);
 
   return (
     <div className="w-screen h-screen flex flex-col items-center bg-slate-200">
