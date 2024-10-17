@@ -46,6 +46,7 @@ const RequestHandler = ({
       {incomingFriendRequest.length > 0
         ? incomingFriendRequest.map(
             (pFriends: {
+              email: string | null;
               id: string;
               firstName: string | null;
               lastName: string | null;
@@ -64,9 +65,12 @@ const RequestHandler = ({
                   />
                   <h1 className="text-black flex flex-col justify-center font-bold">
                     {pFriends.firstName as string} {pFriends.lastName as string}
+                    <p className="text-slate-500 text-xs pl-2">
+                      {pFriends.email}
+                    </p>
                   </h1>
                 </div>
-                <div className="rounded-full bg-white group-hover:bg-blue-600 group-hover:text-white flex">
+                <div className="gap-2 flex">
                   <Button
                     onClick={() =>
                       acceptFriend(

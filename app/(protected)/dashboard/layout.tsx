@@ -26,9 +26,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
 
   const userRole = userInfo.role as string;
 
-  const friends = userInfo.friends as unknown as Friend[];
-  const friendsOf = userInfo.friendsOf as unknown as Friend[];
-  const friendsList = friends.concat(friendsOf);
+  const friendsList = userInfo.friends as unknown as Friend[];
 
   return (
     <html lang="en" className="scrollbar-thin scrollbar-webkit">

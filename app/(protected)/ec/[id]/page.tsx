@@ -78,8 +78,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     Description: string | null;
   }[];
 
-  const numOfConnection =
-    (userInfo.friends?.length ?? 0) + (userInfo.friendsOf?.length ?? 0);
+  const numOfConnection = userInfo.friends?.length ?? 0;
 
   const dateJoined = userInfo.emailVerified;
 
@@ -92,7 +91,6 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (stringifiedFriends) {
     areFriends = stringifiedFriends.includes(session.user.id);
   }
-  
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] flex bg-[#F4F2EE]">

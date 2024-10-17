@@ -11,7 +11,7 @@ interface sideProps {
 }
 
 const SideInfo = ({ user, posts, applications }: sideProps) => {
-  const connections = (user.friends ?? []).concat(user.friendsOf ?? []);
+  const connections = user.friends ?? [];
 
   return (
     <div className="h-full rounded-2xl w-full bg-white flex flex-col items-center">

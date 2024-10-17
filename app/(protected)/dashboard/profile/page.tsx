@@ -1,7 +1,7 @@
 import React from "react";
 import EditContent from "../../components/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Button, Card, Image } from "@nextui-org/react";
+import { Button, Card, Image, Link } from "@nextui-org/react";
 import ProfileImage from "../../components/ProfileImage";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -47,8 +47,7 @@ const page = async () => {
     Description: string | null;
   }[];
 
-  const numOfConnection =
-    (userInfo.friends?.length ?? 0) + (userInfo.friendsOf?.length ?? 0);
+  const numOfConnection = userInfo.friends?.length ?? 0;
 
   const dateJoined = userInfo.emailVerified;
 
@@ -88,10 +87,10 @@ const page = async () => {
         )}
         <div className="w-full flex flex-col justify-around gap-8">
           <div className="flex flex-col w-full">
-            <div className="flex justify-between ">
+            <Link href="connections" className="flex justify-between ">
               <h1 className="text-[#727171]">Connections</h1>
               <h1 className="text-black">{numOfConnection}</h1>
-            </div>
+            </Link>
             <div className="flex justify-between ">
               <h1 className="text-[#727171]">Gender</h1>
               <h1 className="text-black">{userInfo.pronouns}</h1>

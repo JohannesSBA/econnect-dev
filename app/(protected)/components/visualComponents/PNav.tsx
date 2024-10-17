@@ -24,6 +24,7 @@ export default function App() {
     ["Profile", "/dashboard/profile"],
     ["Dashboard", "/dashboard"],
     ["Messages", "/chat"],
+    ["Connections", "/dashboard/connections"],
     ["Search", "/search"],
     ["My Settings", "/dashboard/settings"],
     ["Help & Feedback", "/help"],
@@ -39,7 +40,7 @@ export default function App() {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden text-black"
         />
-        <NavbarContent className="flex gap-2" justify="start">
+        <NavbarContent className="hidden md:flex gap-2" justify="start">
           <Link
             href={"/employer-dashboard"}
             className="flex gap-4 text-blue-800"
@@ -47,8 +48,6 @@ export default function App() {
             <GiWaterDrop />
             <p className="flex font-bold text-inherit">Econnect</p>
           </Link>
-        </NavbarContent>
-        <NavbarContent className=" hidden sm:flex gap-2" justify="start">
           <Link
             href="/dashboard"
             className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
@@ -67,18 +66,20 @@ export default function App() {
           >
             Listings
           </Link>
+          <Link
+            href="/dashboard/connections"
+            className="rounded-lg p-2 px-4 font-semibold text-[#6C6C6C]"
+          >
+            Connections
+          </Link>
         </NavbarContent>
       </NavbarContent>
-      <NavbarContent className="hidden md:flex gap-4">
-        <NavbarItem>
-          <Search />
-        </NavbarItem>
-      </NavbarContent>
       <NavbarContent className="justify-end gap-2 fixed right-4">
-        <NavbarItem className="hidden md:flex">
+        <NavbarItem className="hidden lg:flex gap-2">
+          <Search />
           <UserPicture />
         </NavbarItem>
-        <NavbarItem className="flex ">
+        <NavbarItem className="flex px-2">
           <SignOutButton />
         </NavbarItem>
       </NavbarContent>
