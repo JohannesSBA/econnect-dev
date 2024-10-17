@@ -11,10 +11,10 @@ import SignInSecurity from "./SideBarComponents/SignInSecurity";
 const sections = [
   { label: "Account preferences", id: "account-preferences" },
   { label: "Sign in & security", id: "sign-in-security" },
-  { label: "Visibility", id: "visibility" },
-  { label: "Data privacy", id: "data-privacy" },
-  { label: "Advertising data", id: "advertising-data" },
-  { label: "Notifications", id: "notifications" },
+  // { label: "Visibility", id: "visibility" },
+  // { label: "Data privacy", id: "data-privacy" },
+  // { label: "Advertising data", id: "advertising-data" },
+  // { label: "Notifications", id: "notifications" },
 ];
 
 interface ClientComponentProps {
@@ -80,10 +80,10 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
           <AccountPreferences user={user} />
         )}
         {sectionId === "sign-in-security" && <SignInSecurity user={user} />}
-        {sectionId === "visibility" && <Visibility />}
-        {sectionId === "data-privacy" && <DataPrivacy />}
-        {sectionId === "advertising-data" && <AdvertisingData />}
-        {sectionId === "notifications" && <Notifications />}
+        {/* {sectionId === "visibility" && <Visibility />} */}
+        {/* {sectionId === "data-privacy" && <DataPrivacy />} */}
+        {/* {sectionId === "advertising-data" && <AdvertisingData />} */}
+        {/* {sectionId === "notifications" && <Notifications />} */}
       </div>
     </div>
   );
