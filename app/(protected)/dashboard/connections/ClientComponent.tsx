@@ -16,6 +16,9 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import SideInfo from "../../components/SideInfo";
+import axios from "axios";
+import NotificationToast from "../../components/NotificationToast";
+import { toast } from "sonner";
 
 interface ClientComponentProps {
   user: User;
@@ -55,6 +58,21 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
     onOpen();
   };
 
+  const removeFriend = async (friendId: string, email: string) => {
+    try {
+      const res = await axios.post("/api/friends/unfriend", {
+        friendId: friendId,
+        email: email,
+      });
+      if (res.status === 200) {
+        toast.success("Friend removed successfully");
+        window.location.reload();
+      }
+    } catch (error) {
+      toast.error("Failed to remove friend, Please try again later");
+    }
+  };
+
   return (
     <div className="w-screen md:h-screen overflow-clip bg-slate-100 flex flex-col md:flex-row justify-between font-PlusJakartSans p-4 gap-2">
       <div className="h-[90%] w-3/4 flex flex-col overflow-scroll p-6 pl-12 bg-white shadow-md text-black ">
@@ -73,6 +91,7 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
 
         {/* Sort Options */}
         <div className="flex gap-4 mb-4">
+          <h1 className="text-slate-400 text-sm p-4">Sorted by</h1>
           <button
             className={`p-2 ${sortOption === "recent" ? "font-bold" : ""}`}
             onClick={() => setSortOption("recent")}
@@ -89,9 +108,8 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
 
         {/* Render sorted connections */}
         {sortedConnections.map((connection) => (
-          <Link
-            href={`/ec/${connection.id}`}
-            className="flex p-6 gap-2 justify-between hover:cursor-pointer border shadow-sm mb-4"
+          <div
+            className="flex p-6 gap-2 justify-between border shadow-sm mb-4"
             key={connection.id}
           >
             <div>
@@ -118,22 +136,29 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
               >
                 Message
               </Button>
-
+              <Button color="default" href={`/ec/${connection.id}`} as={Link}>
+                Profile
+              </Button>
               <Button
                 onPress={() => handleOpenModal(connection)}
                 color="warning"
               >
                 Unfriend
               </Button>
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+              <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                backdrop="blur"
+                className="light"
+              >
                 <ModalContent>
                   {(onClose) => (
                     <>
-                      <ModalHeader className="flex flex-col gap-1">
+                      <ModalHeader className="flex flex-col gap-1 text-black ">
                         Are You Sure?
                       </ModalHeader>
                       <ModalBody>
-                        <p>
+                        <p className="text-black">
                           This action cannot be undone! Are you sure you want to
                           remove {selectedFriend?.firstName} from your friends
                           list?
@@ -143,15 +168,20 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
                         <Button
                           color="default"
                           variant="light"
+                          className="z-50"
                           onPress={onClose}
                         >
                           Close
                         </Button>
                         <Button
-                          color="warning"
-                          //   onPress={() =>
-                          //     removeFriend(selectedFriend?.id as string)
-                          //   }
+                          color="danger"
+                          className="z-50"
+                          onPress={() =>
+                            removeFriend(
+                              selectedFriend?.id as string,
+                              selectedFriend?.email
+                            )
+                          }
                         >
                           Confirm
                         </Button>
@@ -161,10 +191,10 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
                 </ModalContent>
               </Modal>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
-      <div className="w-1/4">
+      <div className="w-1/4 h-[90%]">
         <SideInfo
           user={user}
           posts={user.posts}
