@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  Image,
   Skeleton,
   user,
   Button,
@@ -18,7 +19,7 @@ import axios from "axios";
 import parse from "html-react-parser";
 import { User } from "@/app/types/db";
 import "@/app/rich.css";
-import Image from "next/image";
+import { getUserContent } from "@/app/helpers/getUser";
 import { usePathname } from "next/navigation";
 import { MdDelete } from "react-icons/md";
 
@@ -138,7 +139,6 @@ export default function Posts(id: PostProp) {
                     alt=""
                     className="rounded-full border"
                     width={50}
-                    height={50}
                   />
                   <div className="flex flex-col m-0 p-0">
                     <h1 className="font-bold">{`${post.author.firstName} ${post.author.lastName}`}</h1>
@@ -214,19 +214,16 @@ export default function Posts(id: PostProp) {
               <div className="flex gap-4 m-3">
                 <Image
                   width={200}
-                  height={200}
                   alt="Application Image"
                   src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/0`}
                 />
                 <Image
                   width={200}
-                  height={200}
                   alt="Application Image"
                   src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/1`}
                 />
                 <Image
                   width={200}
-                  height={200}
                   alt="Application Image"
                   src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/2`}
                 />

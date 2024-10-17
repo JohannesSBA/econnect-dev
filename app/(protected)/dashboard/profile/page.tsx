@@ -144,7 +144,7 @@ const page = async () => {
           </div>
         </div>
         <div className="w-full m-2 h-1/2 overflow-y-scroll scrollbar-thin scrollbar-webkit overflow-x-hidden">
-          <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
+          <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-sm z-20">
             Posts
           </h1>
           <Posts id={userInfo?.id as string} />

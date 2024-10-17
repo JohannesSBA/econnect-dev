@@ -49,12 +49,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
         </Button>
       </a>
       <div className="my-6 p-4">
-        <Image
-          width={400}
-          height={400}
-          alt="Advertisement"
-          src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-        />
+        {/* <Image width={400} height={400} alt="Advertisement" src="" /> */}
       </div>
       <div className="">
         <div className="grid grid-cols-4 text-center gap-2 text-black font-light text-xs">
