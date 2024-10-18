@@ -13,14 +13,15 @@ export async function POST(req: Request, res: Response) {
       data: {
         userId: session.user.id as string,
         title: body.title,
-        EmploymentType: body.EmploymentType,
-        CompanyName: body.CompanyName,
-        LocationName: body.LocationName,
-        LocationType: body.LocationType,
-        currently: body.currently,
+        employmentType: body.employmentType,
+        companyName: body.companyName,
+        locationName: body.locationName,
+        locationType: body.locationType,
+        description: body.description,
+        id: body.id,
         startDate: body.startDate,
         endDate: body.endDate,
-        Description: body.Description,
+        currently: body.currently, // Added the missing 'currently' property
       },
     })
     .catch(() => {

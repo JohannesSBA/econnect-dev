@@ -32,8 +32,14 @@ export async function POST(req: Request, res: Response) {
               location: true,
               lastName: true,
               title: true,
+              likes: true,
             },
           },
+          likes: true,
+          comments: true,
+          categories: true,
+          reports: true,
+          savedBy: true,
         }, // Include only the id and name of the author
       });
       const stringifiedPosts = JSON.stringify(posts);
@@ -65,8 +71,14 @@ export async function POST(req: Request, res: Response) {
               location: true,
               lastName: true,
               title: true,
+              likes: true,
             },
           },
+          likes: true,
+          comments: true,
+          categories: true,
+          reports: true,
+          savedBy: true,
         }, // Include only the id and name of the author
       });
 

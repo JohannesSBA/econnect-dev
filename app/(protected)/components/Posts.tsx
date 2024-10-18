@@ -1,5 +1,11 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  FormEvent,
+} from "react";
 import {
   Card,
   CardHeader,
@@ -22,12 +28,14 @@ import "@/app/rich.css";
 import { getUserContent } from "@/app/helpers/getUser";
 import { usePathname } from "next/navigation";
 import { MdDelete } from "react-icons/md";
+import { IoMdThumbsUp } from "react-icons/io";
 
 interface PostProp {
-  id: string;
+  id: any;
+  userId: string;
 }
 
-export default function Posts(id: PostProp) {
+export default function Posts(userId: PostProp) {
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -51,7 +59,7 @@ export default function Posts(id: PostProp) {
     setIsLoading(true);
     try {
       const res = await axios.post("/api/user/post/my", {
-        userId: id,
+        userId: userId,
         page: page,
         limit: 5, // or any other number you want to use as the limit
       });
@@ -71,7 +79,7 @@ export default function Posts(id: PostProp) {
     } finally {
       setIsLoading(false);
     }
-  }, [allPostsLoaded, id, page]);
+  }, [allPostsLoaded, userId, page]);
 
   useEffect(() => {
     fetchPosts();
@@ -109,6 +117,53 @@ export default function Posts(id: PostProp) {
     }
   }
 
+  async function handleLike(postId: string, isLiked: boolean) {
+    try {
+      if (isLiked) {
+        // If the post is already liked, unlike it
+        await axios.post("/api/user/post/unlike", {
+          postId: postId,
+        });
+      } else {
+        // If the post is not liked, like it
+        await axios.post("/api/user/post/like", {
+          postId: postId,
+        });
+      }
+
+      // Update the post's likes in the state
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                likes: isLiked
+                  ? post.likes.filter(
+                      (like: { userId: any }) => like.userId !== userId.id
+                    ) // Unlike: Remove the user from likes
+                  : [...post.likes, { userId: userId.id }], // Like: Add the user to likes
+              }
+            : post
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // function handleComment(e: PressEvent): void {
+  //   throw new Error("Function not implemented.");
+  // }
+
+  // function handReport(e: PressEvent): void {
+  //   throw new Error("Function not implemented.");
+  // }
+
+  // console.log(posts);
+
+  // console.log(posts[0]?.likes.some(like: {id: any})=> like.id);
+  // console.log(userId);
+
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
       {posts.length === 0 && !isLoading ? (
@@ -126,6 +181,8 @@ export default function Posts(id: PostProp) {
             createdAt: Date;
             author: User;
             authorId: string;
+            likes: any[];
+            comments: any[];
           }) => (
             <div
               key={post.id}
@@ -210,6 +267,7 @@ export default function Posts(id: PostProp) {
               </div>
               <h1 className="font-bold">{post.title}</h1>
               <div>{parse(post.content)}</div>
+
               <div className="flex gap-4 m-3">
                 <Image
                   width={200}
@@ -227,19 +285,56 @@ export default function Posts(id: PostProp) {
                   src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/2`}
                 />
               </div>
+              <div className=" w-full shadow-sm flex justify-between">
+                <h1 className="text-xs text-slate-600">
+                  {post.likes.length + " Liked this post"}
+                </h1>
+                <h1 className="text-xs text-slate-600">
+                  {post.comments.length} Comments
+                </h1>
+              </div>
               <div className="flex justify-between">
                 <div className="flex gap-2">
                   <Button
-                    color="success"
+                    color="primary"
                     variant="light"
-                    className="rounded-md"
+                    className={`rounded-md ${
+                      post.likes.some(
+                        (like: { userId: any }) => like.userId === userId.id
+                      )
+                        ? "text-blue-400"
+                        : "text-black"
+                    }`}
+                    onPress={() =>
+                      handleLike(
+                        post.id as string,
+                        post.likes.some(
+                          (like: { userId: any }) => like.userId === userId.id
+                        )
+                      )
+                    }
                   >
-                    Like
+                    <IoMdThumbsUp
+                      color={
+                        post.likes.some(
+                          (like: { userId: any }) => like.userId === userId.id
+                        )
+                          ? "blue"
+                          : "black"
+                      }
+                    />
+                    {post.likes.some(
+                      (like: { userId: any }) => like.userId === userId.id
+                    )
+                      ? "Unlike"
+                      : "Like"}
                   </Button>
+
                   <Button
                     color="warning"
                     variant="light"
                     className="rounded-md"
+                    // onPress={handleComment}
                   >
                     Comment
                   </Button>
@@ -249,6 +344,7 @@ export default function Posts(id: PostProp) {
                     color="warning"
                     variant="light"
                     className="rounded-md"
+                    // onPress={handReport}
                   >
                     Report
                   </Button>

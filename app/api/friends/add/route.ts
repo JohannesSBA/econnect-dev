@@ -13,7 +13,7 @@ export async function POST(req: Request, res: Response) {
       select: {
         id: true,
         friends: true,
-        frinedsOf: true,
+        friendsOf: true,
         sentFriendRequest: true,
       },
     });

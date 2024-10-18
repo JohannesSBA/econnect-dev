@@ -91,7 +91,7 @@ const Page = async () => {
           Your Activity
         </h1>
         <div className="h-[553px] bg-white rounded-md m-4 text-black overflow-scroll">
-          <Posts id={session.user.id} />
+          <Posts id={session.user.id} userId="" />
         </div>
         <div className="bg-white rounded-md mx-2 flex p-2">
           <User

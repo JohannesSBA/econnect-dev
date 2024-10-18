@@ -147,7 +147,7 @@ const page = async () => {
           <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-sm z-20">
             Posts
           </h1>
-          <Posts id={userInfo?.id as string} />
+          <Posts id={userInfo?.id as string} userId="" />
         </div>
       </div>
       <div className="md:w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">
@@ -201,14 +201,7 @@ const page = async () => {
               >
                 View Resume
               </a>
-              <EditContent
-                userBio={userInfo.bio as string}
-                userName={userInfo.firstName as string}
-                userPronouns={userInfo.pronouns}
-                userLocation={userInfo.location as string}
-                userCPosition={userInfo.currentPosition as string}
-                userTitle={userInfo.title as string}
-              />
+
               <a
                 href={"/dashboard/settings"}
                 target="_blank"

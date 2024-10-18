@@ -91,7 +91,7 @@ const Page = async () => {
           Posts
         </h1>
         <div className="h-[553px] flex w-full md:w-auto bg-white rounded-md m-4 text-black overflow-scroll">
-          <Posts id={""} />
+          <Posts id={""} userId="" />
         </div>
         <div className="bg-white text-black rounded-md mx-2 flex p-2 items-center">
           <User

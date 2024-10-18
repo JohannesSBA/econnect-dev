@@ -15,7 +15,7 @@ export async function POST(req: Request, res: Response) {
         friends: {
           connect: { id: body.id },
         },
-        frinedsOf: {
+        friendsOf: {
           connect: { id: session.user.id },
         },
         pendingFriendRequest: {
