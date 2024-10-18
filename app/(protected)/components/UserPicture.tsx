@@ -18,10 +18,10 @@ export default function UserPicture() {
           <div className="flex gap-1">
             <Image
               src={`https://econnectbucket.s3.amazonaws.com/image/${userInfo.id}`}
-              alt="profile piture"
+              alt="profile picture"
               width={50}
               height={50}
-              className="border-4 border-slate-400 justify-center object-contain rounded-full bg-slate-200"
+              className="border-4 border-slate-400 justify-center object-cover rounded-full bg-slate-200 w-12 h-12"
             />
 
             <div className="flex flex-col">
