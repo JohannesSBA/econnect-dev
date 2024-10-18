@@ -8,11 +8,11 @@ import { Message } from "@/app/lib/validation";
 import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
 import { Friend } from "@/app/types/db";
-import NotificationToast from "./NotificationToast";
 import Link from "next/link";
 import { FaUserFriends } from "react-icons/fa";
 import prisma from "@/app/lib/prisma";
 import axios from "axios";
+import NotificationToast from "./NotificationToast";
 
 interface MessageProps {
   userId: string;

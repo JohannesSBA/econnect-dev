@@ -15,11 +15,20 @@ export async function POST(req: Request, res: Response) {
         friends: {
           connect: { id: body.id },
         },
-        frinedsOf: {
-          connect: { id: session.user.id },
-        },
         pendingFriendRequest: {
           disconnect: { id: body.id },
+        },
+      },
+    });
+
+    await prisma.user.update({
+      where: { id: body.id },
+      data: {
+        friends: {
+          connect: { id: session.user.id },
+        },
+        sentFriendRequest: {
+          disconnect: { id: session.user.id },
         },
       },
     });

@@ -99,7 +99,7 @@ const Main = ({ lang }: MainProps) => {
           <Section delay={0.7}>
             <div className="hidden md:flex mt-4 p-4 justify-around">
               <CustomCard
-                image="date1.webp"
+                image="/date1.webp"
                 main={
                   lang === "en"
                     ? "Find The Perfect Job For You"
@@ -113,7 +113,7 @@ const Main = ({ lang }: MainProps) => {
               />
               <Spacer x={4} />
               <CustomCard
-                image="dale2.webp"
+                image="/dale2.webp"
                 main={lang === "en" ? "Apply with Ease" : "በቀላሉ ማመልከት"}
                 text={
                   lang === "en"

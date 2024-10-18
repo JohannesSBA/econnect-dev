@@ -191,7 +191,7 @@ export default function CreatePost() {
       <Button
         onPress={onOpen}
         disableAnimation
-        className=" w-[832px] h-16 mx-8 border rounded-full border-slate-300 bg-white flex gap-4 py-6 justify-between"
+        className=" w-[112rem] h-16 mx-8 border rounded-full border-slate-300 bg-white flex gap-4 py-6 justify-between"
       >
         <h1 className="font-PlusJakartaSans ml-2 text-base text-[#676667]">
           Create new Post

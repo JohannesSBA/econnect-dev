@@ -3,11 +3,19 @@
 import axios from "axios";
 import React, { FormEvent, useReducer, useState } from "react";
 import validateCredentials from "../helpers/validateForm";
-import { Button, Checkbox, Input, Radio, RadioGroup } from "@nextui-org/react";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Radio,
+  RadioGroup,
+  Spinner,
+} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import Nav from "../components/Nav";
+import { set } from "zod";
 
 export default function Form() {
   const [email, setEmail] = useState<string>();
@@ -19,7 +27,7 @@ export default function Form() {
   const [role, setRole] = useState<string>();
   const [visible, setVisible] = useState<boolean>();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   function passWordMatch(password: string, confirmedPassword: string) {
     if (password === confirmedPassword) {
@@ -30,6 +38,7 @@ export default function Form() {
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!passWordMatch(password as string, confirmPassword as string)) {
@@ -58,13 +67,15 @@ export default function Form() {
         } catch (error: any) {
           // 'any' type is used here, but try to use a more specific type if possible
           toast.error(`Error: ${error.response?.data}`);
+        } finally {
+          setLoading(false);
         }
       }
     }
   };
 
   return (
-    <div className="w-screen h-screen flex">
+    <div className="w-screen h-screen flex light text-black">
       <div className="md:w-1/3 lg:w-2/3 h-screen cs-background hidden md:flex items-center">
         <div className="absolute top-0 w-screen">
           <Nav lang={"en"} />
@@ -89,7 +100,7 @@ export default function Form() {
               Employee
             </Button>
             <Button
-              className="w-full"
+              className="w-full text-black"
               radius="none"
               {...(role === "EMPLOYER" && { color: "primary" })}
               onClick={() => {
@@ -106,6 +117,7 @@ export default function Form() {
                 label="First Name"
                 placeholder="Enter your first name"
                 variant="bordered"
+                className="text-black"
                 onChange={(e) => {
                   setFirstName(e.target.value);
                 }}
@@ -114,6 +126,7 @@ export default function Form() {
                 required
                 label="Last Name"
                 placeholder="Enter your last name"
+                className="text-black"
                 variant="bordered"
                 onChange={(e) => {
                   setLastName(e.target.value);
@@ -124,6 +137,7 @@ export default function Form() {
             <Input
               required
               label="Business Name"
+              className="text-black"
               placeholder="Enter your Business's name"
               variant="bordered"
               onChange={(e) => {
@@ -137,6 +151,7 @@ export default function Form() {
             required
             label="Email"
             placeholder="Enter your email"
+            className="text-black"
             variant="bordered"
             onChange={(e) => {
               setEmail(e.target.value);
@@ -147,6 +162,7 @@ export default function Form() {
             label="Phone Number"
             placeholder="Enter your Phone Number"
             type="phoneNumber"
+            className="text-black"
             variant="bordered"
             onChange={(e) => {
               setPhoneNumber(e.target.value);
@@ -158,6 +174,7 @@ export default function Form() {
               label="Password"
               placeholder="Enter your password"
               type={visible ? "text" : "password"}
+              className="text-black"
               variant="bordered"
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -168,6 +185,7 @@ export default function Form() {
               label="Confirm Password"
               placeholder="Confirm your password"
               type={visible ? "text" : "password"}
+              className="text-black"
               variant="bordered"
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
@@ -180,7 +198,7 @@ export default function Form() {
             }}
             onClick={() => setVisible(!visible)}
           >
-            <p className="text-slate-200">Show Password</p>
+            <p className="text-slate-800">Show Password</p>
           </Checkbox>
 
           <Button
@@ -190,7 +208,7 @@ export default function Form() {
             className="w-full hover:bg-blue-700 rounded-full"
             disabled={isDisabled}
           >
-            {isDisabled ? "Email Sent" : "Sign Up"}
+            {isDisabled ? "Email Sent" : loading ? <Spinner /> : "Sign Up"}
           </Button>
         </form>
       </div>

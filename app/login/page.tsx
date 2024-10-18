@@ -47,8 +47,8 @@ export default function Login() {
   }
 
   return (
-    <div className="w-screen h-screen flex">
-      <div className="md:w-1/3 lg:w-2/3 h-screen cs-background hidden md:flex items-center">
+    <div className="w-screen h-screen flex light text-black">
+      <div className="md:w-1/3 lg:w-2/3 h-screen cs-background hidden md:flex items-center light">
         <div className="absolute top-0 w-screen">
           <Nav lang={"en"} />
         </div>
@@ -56,12 +56,15 @@ export default function Login() {
       </div>
       <div className="w-screen md:w-2/3 lg:w-1/3 flex flex-col justify-center align-middle p-12 bg-slate-100 text-slate-800">
         <h1 className="py-6 px-2 font-bold text-4xl">Login</h1>
-        <form className="flex flex-col gap-3" onSubmit={loginWithCredentials}>
+        <form
+          className="flex flex-col gap-3 text-black"
+          onSubmit={loginWithCredentials}
+        >
           <Input
             endContent={<AiOutlineMail />}
             required
             label="Email"
-            className="text-slate-800"
+            className="text-black"
             placeholder="Enter your email"
             variant="bordered"
             onChange={(e) => {
@@ -75,6 +78,7 @@ export default function Login() {
             placeholder="Enter your password"
             type={visible ? "text" : "password"}
             variant="bordered"
+            className="text-black"
             onChange={(e) => {
               setPassword(e.target.value);
             }}

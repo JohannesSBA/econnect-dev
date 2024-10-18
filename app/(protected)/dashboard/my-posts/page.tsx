@@ -3,11 +3,9 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { redirect, usePathname } from "next/navigation";
-
 import { Button, User } from "@nextui-org/react";
 import { FiAirplay, FiExternalLink } from "react-icons/fi";
 import Image from "next/image";
-
 import { MdGroups } from "react-icons/md";
 import Link from "next/link";
 import NewPost from "../../components/NewPost";
@@ -87,15 +85,9 @@ const Page = async () => {
         </div>
       </div>
       <div className="w-2/4 flex flex-col h-[90%] border rounded-md">
-        <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
-          Your Activity
-        </h1>
-        <div className="h-[553px] bg-white rounded-md m-4 text-black overflow-scroll">
-          <Posts id={session.user.id} />
-        </div>
-        <div className="bg-white rounded-md mx-2 flex p-2">
+        <div className="flex pt-2">
           <User
-            name="User Name" // Add the 'name' property with a value
+            name={""} // Add the 'name' property with a value
             avatarProps={{
               isBordered: true,
               src: `https://econnectbucket.s3.amazonaws.com/image/${user.id}`,
@@ -103,9 +95,18 @@ const Page = async () => {
             className="transition-transform ml-4 translate-x-4"
           />
           <NewPost />
-          <Link href="/dashboard/" className="text-blue-400 font-light">
-            All Posts
-          </Link>
+          <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
+            Your Activity
+          </h1>
+        </div>
+        <Link
+          href="/dashboard/"
+          className="text-blue-400 font-light text-center"
+        >
+          All Posts
+        </Link>
+        <div className="h-full bg-white rounded-md m-4 text-black overflow-scroll">
+          <Posts id={session.user.id} userId="" />
         </div>
       </div>
       <div className="w-[26.7%] h-[90%] flex flex-col m-2 p-2">

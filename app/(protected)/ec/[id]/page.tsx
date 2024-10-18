@@ -45,13 +45,23 @@ const page = async ({ params }: { params: { id: string } }) => {
     );
   } else if (role === "EMPLOYEE") {
     const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
-    stringifiedFriends.includes(session.user.id)
-      ? (userActionButton = (
-          <a href={`/chat/${chatRoom}`}>
-            <Button color="primary">Send a Message</Button>
-          </a>
-        ))
-      : (userActionButton = <AddFriendButton id={userInfo.id as string} />);
+    if (
+      Array.isArray(stringifiedFriends) &&
+      stringifiedFriends.includes(session.user.id)
+    ) {
+      userActionButton = (
+        <a href={`/chat/${chatRoom}`}>
+          <Button color="primary">Send a Message</Button>
+        </a>
+      );
+    } else {
+      // Handle case when the user is not in the friends list
+      userActionButton = (
+        <Button disabled color="primary">
+          Can&apos;t Send a Message
+        </Button>
+      );
+    }
   }
 
   const educationList = await getEducation(userInfo.id as string);
@@ -197,7 +207,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
             Posts
           </h1>
-          <Posts id={userInfo?.id as string} />
+          <Posts id={userInfo?.id as string} userId="" />
         </div>
       </div>
       <div className="w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">
