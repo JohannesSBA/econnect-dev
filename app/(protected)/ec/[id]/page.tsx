@@ -45,13 +45,23 @@ const page = async ({ params }: { params: { id: string } }) => {
     );
   } else if (role === "EMPLOYEE") {
     const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
-    stringifiedFriends.includes(session.user.id)
-      ? (userActionButton = (
-          <a href={`/chat/${chatRoom}`}>
-            <Button color="primary">Send a Message</Button>
-          </a>
-        ))
-      : (userActionButton = <AddFriendButton id={userInfo.id as string} />);
+    if (
+      Array.isArray(stringifiedFriends) &&
+      stringifiedFriends.includes(session.user.id)
+    ) {
+      userActionButton = (
+        <a href={`/chat/${chatRoom}`}>
+          <Button color="primary">Send a Message</Button>
+        </a>
+      );
+    } else {
+      // Handle case when the user is not in the friends list
+      userActionButton = (
+        <Button disabled color="primary">
+          Can't Send a Message
+        </Button>
+      );
+    }
   }
 
   const educationList = await getEducation(userInfo.id as string);

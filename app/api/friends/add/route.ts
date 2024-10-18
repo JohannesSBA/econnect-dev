@@ -55,7 +55,7 @@ export async function POST(req: Request, res: Response) {
       });
     }
 
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id: idToAdd.id,
       },
@@ -63,6 +63,19 @@ export async function POST(req: Request, res: Response) {
         pendingFriendRequest: {
           connect: {
             id: session.user.id,
+          },
+        },
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        sentFriendRequest: {
+          connect: {
+            id: idToAdd.id,
           },
         },
       },
