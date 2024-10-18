@@ -5,9 +5,10 @@ import axios from "axios";
 import { pusherClient } from "@/app/lib/pusher";
 import { toPusherKey, chatHrefConstructor } from "@/app/lib/utils";
 import { toast } from "sonner";
-import NotificationToast from "../NotificationToast";
+
 import { User } from "@/app/types/db";
 import { Message } from "@/app/lib/validation";
+import NotificationToast from "../NotificationToast";
 
 interface UserContextType {
   userInfo: any;

@@ -7,14 +7,9 @@ import React, {
   FormEvent,
 } from "react";
 import {
-  Card,
-  CardHeader,
-  CardBody,
   Image,
   Skeleton,
-  user,
   Button,
-  useDisclosure,
   Modal,
   ModalBody,
   ModalContent,
@@ -25,10 +20,11 @@ import axios from "axios";
 import parse from "html-react-parser";
 import { User } from "@/app/types/db";
 import "@/app/rich.css";
-import { getUserContent } from "@/app/helpers/getUser";
 import { usePathname } from "next/navigation";
 import { MdDelete } from "react-icons/md";
 import { IoMdThumbsUp } from "react-icons/io";
+import { getUserContent } from "@/app/helpers/getUser";
+import Comments from "./visualComponents/Comments";
 
 interface PostProp {
   id: any;
@@ -39,9 +35,11 @@ export default function Posts(userId: PostProp) {
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
+  const [commentInput, setCommentInput] = useState<string>(""); // New state for comment input
   const sentinelRef = useRef(null);
   const [openModalId, setOpenModalId] = useState<string | null>(null);
-  const [allPostsLoaded, setAllPostsLoaded] = useState(false); // Step 1
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false);
+  const maxChars = 400;
 
   const onOpen = (postId: string) => {
     setOpenModalId(postId);
@@ -54,21 +52,19 @@ export default function Posts(userId: PostProp) {
   const pageName = usePathname();
 
   const fetchPosts = useCallback(async () => {
-    if (allPostsLoaded) return; // Prevent fetching if all posts are loaded
+    if (allPostsLoaded) return;
 
     setIsLoading(true);
     try {
       const res = await axios.post("/api/user/post/my", {
         userId: userId,
         page: page,
-        limit: 5, // or any other number you want to use as the limit
+        limit: 5,
       });
       if (res.data.length < 5) {
-        // Step 2
-        setAllPostsLoaded(true); // No more posts to load
+        setAllPostsLoaded(true);
       }
       setPosts((prevPosts) => {
-        // Filter out duplicate posts based on their ID
         const newPosts = res.data.filter(
           (post: any) => !prevPosts.some((prevPost) => prevPost.id === post.id)
         );
@@ -88,7 +84,6 @@ export default function Posts(userId: PostProp) {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !isLoading && !allPostsLoaded) {
-        // Step 3
         setPage((prevPage) => prevPage + 1);
       }
     });
@@ -120,18 +115,14 @@ export default function Posts(userId: PostProp) {
   async function handleLike(postId: string, isLiked: boolean) {
     try {
       if (isLiked) {
-        // If the post is already liked, unlike it
         await axios.post("/api/user/post/unlike", {
           postId: postId,
         });
       } else {
-        // If the post is not liked, like it
         await axios.post("/api/user/post/like", {
           postId: postId,
         });
       }
-
-      // Update the post's likes in the state
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post.id === postId
@@ -140,8 +131,8 @@ export default function Posts(userId: PostProp) {
                 likes: isLiked
                   ? post.likes.filter(
                       (like: { userId: any }) => like.userId !== userId.id
-                    ) // Unlike: Remove the user from likes
-                  : [...post.likes, { userId: userId.id }], // Like: Add the user to likes
+                    )
+                  : [...post.likes, { userId: userId.id }],
               }
             : post
         )
@@ -151,21 +142,44 @@ export default function Posts(userId: PostProp) {
     }
   }
 
-  // function handleComment(e: PressEvent): void {
-  //   throw new Error("Function not implemented.");
-  // }
+  async function handleComment(postId: string) {
+    try {
+      const res = await axios.post("/api/user/post/comment", {
+        postId: postId,
+        comment: commentInput,
+      });
 
-  // function handReport(e: PressEvent): void {
-  //   throw new Error("Function not implemented.");
-  // }
+      // Update the comments of the post in the state
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? {
+                ...post,
+                comments: [
+                  ...post.comments,
+                  { userId: userId.id, content: commentInput },
+                ],
+              }
+            : post
+        )
+      );
 
-  // console.log(posts);
+      // Clear the comment input field
+      setCommentInput("");
+    } catch (error) {
+      console.log("Error posting comment:", error);
+    }
+  }
 
-  // console.log(posts[0]?.likes.some(like: {id: any})=> like.id);
-  // console.log(userId);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Limit the input to 400 characters
+    if (e.target.value.length <= maxChars) {
+      setCommentInput(e.target.value);
+    }
+  };
 
   return (
-    <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin">
+    <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin p-2">
       {posts.length === 0 && !isLoading ? (
         <h1 className="w-full flex justify-center text-center pt-4">
           No Posts Currently Available. <br />
@@ -212,57 +226,6 @@ export default function Posts(userId: PostProp) {
                     month: "short",
                     day: "numeric",
                   })}
-                  {pageName === "/dashboard/my-posts" ? (
-                    <div>
-                      <Button onPress={() => onOpen(post.id as string)}>
-                        <MdDelete />
-                      </Button>
-                      <Modal
-                        isOpen={openModalId === post.id}
-                        onOpenChange={onClose}
-                        className="light"
-                      >
-                        <ModalContent className="">
-                          {(onClose) => (
-                            <>
-                              <ModalHeader className="flex flex-col gap-1 text-black">
-                                Delete Post
-                              </ModalHeader>
-                              <ModalBody className="text-black">
-                                <p>
-                                  Are you sure you want to delete the post? Once
-                                  deleted, it cannot be recovered.
-                                </p>
-                                <p>{post.title}</p>
-                              </ModalBody>
-                              <ModalFooter>
-                                <Button
-                                  color="danger"
-                                  variant="light"
-                                  onPress={onClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  color="primary"
-                                  onPress={() =>
-                                    handleDeletePost(
-                                      post.id as string,
-                                      post.images as string
-                                    )
-                                  }
-                                >
-                                  Delete
-                                </Button>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
-                    </div>
-                  ) : (
-                    ""
-                  )}
                 </h1>
               </div>
               <h1 className="font-bold">{post.title}</h1>
@@ -274,16 +237,6 @@ export default function Posts(userId: PostProp) {
                   alt="Application Image"
                   src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/0`}
                 />
-                <Image
-                  width={200}
-                  alt="Application Image"
-                  src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/1`}
-                />
-                <Image
-                  width={200}
-                  alt="Application Image"
-                  src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/2`}
-                />
               </div>
               <div className=" w-full shadow-sm flex justify-between">
                 <h1 className="text-xs text-slate-600">
@@ -293,6 +246,7 @@ export default function Posts(userId: PostProp) {
                   {post.comments.length} Comments
                 </h1>
               </div>
+
               <div className="flex justify-between">
                 <div className="flex gap-2">
                   <Button
@@ -329,26 +283,42 @@ export default function Posts(userId: PostProp) {
                       ? "Unlike"
                       : "Like"}
                   </Button>
+                </div>
+              </div>
 
-                  <Button
-                    color="warning"
-                    variant="light"
-                    className="rounded-md"
-                    // onPress={handleComment}
-                  >
-                    Comment
-                  </Button>
+              {/* Comment Section */}
+              <div className="mt-4 relative">
+                {/* Comment Input Field */}
+                <input
+                  type="text"
+                  value={commentInput}
+                  onChange={handleInputChange}
+                  placeholder="Add a comment..."
+                  className="p-2 border border-gray-300 rounded-md w-full light"
+                />
+
+                {/* Character Counter */}
+                <div className="absolute right-0 top-0 mt-2 mr-2 text-xs text-gray-500">
+                  {commentInput.length}/{maxChars}
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    color="warning"
-                    variant="light"
-                    className="rounded-md"
-                    // onPress={handReport}
-                  >
-                    Report
-                  </Button>
-                </div>
+
+                {/* Submit Button */}
+                <Button
+                  color="primary"
+                  variant="light"
+                  className="mt-2"
+                  disabled={commentInput.length === 0} // Disable if no input
+                  onPress={() => handleComment(post.id as string)}
+                >
+                  Submit
+                </Button>
+              </div>
+
+              <div className="mt-4">
+                <Comments
+                  post={post}
+                  commentUserId={userId as unknown as string}
+                />
               </div>
             </div>
           )
@@ -357,8 +327,6 @@ export default function Posts(userId: PostProp) {
       <div ref={sentinelRef} className="h-10 w-full" />
       {isLoading && (
         <div className="flex flex-col gap-4 w-full h-full">
-          <Skeleton className="w-full h-16 rounded-md flex flex-col justify-between gap-2 m-4" />
-          <Skeleton className="w-full h-16 rounded-md flex flex-col justify-between gap-2 m-4" />
           <Skeleton className="w-full h-16 rounded-md flex flex-col justify-between gap-2 m-4" />
           <Skeleton className="w-full h-16 rounded-md flex flex-col justify-between gap-2 m-4" />
         </div>
