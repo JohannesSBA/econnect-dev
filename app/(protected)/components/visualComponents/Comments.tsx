@@ -33,7 +33,7 @@ interface Post {
   author: User;
   authorId: string;
   likes: any[];
-  comments: any[];
+  comments: Comment[]; // List of comments
 }
 
 export default function PostWithComments({
@@ -43,9 +43,11 @@ export default function PostWithComments({
   post: Post;
   commentUserId: string;
 }) {
+  const [comments, setComments] = useState<Comment[]>(post.comments); // Manage comments state locally
   const [showModal, setShowModal] = useState(false);
-  console.log(("from" + commentUserId) as string);
-  const latestComments = post.comments.slice(0, 3); // Get the latest 3 comments
+
+  // Get the latest 3 comments from the current state
+  const latestComments = comments.slice(0, 3);
 
   const handleShowMore = () => {
     setShowModal(true);
@@ -64,18 +66,9 @@ export default function PostWithComments({
     try {
       await axios.post("/api/user/post/comment/delete", { commentId });
 
-      // Remove the comment from local state
-      setPosts((prevPosts) =>
-        prevPosts.map((p: { id: any; comments: any[] }) =>
-          p.id === post.id
-            ? {
-                ...p,
-                comments: p.comments.filter(
-                  (c: { id: string }) => c.id !== commentId
-                ),
-              }
-            : p
-        )
+      // Remove the comment from local state in real-time
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId)
       );
     } catch (error) {
       console.error("Failed to delete comment:", error);
@@ -128,7 +121,7 @@ export default function PostWithComments({
       ))}
 
       {/* Show More Button */}
-      {post.comments.length > 3 && (
+      {comments.length > 3 && (
         <Button color="primary" variant="light" onPress={handleShowMore}>
           Show More
         </Button>
@@ -147,7 +140,7 @@ export default function PostWithComments({
                 All Comments
               </ModalHeader>
               <ModalBody>
-                {post.comments.map((comment: Comment, index: number) => (
+                {comments.map((comment: Comment, index: number) => (
                   <div
                     key={index}
                     className="text-sm text-gray-700 flex items-center gap-2 justify-between w-full"
@@ -208,7 +201,4 @@ export default function PostWithComments({
       </Modal>
     </div>
   );
-}
-function setPosts(arg0: (prevPosts: any) => any) {
-  throw new Error("Function not implemented.");
 }
