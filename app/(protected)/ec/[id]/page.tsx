@@ -58,7 +58,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       // Handle case when the user is not in the friends list
       userActionButton = (
         <Button disabled color="primary">
-          Can't Send a Message
+          Can&apos;t Send a Message
         </Button>
       );
     }
