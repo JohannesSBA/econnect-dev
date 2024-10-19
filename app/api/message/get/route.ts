@@ -16,10 +16,13 @@ export async function POST(req: Request, res: Response) {
       ],
     },
     select: {
+      id: true,
       createdAt: true,
       recipientId: true,
       senderId: true,
       text: true,
+      readAt: true,
+      readBy: true,
     },
   });
 

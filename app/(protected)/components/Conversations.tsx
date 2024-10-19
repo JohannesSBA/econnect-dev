@@ -1,8 +1,8 @@
 "use client";
 import axios from "axios";
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { pusherClient } from "@/app/lib/pusher";
-import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
+import { toPusherKey } from "@/app/lib/utils";
 import { z } from "zod";
 import { messageValidator } from "@/app/lib/validation";
 import { toast } from "sonner";
@@ -14,14 +14,14 @@ interface conversationProps {
   chatRoom: string;
 }
 
-type Message = z.infer<typeof messageValidator>;
+// type Message = z.infer<typeof messageValidator>;
 
-const Conversations: FunctionComponent<conversationProps> = ({
+const Conversations: React.FC<conversationProps> = ({
   chatPartner,
   chatId,
   chatRoom,
 }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [userReadStatus, setUserReadStatus] = useState<Record<string, boolean>>(
     {}
   );
@@ -31,14 +31,27 @@ const Conversations: FunctionComponent<conversationProps> = ({
     const getMessage = async () => {
       try {
         const res = await axios.post("/api/message/get", {
-          chatPartner: chatPartner,
-          chatId: chatId,
+          chatPartner,
+          chatId,
         });
         const sortedMessages = res.data.sort(
-          (a: Message, b: Message) =>
+          (a: any, b: any) =>
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
         setMessages(sortedMessages);
+
+        await axios.post("/api/message/mark-as-read", {
+          messageIds: sortedMessages,
+        });
+
+        // Initialize read status for each message
+        const initialReadStatus: Record<string, boolean> = {};
+        sortedMessages.forEach((message: any) => {
+          console.log(message);
+          initialReadStatus[message.id] =
+            message.readBy.length > 0 ? true : false;
+        });
+        setUserReadStatus(initialReadStatus);
       } catch {
         return toast.error("Sorry, This chat isn't available.");
       }
@@ -51,17 +64,22 @@ const Conversations: FunctionComponent<conversationProps> = ({
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`chat:${chatRoom}`));
 
-    const messageHandler = (message: Message) => {
+    const messageHandler = (message: any) => {
       setMessages((prev) => [...prev, message]);
-      // Assume the current user has not read the message initially
       setUserReadStatus((prev) => ({ ...prev, [message.id]: false }));
     };
 
+    const messageReadHandler = (message: any) => {
+      setUserReadStatus((prev) => ({ ...prev, [message.id]: true }));
+    };
+
     pusherClient.bind("incoming-message", messageHandler);
+    pusherClient.bind("message-read", messageReadHandler);
 
     return () => {
       pusherClient.unsubscribe(toPusherKey(`chat:${chatRoom}`));
       pusherClient.unbind("incoming-message", messageHandler);
+      pusherClient.unbind("message-read", messageReadHandler);
     };
   }, [chatRoom]);
 
@@ -78,6 +96,7 @@ const Conversations: FunctionComponent<conversationProps> = ({
     <div
       className="w-full h-full mb-44 px-4 overflow-scroll flex flex-col"
       id="messages"
+      key={chatPartner}
     >
       {messages.map((message, index) => {
         const isCurrentUser = chatPartner !== message.senderId;
@@ -88,14 +107,10 @@ const Conversations: FunctionComponent<conversationProps> = ({
 
         const hasMessageOnNewDay = (() => {
           if (index === 0) {
-            // The first message is always on a new day
             return true;
           }
-
           const previousMessageDate = new Date(messages[index - 1].createdAt);
           const currentMessageDate = new Date(message.createdAt);
-
-          // Compare the dates without considering the time
           return (
             previousMessageDate.getUTCFullYear() !==
               currentMessageDate.getUTCFullYear() ||
@@ -104,6 +119,8 @@ const Conversations: FunctionComponent<conversationProps> = ({
             previousMessageDate.getUTCDate() !== currentMessageDate.getUTCDate()
           );
         })();
+
+        const isMessageRead = userReadStatus[message.id] || false;
 
         return (
           <div key={message.id} className="w-full">
@@ -142,14 +159,16 @@ const Conversations: FunctionComponent<conversationProps> = ({
                     <span
                       className={
                         isCurrentUser
-                          ? "ml-2 text-[10px] p-1 text-gray-300 realtive right-0 w-full text-right"
-                          : "ml-2 text-[10px] p-1 text-gray-400 realtive right-0 w-full text-right"
+                          ? "ml-2 text-[10px] p-1 text-gray-300 relative right-0 w-full text-right"
+                          : "ml-2 text-[10px] p-1 text-gray-400 relative right-0 w-full text-right"
                       }
                     >
                       {new Date(message.createdAt).toLocaleTimeString("en-US", {
                         hour: "numeric",
                         minute: "numeric",
                       })}
+                      {isCurrentUser && !isMessageRead && <span> ✓</span>}
+                      {isMessageRead && <span> ✓✓</span>}
                     </span>
                   </div>
                 </div>

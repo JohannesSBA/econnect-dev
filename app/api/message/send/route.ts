@@ -38,6 +38,7 @@ export async function POST(req: Request, res: Response) {
     senderId: body.chatId,
     recipientId: body.chatPartner,
     createdAt: timeStamp,
+    deliveredAt: timeStamp,
   };
 
   //Pusher Events
