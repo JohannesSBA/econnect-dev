@@ -3,7 +3,7 @@ import SignOutButton from "../SignOutButton";
 import UserPicture from "../UserPicture";
 import Search from "../SearchComponents/Search";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -14,12 +14,17 @@ import {
   NavbarMenuItem,
   Link,
   Button,
+  Badge,
 } from "@nextui-org/react";
 import { GiWaterDrop } from "react-icons/gi";
 import { IoBriefcase, IoChatbox, IoHome, IoLink } from "react-icons/io5";
+import axios from "axios"; // Import axios to fetch data
+import { FaBell } from "react-icons/fa6";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [messageCounter, setMessageCounter] = useState(0); // New state for unread message count
+  const [notificationCounter, setNotificationCounter] = useState(0); // New state for unread notification count
 
   const menuItems = [
     ["Profile", "/dashboard/profile"],
@@ -30,6 +35,44 @@ export default function App() {
     ["My Settings", "/dashboard/settings"],
     ["Help & Feedback", "/help"],
   ];
+
+  // Function to fetch unread messages count
+  const fetchUnreadMessages = async () => {
+    try {
+      const response = await axios.get("/api/message/unread"); // Replace with your API route to get unread messages
+      setMessageCounter(response.data.unreadCount); // Assuming your API returns an `unreadCount` field
+    } catch (error) {
+      console.error("Error fetching unread messages:", error);
+    }
+  };
+
+  // Fetch unread messages count when component mounts
+  useEffect(() => {
+    fetchUnreadMessages();
+
+    // Optionally, set up a polling or real-time mechanism (e.g., using Pusher) to update the counter.
+    // Example with polling every 60 seconds:
+    const interval = setInterval(fetchUnreadMessages, 30000); // Poll every 30 seconds
+    return () => clearInterval(interval); // Cleanup the interval on unmount
+  }, []);
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("/api/user/notification/unread"); // Replace with your API route to get unread messages
+      setNotificationCounter(response.data.unreadCount); // Assuming your API returns an `unreadCount` field
+    } catch (error) {
+      console.error("Error fetching unread messages:", error);
+    }
+  };
+
+  // Fetch unread messages count when component mounts
+  useEffect(() => {
+    fetchNotifications();
+
+    // Optionally, set up a polling or real-time mechanism (e.g., using Pusher) to update the counter.
+    // Example with polling every 60 seconds:
+    const interval = setInterval(fetchUnreadMessages, 30000); // Poll every 30 seconds
+    return () => clearInterval(interval); // Cleanup the interval on unmount
+  }, []);
 
   return (
     <Navbar
@@ -52,25 +95,35 @@ export default function App() {
             </Link>
             <Link
               href="/dashboard"
-              className="rounded-lg p-2 px-4 justify-center h-16   font-semibold hover:text-black text-[#6C6C6C]"
+              className="rounded-lg p-2 px-4 justify-center h-16 font-semibold hover:text-black text-[#6C6C6C]"
             >
-              <div className="flex flex-col items-center  rounded-md">
+              <div className="flex flex-col items-center rounded-md">
                 <IoHome />
                 <h1 className="hidden md:flex text-xs">Dashboard</h1>
               </div>
             </Link>
             <Link
-              className="rounded-lg p-2 px-4 justify-center h-16   font-semibold hover:text-black text-[#6C6C6C]"
+              className="rounded-lg p-2 px-4 justify-center h-16 font-semibold hover:text-black text-[#6C6C6C]"
               href="/chat"
             >
-              <div className="flex flex-col items-center  rounded-md">
-                <IoChatbox />
-                <h1 className="hidden md:flex text-xs">Messeging</h1>
+              <div className="flex flex-col items-center rounded-md">
+                <Badge
+                  content={messageCounter} // Show unread messages count
+                  color="primary"
+                  shape="circle"
+                  size="sm"
+                  isInvisible={messageCounter === 0}
+                  // hidden={messageCounter == 0} // Hide badge when there are no unread messages
+                  className="border-none"
+                >
+                  <IoChatbox />
+                </Badge>
+                <h1 className="hidden md:flex text-xs">Messaging</h1>
               </div>
             </Link>
             <Link
               href="/listings"
-              className="rounded-lg p-2 px-4 justify-center h-16   font-semibold hover:text-black text-[#6C6C6C]"
+              className="rounded-lg p-2 px-4 justify-center h-16 font-semibold hover:text-black text-[#6C6C6C]"
             >
               <div className="flex flex-col items-center rounded-md">
                 <IoBriefcase />
@@ -81,9 +134,28 @@ export default function App() {
               href="/dashboard/connections"
               className="rounded-lg p-2 px-4 w-20 justify-center h-16 hover:text-black font-semibold text-[#6C6C6C]"
             >
-              <div className="flex flex-col items-center  rounded-md">
+              <div className="flex flex-col items-center rounded-md">
                 <IoLink />
                 <h1 className="hidden md:flex text-xs">Connects</h1>
+              </div>
+            </Link>
+            <Link
+              href="/dashboard/notifications"
+              className="rounded-lg p-2 px-4 w-20 justify-center h-16 hover:text-black font-semibold text-[#6C6C6C]"
+            >
+              <div className="flex flex-col items-center rounded-md">
+                <Badge
+                  content={notificationCounter} // Show unread messages count
+                  color="primary"
+                  shape="circle"
+                  size="sm"
+                  isInvisible={notificationCounter === 0}
+                  // hidden={messageCounter == 0} // Hide badge when there are no unread messages
+                  className="border-none"
+                >
+                  <FaBell />
+                </Badge>
+                <h1 className="hidden md:flex text-xs">Notification</h1>
               </div>
             </Link>
           </div>

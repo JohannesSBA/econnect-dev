@@ -1,6 +1,6 @@
 "use client"; // Mark this as a client component
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Friend, User } from "@/app/types/db"; // Adjust the import path as necessary
@@ -13,11 +13,14 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Badge,
 } from "@nextui-org/react";
 import Link from "next/link";
 import SideInfo from "../../components/SideInfo";
 import axios from "axios";
 import { toast } from "sonner";
+import RequestHandler from "../../components/RequestHandler";
+import { FaUserFriends } from "react-icons/fa";
 
 interface ClientComponentProps {
   user: any;
@@ -32,6 +35,8 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
   const [sortOption, setSortOption] = useState("recent");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
+  const [requestCounter, setRequestCounter] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
@@ -80,12 +85,52 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
     }
   };
 
+  useEffect(() => {
+    const friendRequestCounter = async () => {
+      const getPending = await axios.post("/api/friends/requests", {});
+
+      setRequestCounter(getPending.data[0].pendingFriendRequest.length);
+      setIsLoading(false);
+    };
+
+    friendRequestCounter();
+  }, [user.id]);
+
+  let requestElement;
+
+  requestCounter > 0
+    ? (requestElement = (
+        <Badge content={requestCounter} color="primary">
+          <Link
+            href="/chat/friend-requests"
+            className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
+          >
+            <FaUserFriends />
+            <p className=" text-md">Requests</p>
+          </Link>
+        </Badge>
+      ))
+    : (requestElement = (
+        <Link
+          href="/chat/friend-requests"
+          className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
+        >
+          <FaUserFriends />
+          <p className=" text-md">Requests</p>
+        </Link>
+      ));
+
   return (
     <div className="w-screen md:h-screen overflow-clip bg-slate-100 flex flex-col md:flex-row justify-between font-PlusJakartSans p-4 gap-2">
       <div className="h-[90%] w-3/4 flex flex-col overflow-scroll p-6 pl-12 bg-white shadow-md text-black ">
-        <h1 className="text-bold text-2xl text-slate-700">
-          {connections.length} Connections
-        </h1>
+        <div className="w-full flex justify-between">
+          <h1 className="text-bold text-2xl text-slate-700">
+            {connections.length} Connections
+          </h1>
+          <div className="group hover:bg-slate-200 p-4 bottom-0 rounded-md">
+            {requestElement}
+          </div>
+        </div>
 
         {/* Search Input */}
         <input
