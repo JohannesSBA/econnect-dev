@@ -15,11 +15,10 @@ export async function POST(req: Request, res: Response) {
   const body = await req.json();
   const offset = body.page * body.limit;
 
-  if (body.userId.id === session.user.id) {
+  if (body.from === "my") {
     try {
-      const userId = body.userId.id;
       const posts = await prisma.post.findMany({
-        where: { authorId: userId },
+        where: { authorId: session.user.id },
         skip: offset,
         take: body.limit,
         orderBy: { createdAt: "desc" },
@@ -48,7 +47,7 @@ export async function POST(req: Request, res: Response) {
     } catch (error) {
       return new Response("Something went wrong", { status: 500 });
     }
-  } else {
+  } else if (body.from === "default") {
     try {
       const user = await prisma.user.findUnique({
         where: { id: session.user.id },
@@ -83,6 +82,39 @@ export async function POST(req: Request, res: Response) {
       });
 
       const stringifiedPosts = JSON.stringify(posts);
+      return new Response(stringifiedPosts, { status: 200 });
+    } catch (error) {
+      return new Response("Something went wrong", { status: 500 });
+    }
+  } else {
+    try {
+      const userId = body.userId;
+      const posts = await prisma.post.findMany({
+        where: { authorId: userId },
+        skip: offset,
+        take: body.limit,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              email: true,
+              location: true,
+              lastName: true,
+              title: true,
+              likes: true,
+            },
+          },
+          likes: true,
+          comments: true,
+          categories: true,
+          reports: true,
+          savedBy: true,
+        }, // Include only the id and name of the author
+      });
+      const stringifiedPosts = JSON.stringify(posts);
+
       return new Response(stringifiedPosts, { status: 200 });
     } catch (error) {
       return new Response("Something went wrong", { status: 500 });

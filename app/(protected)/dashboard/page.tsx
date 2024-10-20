@@ -108,7 +108,11 @@ const Page = async () => {
           Your Posts
         </Link>
         <div className="h-full bg-white rounded-md m-4 text-black overflow-scroll">
-          <Posts id={session.user.id} userId="" />
+          <Posts
+            id={session.user.id}
+            userId={session.user.id}
+            fromPage={"default"}
+          />
         </div>
       </div>
       <div className="w-[26.7%] h-[90%] flex flex-col m-2 p-2">

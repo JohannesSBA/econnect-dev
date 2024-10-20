@@ -15,6 +15,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Link,
 } from "@nextui-org/react";
 import axios from "axios";
 import parse from "html-react-parser";
@@ -29,9 +30,10 @@ import Comments from "./visualComponents/Comments";
 interface PostProp {
   id: any;
   userId: string;
+  fromPage: string;
 }
 
-export default function Posts(userId: PostProp) {
+export default function Posts({ userId, fromPage }: PostProp) {
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -58,6 +60,7 @@ export default function Posts(userId: PostProp) {
     try {
       const res = await axios.post("/api/user/post/my", {
         userId: userId,
+        from: fromPage,
         page: page,
         limit: 5,
       });
@@ -130,9 +133,9 @@ export default function Posts(userId: PostProp) {
                 ...post,
                 likes: isLiked
                   ? post.likes.filter(
-                      (like: { userId: any }) => like.userId !== userId.id
+                      (like: { userId: any }) => like.userId !== userId
                     )
-                  : [...post.likes, { userId: userId.id }],
+                  : [...post.likes, { userId: userId }],
               }
             : post
         )
@@ -157,7 +160,7 @@ export default function Posts(userId: PostProp) {
                 ...post,
                 comments: [
                   ...post.comments,
-                  { userId: userId.id, content: commentInput },
+                  { userId: userId, content: commentInput },
                 ],
               }
             : post
@@ -203,7 +206,7 @@ export default function Posts(userId: PostProp) {
               className="shadow-md my-2 mx-1 rounded-md bg-white p-2 max-w-full overflow-x-clip text-wrap whitespace-normal"
             >
               <div className="flex justify-between">
-                <div className="flex gap-2">
+                <Link href={`/ec/${post.author.id}`} className="flex gap-2">
                   <Image
                     src={`https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`}
                     alt=""
@@ -219,7 +222,7 @@ export default function Posts(userId: PostProp) {
                       {post.author.title}
                     </h1>
                   </div>
-                </div>
+                </Link>
                 <h1 className="text-sm font-light text-slate-600">
                   {new Date(post.createdAt).toLocaleDateString("en-us", {
                     year: "numeric",
@@ -254,7 +257,7 @@ export default function Posts(userId: PostProp) {
                     variant="light"
                     className={`rounded-md ${
                       post.likes.some(
-                        (like: { userId: any }) => like.userId === userId.id
+                        (like: { userId: any }) => like.userId === userId
                       )
                         ? "text-blue-400"
                         : "text-black"
@@ -263,7 +266,7 @@ export default function Posts(userId: PostProp) {
                       handleLike(
                         post.id as string,
                         post.likes.some(
-                          (like: { userId: any }) => like.userId === userId.id
+                          (like: { userId: any }) => like.userId === userId
                         )
                       )
                     }
@@ -271,14 +274,14 @@ export default function Posts(userId: PostProp) {
                     <IoMdThumbsUp
                       color={
                         post.likes.some(
-                          (like: { userId: any }) => like.userId === userId.id
+                          (like: { userId: any }) => like.userId === userId
                         )
                           ? "blue"
                           : "black"
                       }
                     />
                     {post.likes.some(
-                      (like: { userId: any }) => like.userId === userId.id
+                      (like: { userId: any }) => like.userId === userId
                     )
                       ? "Unlike"
                       : "Like"}

@@ -207,7 +207,11 @@ const page = async ({ params }: { params: { id: string } }) => {
           <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
             Posts
           </h1>
-          <Posts id={userInfo?.id as string} userId="" />
+          <Posts
+            id={userInfo?.id as string}
+            userId={userInfo?.id as string}
+            fromPage={"his"}
+          />
         </div>
       </div>
       <div className="w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">
