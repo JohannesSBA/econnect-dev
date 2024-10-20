@@ -49,7 +49,6 @@ const page = async () => {
             incomingFriendRequest={pendingList}
             sessionEmail={session.user.email as string}
           />
-          ;
         </div>
       </div>
     </div>
