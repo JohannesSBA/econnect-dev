@@ -38,7 +38,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   return (
     <html lang="en" className="scrollbar-thin scrollbar-webkit">
       <body className={inter.className}>
-        <div className="h-screen w-screen overflow-clip font-PlusJakartaSans">
+        <div className="h-screen w-screen font-PlusJakartaSans bg-zinc-100">
           <div className="sticky bg-zinc-100 h-20 w-screen flex items-center px-6 gap-4 rounded-md shadow-lg backdrop-blur-md">
             <div className="flex gap-4">
               <Link

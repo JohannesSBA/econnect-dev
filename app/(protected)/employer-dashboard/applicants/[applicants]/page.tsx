@@ -15,27 +15,9 @@ interface PageProps {
   };
 }
 
-interface PageProps {
-  params: {
-    applicants: string;
-  };
-}
-
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  // More people...
-];
-
 const page = async ({ params }: { params: { applicants: string } }) => {
   const session = await getServerSession(options);
   if (!session) return;
-
-  console.log("this is", params.applicants);
 
   const userInfo = await getUserContent(session.user.id);
   const listing = await getListing(params.applicants);
@@ -43,8 +25,6 @@ const page = async ({ params }: { params: { applicants: string } }) => {
   const applicantsObject = await getApplicants(params.applicants);
   const applicants = applicantsObject.applicants || [];
 
-  console.log("listing info", listing);
-  console.log("company info", comp);
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center pt-4">
