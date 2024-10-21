@@ -21,7 +21,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const [jobs, setJobs] = useState<any[]>();
+  const [jobs, setJobs] = useState<any[]>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
@@ -95,7 +95,7 @@ const Page = () => {
                         </span>
                       </div>
                       <span className="text-slate-400 text-xs">
-                        {job.applicants.length > 100
+                        {job.applicants?.length > 100
                           ? "Over 100 applicants"
                           : job.applicants.length == 0
                           ? "No applicants"
@@ -105,13 +105,7 @@ const Page = () => {
                       </span>
                     </div>
                   </Link>
-                  <Button
-                    color="danger"
-                    className="fixed right-0 mr-16 z-50 border-2"
-                    onPress={onOpen}
-                  >
-                    Delete Listing
-                  </Button>
+
                   <Modal
                     backdrop="opaque"
                     isOpen={isOpen}
@@ -150,6 +144,23 @@ const Page = () => {
                       )}
                     </ModalContent>
                   </Modal>
+                </div>
+                <div className="flex flex-col">
+                  <Button
+                    color="primary"
+                    className=" mr-16 z-50 border-2"
+                    as={Link}
+                    href={`/employer-dashboard/listing/${job.id}`}
+                  >
+                    See Applicants
+                  </Button>
+                  <Button
+                    color="danger"
+                    className=" mr-16 z-50 border-2"
+                    onPress={onOpen}
+                  >
+                    Delete Listing
+                  </Button>
                 </div>
               </div>
             ))

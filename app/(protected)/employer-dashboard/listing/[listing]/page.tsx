@@ -1,89 +1,109 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getListing } from "@/app/helpers/getListing";
-import { getUserContent } from "@/app/helpers/getUser";
-import { Avatar, Button, Link, User } from "@nextui-org/react";
-import axios from "axios";
-import parse from "html-react-parser";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
-import React from "react";
+// import { options } from "@/app/api/auth/[...nextauth]/options";
+// import { getListing } from "@/app/helpers/getListing";
+// import { getUserContent } from "@/app/helpers/getUser";
+// import { Avatar, Button, Link, User } from "@nextui-org/react";
+// import { getServerSession } from "next-auth";
+// import { notFound } from "next/navigation";
+// import React from "react";
 
-interface PageProps {
-  params: {
-    listing: string;
-  };
-}
+// interface PageProps {
+//   params: {
+//     listing: string;
+//   };
+// }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { listing: string };
-}) {
-  const { listing } = params;
-  const session = await getServerSession(options);
-  if (!session) notFound();
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: { listing: string };
+// }) {
+//   const { listing } = params;
+//   const session = await getServerSession(options);
+//   if (!session) notFound();
 
-  const userInfo = await getUserContent(session.user.id);
-  let flag = false;
+//   const userInfo = await getUserContent(session.user.id);
+//   let flag = false;
 
-  userInfo.jobListing?.forEach((job) => {
-    job.id === listing ? (flag = true) : null;
-  });
+//   userInfo.jobListing?.forEach((job) => {
+//     job.id === listing ? (flag = true) : null;
+//   });
 
-  if (flag == false) {
-    notFound();
-  }
+//   if (!flag) {
+//     notFound();
+//   }
 
-  return { title: `Applications | ${userInfo.firstName} listing` };
-}
+//   return { title: `Applications | ${userInfo.firstName} listing` };
+// }
 
-interface PageProps {
-  params: {
-    listing: string;
-  };
-}
+// const page = async ({ params }: PageProps) => {
+//   const session = await getServerSession(options);
+//   if (!session) return;
 
-const page = async ({ params }: { params: { listing: string } }) => {
-  const session = await getServerSession(options);
-  if (!session) return;
+//   const listing = await getListing(params.listing);
 
-  const userInfo = await getUserContent(session.user.id);
-  const listing = await getListing(params.listing);
-  const comp = await getUserContent(listing?.postedById as string);
+//   // Assuming `listing.applicants` contains an array of applicant objects with status
+//   const applicants = listing?.applicants || [];
 
-  return (
-    <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
-      <div className="w-2/3 h-full bg-slate-200 flex flex-col p-4">
-        <h1 className="text-xl text-[#1E40AF] font-bold w-full flex justify-between">
-          Join {comp?.fullName} &lsquo;s Team as
-          {comp.id}
-        </h1>
-        <h1 className="w-full overflow-ellipsis text-slate-800 text-7xl font-bold">
-          {listing?.title}
-        </h1>
-        <p className="overflow-y-scroll overflow-x-hidden p-2 scrollbar-thin scrollbar-webkit">
-          {parse(listing?.description as string)}
-        </p>
-      </div>
-      <div className="w-1/3 h-full  flex flex-col items-center pt-4">
-        <h1 className="w-full text-center text-2xl font-light mb-8">
-          Learn about the company
-        </h1>
-        <Avatar
-          src={`https://econnectbucket.s3.amazonaws.com/image/${listing?.postedById}`}
-          className="w-40 h-40 text-large"
-        />
-        <h1 className="font-bold text-lg">{comp.fullName}</h1>
-        <h1>{comp.location}</h1>
-        <p className="w-[30rem] h-[20rem] overflow-clip text-center mt-2">
-          {comp.bio}
-        </p>
-        <Link href={`/ec/${comp.id}`}>
-          <Button variant="flat">Comapny Page</Button>
-        </Link>
-      </div>
-    </div>
-  );
-};
+//   // Organize applicants into categories
+//   const denied = applicants.filter(
+//     (applicant) => applicant.status === "denied"
+//   );
+//   const accepted = applicants.filter(
+//     (applicant) => applicant.status === "accepted"
+//   );
+//   const notReviewed = applicants.filter(
+//     (applicant) => applicant.status === "not reviewed"
+//   );
 
-export default page;
+//   return (
+//     <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex flex-col text-black">
+//       <h1 className="text-2xl font-bold mb-4">
+//         Applicants for {listing?.title}
+//       </h1>
+
+//       <div className="mb-6">
+//         <h2 className="text-xl font-semibold mb-2">Accepted Applicants</h2>
+//         {accepted.length > 0 ? (
+//           accepted.map((applicant) => (
+//             <div key={applicant.id} className="p-2 bg-green-100 rounded mb-2">
+//               <Avatar src={applicant.avatarUrl} size="sm" />
+//               <span>{applicant.name}</span>
+//             </div>
+//           ))
+//         ) : (
+//           <p>No accepted applicants yet.</p>
+//         )}
+//       </div>
+
+//       <div className="mb-6">
+//         <h2 className="text-xl font-semibold mb-2">Denied Applicants</h2>
+//         {denied.length > 0 ? (
+//           denied.map((applicant) => (
+//             <div key={applicant.id} className="p-2 bg-red-100 rounded mb-2">
+//               <Avatar src={applicant.avatarUrl} size="sm" />
+//               <span>{applicant.name}</span>
+//             </div>
+//           ))
+//         ) : (
+//           <p>No denied applicants yet.</p>
+//         )}
+//       </div>
+
+//       <div>
+//         <h2 className="text-xl font-semibold mb-2">Not Reviewed Applicants</h2>
+//         {notReviewed.length > 0 ? (
+//           notReviewed.map((applicant) => (
+//             <div key={applicant.id} className="p-2 bg-yellow-100 rounded mb-2">
+//               <Avatar src={applicant.avatarUrl} size="sm" />
+//               <span>{applicant.name}</span>
+//             </div>
+//           ))
+//         ) : (
+//           <p>No applicants are pending review.</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default page;
