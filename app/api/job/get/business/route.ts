@@ -18,6 +18,22 @@ export async function POST(req: Request, res: Response) {
       shortDescription: true,
       Expired: true,
       expireDate: true,
+      applicants: true,
+      postedById: true,
+      ComputerScreened: true,
+      hired: true,
+      HumanScreened: true,
+      postedBy: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          location: true,
+          title: true,
+          likes: true,
+        },
+      },
     },
   });
 

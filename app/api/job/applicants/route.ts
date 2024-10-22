@@ -16,6 +16,9 @@ export async function POST(req: Request, res: Response) {
     },
     select: {
       applicants: true,
+      hired: true,
+      ComputerScreened: true,
+      HumanScreened: true,
     },
   });
 

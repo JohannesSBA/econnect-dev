@@ -22,6 +22,9 @@ export async function POST(req: Request, res: Response) {
       Expired: true,
       expireDate: true,
       postedBy: true,
+      hired: true,
+      HumanScreened: true,
+      ComputerScreened: true,
     },
   });
 
