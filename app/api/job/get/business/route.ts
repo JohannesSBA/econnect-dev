@@ -20,6 +20,9 @@ export async function POST(req: Request, res: Response) {
       expireDate: true,
       applicants: true,
       postedById: true,
+      ComputerScreened: true,
+      hired: true,
+      HumanScreened: true,
       postedBy: {
         select: {
           id: true,

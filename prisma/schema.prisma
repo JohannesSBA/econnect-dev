@@ -52,6 +52,9 @@ model User {
   @@map(name: "users")
   Report Report[]
   Comment Comment[]
+  JobCScreened JobListing[] @relation("jobCScreen")
+  JobHScreened JobListing[] @relation("jobHScreen")
+  JobHired JobListing[] @relation("jobHired")
 }
 
 model Message {
@@ -80,6 +83,9 @@ model JobListing {
   postedBy         User       @relation("jobListingsPosted", fields: [postedById], references: [id])
   postedById       String
   applicants       User[]     @relation("jobApplications")
+  ComputerScreened          User[]     @relation("jobCScreen")
+  HumanScreened             User[]     @relation("jobHScreen")
+  hired                      User[]     @relation("jobHired")
   Expired          Boolean    @default(false)
   expireDate       DateTime?
   expireCode       String?

@@ -150,7 +150,7 @@ const Page = () => {
                     color="primary"
                     className=" mr-16 z-50 border-2"
                     as={Link}
-                    href={`/employer-dashboard/listing/${job.id}`}
+                    href={`/employer-dashboard/applicants/${job.id}`}
                   >
                     See Applicants
                   </Button>

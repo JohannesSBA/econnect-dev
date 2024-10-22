@@ -2,7 +2,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getApplicants } from "@/app/helpers/getApplicants";
 import { getListing } from "@/app/helpers/getListing";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Avatar, Button, Link, User } from "@nextui-org/react";
+import { Avatar, Button, Chip, Link, User } from "@nextui-org/react";
 import axios from "axios";
 import parse from "html-react-parser";
 import { getServerSession } from "next-auth";
@@ -24,6 +24,9 @@ const page = async ({ params }: { params: { applicants: string } }) => {
   const comp = await getUserContent(listing?.postedById as string);
   const applicantsObject = await getApplicants(params.applicants);
   const applicants = applicantsObject.applicants || [];
+  const hired = applicantsObject.hired || [];
+  const computerScreened = applicantsObject.computerScreened || [];
+  const humanScreened = applicantsObject.humanScreened || [];
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -66,7 +69,7 @@ const page = async ({ params }: { params: { applicants: string } }) => {
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Phone Number
+                    Status
                   </th>
                   <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                     <span className="sr-only">Edit</span>
@@ -74,7 +77,12 @@ const page = async ({ params }: { params: { applicants: string } }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {applicants.map((applicant) => (
+                {[
+                  ...hired,
+                  ...humanScreened,
+                  ...computerScreened,
+                  ...applicants,
+                ].map((applicant) => (
                   <tr key={applicant.email}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                       {applicant.firstName + " " + applicant.lastName}
@@ -86,7 +94,17 @@ const page = async ({ params }: { params: { applicants: string } }) => {
                       {applicant.email}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {applicant.phoneNumber}
+                      <span>
+                        {hired.includes(applicant) ? (
+                          <Chip color="primary">Hired</Chip>
+                        ) : humanScreened.includes(applicant) ? (
+                          <Chip color="secondary">Human Screened</Chip>
+                        ) : computerScreened.includes(applicant) ? (
+                          <Chip color="secondary">Computer Screened</Chip>
+                        ) : (
+                          <Chip color="default">Applied</Chip>
+                        )}
+                      </span>
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <a
