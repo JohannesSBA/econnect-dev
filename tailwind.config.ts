@@ -7,6 +7,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    // "./node_modules/@headlessui/react/dist/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "class",
   plugins: [
@@ -34,6 +35,8 @@ const config: Config = {
 
       addUtilities(newUtilities, ["responsive", "hover"]);
     },
+    // require("@headlessui/react"), // Removed as it's not a Tailwind CSS plugin
+    require("@headlessui/tailwindcss")({ prefix: "ui" }),
   ],
   theme: {
     extend: {

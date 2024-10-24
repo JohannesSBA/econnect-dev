@@ -6,6 +6,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
 import PNav from "../components/visualComponents/PNav";
+import ProtectedNav from "../components/visualComponents/ProtectedNav";
 
 interface LayoutProps {
   children: ReactNode;
@@ -32,7 +33,15 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
     <html lang="en" className="scrollbar-thin scrollbar-webkit">
       <body className={inter.className}>
         <div className="h-screen w-screen md:overflow-clip font-PlusJakartaSans">
-          <PNav />
+          <ProtectedNav
+            userInfoId={userInfo.id as string}
+            userName={
+              ((userInfo.firstName as string) +
+                " " +
+                userInfo.lastName) as string
+            }
+            userEmail={userInfo.email as string}
+          />
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
         </div>

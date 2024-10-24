@@ -78,7 +78,7 @@ export default function Posts({ userId, fromPage }: PostProp) {
     } finally {
       setIsLoading(false);
     }
-  }, [allPostsLoaded, userId, page]);
+  }, [allPostsLoaded, userId, page, fromPage]);
 
   useEffect(() => {
     fetchPosts();
@@ -206,7 +206,7 @@ export default function Posts({ userId, fromPage }: PostProp) {
               className="shadow-md my-2 mx-1 rounded-md bg-white p-2 max-w-full overflow-x-clip text-wrap whitespace-normal"
             >
               <div className="flex justify-between">
-                <Link href={`/ec/${post.author.id}`} className="flex gap-2">
+                <Link href={`/ec/${post.authorId}`} className="flex gap-2">
                   <Image
                     src={`https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`}
                     alt=""

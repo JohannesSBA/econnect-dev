@@ -10,6 +10,8 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
   const [isSigningOut, setIsSigningOut] = useState<boolean>(false);
   return (
     <Button
+      color="default"
+      className="w-full p-2"
       onPress={async () => {
         setIsSigningOut(true);
         try {

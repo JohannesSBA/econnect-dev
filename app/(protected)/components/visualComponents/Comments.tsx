@@ -155,7 +155,7 @@ export default function PostWithComments({
                       />
                       <div>
                         <h1 className="font-semibold">
-                          {post.author.firstName} {post.author.lastName}
+                          {/* {post.author.firstName} {post.author.lastName} */}
                         </h1>
                         <p className="text-slate-800 text-xs w-64 pl-2">
                           {comment.content}
