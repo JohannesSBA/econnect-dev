@@ -8,7 +8,6 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@nextui-org/react";
 import axios from "axios";
 import Image from "next/image";
@@ -19,6 +18,7 @@ import SignOutButton from "../SignOutButton";
 import { useUser } from "../functionComponents/UserContext";
 import Search from "../SearchComponents/Search";
 import Link from "next/link";
+import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 
 interface appProps {
   userInfoId: string;
@@ -87,11 +87,11 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
-              <Bars3Icon
+              <FaBars
                 aria-hidden="true"
                 className="block h-6 w-6 group-data-[open]:hidden"
               />
-              <XMarkIcon
+              <FaTimes
                 aria-hidden="true"
                 className="hidden h-6 w-6 group-data-[open]:block"
               />
@@ -167,7 +167,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 // hidden={messageCounter == 0} // Hide badge when there are no unread messages
                 className="border-none"
               >
-                <BellIcon aria-hidden="true" className="h-6 w-6" />
+                <FaBell aria-hidden="true" className="h-6 w-6" />
               </Badge>
             </Link>
 

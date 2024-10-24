@@ -12,7 +12,6 @@ import UserPicture from "../components/UserPicture";
 import { MdGroups } from "react-icons/md";
 import Link from "next/link";
 import SideInfo from "../components/SideInfo";
-import { BellIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 const Page = async () => {
