@@ -15,11 +15,11 @@ interface MainProps {
 const Main = ({ lang }: MainProps) => {
   return (
     <div className="">
-      <div className="w-full h-screen flex bg-gradient-to-b dark:from-blue-900 dark:to-blue-950 ">
+      <div className="w-full h-screen flex bg-gradient-to-b from-blue-900 to-blue-950 ">
         <div className="w-full md:w-1/2 p-12 flex flex-col gap-6 mt-12">
           {/* Section creates the animation to  the incoming object*/}
           <Section delay={0.2}>
-            <h1 className="font-bold text-6xl md:text-8xl bg-gradient-to-r dark:from-blue-600 dark:to-indigo-400 text-transparent bg-clip-text mb-3">
+            <h1 className="font-bold text-6xl md:text-8xl bg-gradient-to-r from-blue-600 to-indigo-400 text-transparent bg-clip-text mb-3">
               {lang === "en"
                 ? "Find Your Dream Job With Us"
                 : "የህልም ስራዎን ከእኛ ጋር ያግኙ"}
