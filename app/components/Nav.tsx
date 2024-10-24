@@ -13,7 +13,7 @@ const Nav = ({ lang }: NavProps) => {
 
   return (
     <div className="sticky top-0 w-screen h-20 bg-transparent shadow-md bg-blue-900 backdrop-blur-lg flex justify-between items-center p-8 z-40 dark">
-      <Link href={"/home"} className="flex gap-4 p-4">
+      <Link href={"/home"} className="flex gap-4 p-4 text-white">
         <GiWaterDrop />
         <p className="font-bold text-inherit">
           {lang === "en" ? "Econnect" : "E መገናኘት"}

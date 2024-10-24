@@ -1,32 +1,106 @@
-import React from "react";
-import { AiFillFacebook, AiFillInstagram, AiFillYoutube } from "react-icons/ai";
+import { GiWaterDrop } from "react-icons/gi";
 
-const Footer = () => {
-  return (
-    <div className="w-full flex flex-col gap-2 h-64 bg-blue-900 ">
-      <div className="flex flex-col md:flex-row justify-between w-full px-24 mt-12">
-        <div className="md:w-24 text-center">Econnnect</div>
-        <div className="flex gap-4 w-full text-sm text-center justify-center m-4 -translate-x-6 md:translate-x-6">
-          <h1>Job Listings</h1>
-          <a href="/about">About Us</a>
-          <h1>Contact Us</h1>
-          <h1>FAQs</h1>
-        </div>
-        <div className="flex gap-5 justify-center py-4">
-          <AiFillFacebook />
-          <AiFillInstagram />
-          <AiFillYoutube />
-        </div>
-      </div>
-      <div className=" w-1/2 mx-auto h-1 bg-white"></div>
-      <div className="flex justify-center text-[8px] md:text-medium gap-2">
-        <p>&copy; 2023 Econnect. All rights reserved.</p>
-        <p>Privacy Policy</p>
-        <p>Terms and Conditions</p>
-        <p>Cookie Policy</p>
-      </div>
-    </div>
-  );
+const navigation = {
+  solutions: [
+    { name: "Marketing", href: "#" },
+    { name: "Analytics", href: "#" },
+    { name: "Automation", href: "#" },
+    { name: "Commerce", href: "#" },
+    { name: "Insights", href: "#" },
+  ],
+  support: [
+    { name: "Documentation", href: "#" },
+    { name: "Contact Us", href: "#" },
+  ],
+  company: [
+    { name: "About", href: "/about" },
+    { name: "Blog", href: "#" },
+  ],
+  legal: [
+    { name: "Terms of service", href: "#" },
+    { name: "Privacy policy", href: "#" },
+    { name: "License", href: "#" },
+  ],
 };
 
-export default Footer;
+export default function Footer() {
+  return (
+    <footer className="bg-blue-900">
+      <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
+        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div className="text-6xl text-white">
+            <GiWaterDrop />
+          </div>
+          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm/6 font-semibold text-white">
+                  Solutions
+                </h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.solutions.map((item) => (
+                    <li key={item.name}>
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-400 hover:text-white"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm/6 font-semibold text-white">Support</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.support.map((item) => (
+                    <li key={item.name}>
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-400 hover:text-white"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm/6 font-semibold text-white">Company</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.company.map((item) => (
+                    <li key={item.name}>
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-400 hover:text-white"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm/6 font-semibold text-white">Legal</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.legal.map((item) => (
+                    <li key={item.name}>
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-400 hover:text-white"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
