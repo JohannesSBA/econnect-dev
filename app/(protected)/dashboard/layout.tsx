@@ -5,7 +5,6 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
-import PNav from "../components/visualComponents/PNav";
 import ProtectedNav from "../components/visualComponents/ProtectedNav";
 
 interface LayoutProps {

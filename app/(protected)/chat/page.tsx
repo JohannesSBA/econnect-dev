@@ -12,7 +12,7 @@ import Search from "../components/SearchComponents/Search";
 import SignOutButton from "../components/SignOutButton";
 import UserPicture from "../components/UserPicture";
 import SideInfo from "../components/SideInfo";
-import PNav from "../components/visualComponents/PNav";
+import ProtectedNav from "../components/visualComponents/ProtectedNav";
 
 interface PageProps {
   params: {
@@ -42,7 +42,11 @@ const page = async ({ params }: { params: { chatid: string } }) => {
 
   return (
     <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
-      <PNav />
+      <ProtectedNav
+        userInfoId={userInfo.id as string}
+        userName={userInfo.firstName + " " + userInfo.lastName}
+        userEmail={userInfo.email as string}
+      />
       <div className="w-screen h-full overflow-clip flex bg-slate-100">
         <div className="w-full md:w-1/5">
           <Messages

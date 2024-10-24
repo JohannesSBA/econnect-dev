@@ -2,7 +2,7 @@ import ChatInput from "@/app/(protected)/components/ChatInput";
 import Conversations from "@/app/(protected)/components/Conversations";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Avatar, Link } from "@nextui-org/react";
+import { Avatar, Link, user } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -13,7 +13,7 @@ import SignOutButton from "../../components/SignOutButton";
 import UserPicture from "../../components/UserPicture";
 import { Friend } from "@/app/types/db";
 import SideInfo from "../../components/SideInfo";
-import PNav from "../../components/visualComponents/PNav";
+import ProtectedNav from "../../components/visualComponents/ProtectedNav";
 
 interface PageProps {
   params: {
@@ -72,7 +72,11 @@ const page = async ({ params }: { params: { chatid: string } }) => {
 
   return (
     <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
-      <PNav />
+      <ProtectedNav
+        userInfoId={userInfo.id as string}
+        userName={userInfo.firstName + " " + userInfo.lastName}
+        userEmail={userInfo.email as string}
+      />
       <div className="w-screen h-full overflow-clip flex bg-slate-100">
         <div className="w-1/5 hidden md:flex">
           <Messages

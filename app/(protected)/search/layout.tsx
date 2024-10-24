@@ -13,7 +13,7 @@ import UserPicture from "../components/UserPicture";
 import Search from "../components/SearchComponents/Search";
 import SignOutButton from "../components/SignOutButton";
 import axios from "axios";
-import PNav from "../components/visualComponents/PNav";
+import ProtectedNav from "../components/visualComponents/ProtectedNav";
 
 interface LayoutProps {
   children: ReactNode;
@@ -40,7 +40,11 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
     <html lang="en" className="scrollbar-thin scrollbar-webkit">
       <body className={inter.className}>
         <div className="h-screen w-screen overflow-clip font-PlusJakartaSans">
-          <PNav />
+          <ProtectedNav
+            userInfoId={userInfo.id as string}
+            userName={userInfo.firstName + " " + userInfo.lastName}
+            userEmail={userInfo.email as string}
+          />
           <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
         </div>

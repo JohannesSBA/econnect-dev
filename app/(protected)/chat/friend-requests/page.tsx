@@ -7,9 +7,9 @@ import Link from "next/link";
 import { userInfo } from "os";
 import { GiWaterDrop } from "react-icons/gi";
 import Messages from "../../components/Messages";
-import PNav from "../../components/visualComponents/PNav";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Friend } from "@/app/types/db";
+import ProtectedNav from "../../components/visualComponents/ProtectedNav";
 
 const page = async () => {
   const session = await getServerSession(options);
@@ -34,7 +34,11 @@ const page = async () => {
 
   return (
     <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
-      <PNav />
+      <ProtectedNav
+        userInfoId={userInfo.id as string}
+        userName={userInfo.firstName + " " + userInfo.lastName}
+        userEmail={userInfo.email as string}
+      />
       <div className="w-screen h-full overflow-clip flex bg-slate-100">
         <div className="w-1/5">
           <Messages
