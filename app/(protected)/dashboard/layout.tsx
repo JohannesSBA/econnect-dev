@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   return (
     <html lang="en" className="scrollbar-thin scrollbar-webkit">
       <body className={inter.className}>
-        <div className="h-screen w-screen md:overflow-clip font-PlusJakartaSans">
+        <div className="h-screen w-screen overflow-scroll font-PlusJakartaSans">
           <ProtectedNav
             userInfoId={userInfo.id as string}
             userName={
