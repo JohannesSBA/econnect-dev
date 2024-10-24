@@ -19,7 +19,7 @@ export default function Home() {
   const [lang, setLang] = useState<string>("en");
 
   return (
-    <div className="w-full dark:bg-blue-900 bg-indigo-400">
+    <div className="w-full bg-blue-900 ">
       <NextUIProvider>
         <ThemeProvider attribute="class">
           {/* Language Changer */}
