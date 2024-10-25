@@ -100,7 +100,7 @@ const Page = async () => {
               className="transition-transform ml-4 translate-x-4"
             />
             <NewPost />
-            <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900">
+            <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900 hidden md:flex">
               Your Activity
             </h1>
           </div>

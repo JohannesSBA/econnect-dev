@@ -1,30 +1,32 @@
+import { cache } from "react";
 import prisma from "../lib/prisma";
 
-export const getUserContent = async (userId: string) => {
+export const getUserContent = cache(async (userId: string) => {
+  console.log("Getting user content");
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        bio: true,
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        pronouns: true,
-        location: true,
+      where: { id: userId },
+      include: {
         education: true,
-        currentPosition: true,
-        title: true,
-        gotStarted: true,
-        role: true,
         friends: true,
-        jobListingsPosted: true,
-        emailVerified: true,
-        posts: true,
+        Comment: true,
+        experience: true,
         jobApplications: true,
+        posts: true,
+        notifications: true,
+        JobCScreened: true,
+        jobListingsPosted: true,
+        likes: true,
+        messagesRead: true,
+        messagesSent: true,
+        messagesReceived: true,
+        savedPosts: true,
         pendingFriendRequest: true,
+        sentFriendRequest: true,
+        Report: true,
+        friendsOf: true,
+        JobHired: true,
+        JobHScreened: true,
       },
     });
 
@@ -40,18 +42,31 @@ export const getUserContent = async (userId: string) => {
       education: user?.education,
       currentPosition: user?.currentPosition as string,
       title: user?.title as string,
+      friends: user?.friends,
+      Comment: user?.Comment,
+      experience: user?.experience,
+      jobApplications: user?.jobApplications,
+      posts: user?.posts,
+      notifications: user?.notifications,
+      JobCScreened: user?.JobCScreened,
+      jobListingsPosted: user?.jobListingsPosted,
+      likes: user?.likes,
+      messagesRead: user?.messagesRead,
+      messagesSent: user?.messagesSent,
+      messagesReceived: user?.messagesReceived,
+      savedPosts: user?.savedPosts,
+      pendingFriendRequest: user?.pendingFriendRequest,
+      sentFriendRequest: user?.sentFriendRequest,
+      Report: user?.Report,
+      friendsOf: user?.friendsOf,
+      JobHired: user?.JobHired,
+      JobHScreened: user?.JobHScreened,
       image: `https://econnectbucket.s3.amazonaws.com/image/${user?.id}`,
       gotStarted: user?.gotStarted,
       role: user?.role,
-      friends: user?.friends,
-      jobListing: user?.jobListingsPosted,
-      emailVerified: user?.emailVerified,
-      posts: user?.posts,
-      jobApplications: user?.jobApplications,
     };
   } catch (error) {
-    // Handle the error, log it, or return a meaningful error response.
-    console.error("Error Getting Content:", error);
-    return { error: "Unable to retrieve user bio" };
+    console.error("Error getting user content:", error);
+    throw new Error("Failed to get user content");
   }
-};
+});

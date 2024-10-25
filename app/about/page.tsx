@@ -79,9 +79,11 @@ const blogPosts = [
 ];
 const footerNavigation = {
   main: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
+    { name: "About", href: "/about" },
+    {
+      name: "Blog",
+      href: "https://medium.com/@Econnect/",
+    },
     { name: "Press", href: "#" },
     { name: "Accessibility", href: "#" },
     { name: "Partners", href: "#" },
