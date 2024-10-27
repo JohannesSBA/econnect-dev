@@ -327,11 +327,11 @@ export default function Posts({ userId, fromPage }: PostProp) {
           )
         )
       )}
-      <div ref={sentinelRef} className="h-10 w-full" />
+      <div ref={sentinelRef} className="h-10 w-full overflow-scroll" />
       {isLoading && (
         <div className="flex flex-col gap-4 w-full h-full">
-          <Skeleton className="w-full h-16 rounded-md flex flex-col justify-between gap-2 m-4" />
-          <Skeleton className="w-full h-16 rounded-md flex flex-col justify-between gap-2 m-4" />
+          <Skeleton className="w-full h-24 rounded-md flex flex-col justify-between gap-2 m-4 light" />
+          <Skeleton className="w-full h-24 rounded-md flex flex-col justify-between gap-2 m-4 light" />
         </div>
       )}
     </div>
