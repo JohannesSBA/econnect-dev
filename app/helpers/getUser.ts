@@ -64,6 +64,7 @@ export const getUserContent = cache(async (userId: string) => {
       image: `https://econnectbucket.s3.amazonaws.com/image/${user?.id}`,
       gotStarted: user?.gotStarted,
       role: user?.role,
+      emailVerified: user?.emailVerified,
     };
   } catch (error) {
     console.error("Error getting user content:", error);
