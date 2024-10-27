@@ -15,7 +15,7 @@ const SideInfo = ({ user, posts, applications }: sideProps) => {
   const connections = user.friends ?? [];
 
   return (
-    <div className="h-full rounded-2xl w-full bg-white flex flex-col items-center">
+    <div className="h-full rounded-2xl w-full bg-red-400 flex flex-col items-center top-8">
       <div className="border-b border-black p-4">
         <UserPicture />
       </div>

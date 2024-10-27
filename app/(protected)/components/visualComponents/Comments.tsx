@@ -80,7 +80,7 @@ export default function PostWithComments({
       {latestComments.map((comment: Comment, index: number) => (
         <div
           key={index}
-          className="text-sm text-gray-700 flex items-center gap-2 justify-between w-full"
+          className="text-sm text-gray-700 flex items-center gap-2 justify-between"
         >
           <div className="flex gap-2 items-center">
             <Image
@@ -94,9 +94,7 @@ export default function PostWithComments({
               <h1 className="font-semibold">
                 {post.author.firstName} {post.author.lastName}
               </h1>
-              <p className="text-slate-800 text-xs w-[30rem] pl-2">
-                {comment.content}
-              </p>
+              <p className="text-slate-800 text-xs pl-2">{comment.content}</p>
             </div>
           </div>
           <div className="flex justify-between items-center">
@@ -143,7 +141,7 @@ export default function PostWithComments({
                 {comments.map((comment: Comment, index: number) => (
                   <div
                     key={index}
-                    className="text-sm text-gray-700 flex items-center gap-2 justify-between w-full"
+                    className="text-sm text-gray-700 flex items-center gap-2 justify-between"
                   >
                     <div className="flex gap-2 items-center">
                       <Image
