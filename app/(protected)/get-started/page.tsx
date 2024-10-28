@@ -2,9 +2,9 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { getServerSession } from "next-auth";
 import React from "react";
-import StarterForms from "../components/StarterForms";
 import { User } from "@/app/types/db";
 import { redirect } from "next/navigation";
+import StarterForms from "../components/functionComponents/StarterForms";
 
 const page = async () => {
     const session = await getServerSession(options);

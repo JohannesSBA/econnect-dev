@@ -2,17 +2,17 @@ import React from "react";
 import EditContent from "../../components/functionComponents/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Button, Card, Image } from "@nextui-org/react";
-import ProfileImage from "../../components/ProfileImage";
+import ProfileImage from "../../components/functionComponents/ProfileImage";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import UploadResume from "../../components/UploadResume";
+import UploadResume from "../../components/functionComponents/UploadResume";
 import { FiExternalLink, FiMessageSquare, FiUserPlus } from "react-icons/fi";
-import Posts from "../../components/Posts";
-import NewEducation from "../../components/NewEducation";
+import NewEducation from "../../components/functionComponents/NewEducation";
 import { getEducation } from "@/app/helpers/getEducation";
-import NewExperience from "../../components/NewExperience";
+import NewExperience from "../../components/functionComponents/NewExperience";
 import { getExperience } from "@/app/helpers/getExperience";
+import Posts from "../../components/visualComponents/Posts";
 
 const page = async () => {
     const session = await getServerSession(options);

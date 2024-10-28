@@ -8,10 +8,8 @@ import { GiWaterDrop } from "react-icons/gi";
 import prisma from "@/app/lib/prisma";
 import { Friend } from "@/app/types/db";
 import { getUserContent } from "@/app/helpers/getUser";
-import Messages from "../components/Messages";
-import UserPicture from "../components/UserPicture";
 import Search from "../components/SearchComponents/Search";
-import SignOutButton from "../components/SignOutButton";
+import SignOutButton from "../components/functionComponents/SignOutButton";
 import axios from "axios";
 import ProtectedNav from "../components/visualComponents/ProtectedNav";
 

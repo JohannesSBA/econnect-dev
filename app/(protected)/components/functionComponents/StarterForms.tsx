@@ -2,15 +2,13 @@
 
 import { Button, Pagination } from "@nextui-org/react";
 import React, { useEffect } from "react";
-import ProfileImage from "./ProfileImage";
-import Search from "./SearchComponents/Search";
-import EditContent from "./functionComponents/EditContent";
 import { User } from "@/app/types/db";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { redirect, useRouter } from "next/navigation";
-import AccountPreferences from "../dashboard/settings/SideBarComponents/AccountPreferences";
+import ProfileImage from "./ProfileImage";
+import AccountPreferences from "../../dashboard/settings/SideBarComponents/AccountPreferences";
 
 interface starterProps {
     user: User;

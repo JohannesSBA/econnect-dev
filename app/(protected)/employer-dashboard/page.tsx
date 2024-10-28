@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import NewJobListing from "../components/NewJobListing";
+import NewJobListing from "../components/functionComponents/NewJobListing";
 import Image from "next/image";
 import {
     FaArchive,
@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import { MdSpaceDashboard } from "react-icons/md";
-import JobListing from "../components/JobListing";
+import JobListing from "../components/visualComponents/JobListing";
 import { getListing } from "@/app/helpers/getListing";
 import { Jobs } from "@/app/types/db";
 

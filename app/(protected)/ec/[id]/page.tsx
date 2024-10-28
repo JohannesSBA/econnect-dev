@@ -1,8 +1,8 @@
-import AddFriendButton from "@/app/(protected)/components/AddFriendButton";
+import AddFriendButton from "@/app/(protected)/components/functionComponents/AddFriendButton";
 import EditContent from "@/app/(protected)/components/functionComponents/EditContent";
-import ProfileImage from "@/app/(protected)/components/ProfileImage";
-import UserAbout from "@/app/(protected)/components/UserAbout";
-import UserEducation from "@/app/(protected)/components/UserEducation";
+import ProfileImage from "@/app/(protected)/components/functionComponents/ProfileImage";
+import UserAbout from "@/app/(protected)/components/visualComponents/UserAbout";
+import UserEducation from "@/app/(protected)/components/visualComponents/UserEducation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import { chatHrefConstructor } from "@/app/lib/utils";
@@ -11,12 +11,10 @@ import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { FiUserPlus, FiMessageSquare, FiExternalLink } from "react-icons/fi";
-import NewEducation from "../../components/NewEducation";
-import NewExperience from "../../components/NewExperience";
-import Posts from "../../components/Posts";
-import UploadResume from "../../components/UploadResume";
+import UploadResume from "../../components/functionComponents/UploadResume";
 import { getEducation } from "@/app/helpers/getEducation";
 import { getExperience } from "@/app/helpers/getExperience";
+import Posts from "../../components/visualComponents/Posts";
 
 const page = async ({ params }: { params: { id: string } }) => {
     const session = await getServerSession(options);
