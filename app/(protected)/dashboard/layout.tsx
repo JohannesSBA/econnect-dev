@@ -8,45 +8,48 @@ import { getUserContent } from "@/app/helpers/getUser";
 import ProtectedNav from "../components/visualComponents/ProtectedNav";
 
 interface LayoutProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Econnect",
-  description: "Dashboard for Econnect",
+    title: "Econnect",
+    description: "Dashboard for Econnect",
 };
 
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
-  const session = await getServerSession(options);
-  if (!session) return;
+    const session = await getServerSession(options);
+    if (!session) return;
 
-  const userInfo = await getUserContent(session.user.id);
+    const userInfo = await getUserContent(session.user.id);
 
-  const userRole = userInfo.role as string;
+    const userRole = userInfo.role as string;
 
-  const friendsList = userInfo.friends as unknown as Friend[];
+    const friendsList = userInfo.friends as unknown as Friend[];
 
-  return (
-    <html lang="en" className="scrollbar-thin scrollbar-webkit">
-      <body className={inter.className}>
-        <div className="h-screen w-screen font-PlusJakartaSans sticky">
-          <ProtectedNav
-            userInfoId={userInfo.id as string}
-            userName={
-              ((userInfo.firstName as string) +
-                " " +
-                userInfo.lastName) as string
-            }
-            userEmail={userInfo.email as string}
-          />
-          <aside className="w-full h-full overflow-clip">{children}</aside>
-          <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
-        </div>
-      </body>
-    </html>
-  );
+    return (
+        <html
+            lang="en"
+            className="scrollbar-thin scrollbar-webkit h-fit bg-zinc-100"
+        >
+            <body className={inter.className}>
+                <div className="w-screen font-PlusJakartaSans sticky">
+                    <ProtectedNav
+                        userInfoId={userInfo.id as string}
+                        userName={
+                            ((userInfo.firstName as string) +
+                                " " +
+                                userInfo.lastName) as string
+                        }
+                        userEmail={userInfo.email as string}
+                    />
+                    <aside className="w-full bg-zinc-100">{children}</aside>
+                    <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
+                </div>
+            </body>
+        </html>
+    );
 };
 
 export default Layout;
