@@ -129,50 +129,6 @@ export default function Messages({ userId, friends, role }: MessageProps) {
             }
         >
             <div className="flex flex-col gap-2">
-                <div className="w-full h-12 bg-slate-200 rounded-md flex justify-around items-center gap-2">
-                    <div className="">
-                        <Button
-                            className={
-                                messageType === "all"
-                                    ? "bg-white shadow-md text-black"
-                                    : "text-black"
-                            }
-                            variant={messageType === "all" ? "solid" : "light"}
-                            onClick={() => setMessageType("all")}
-                            disableAnimation
-                        >
-                            All
-                        </Button>
-                        <Button
-                            className={
-                                messageType === "connects"
-                                    ? "bg-white shadow-md text-black"
-                                    : "text-black"
-                            }
-                            variant={
-                                messageType === "connects" ? "solid" : "light"
-                            }
-                            onClick={() => setMessageType("connects")}
-                            disableAnimation
-                        >
-                            Connects
-                        </Button>
-                        <Button
-                            className={
-                                messageType === "recruits"
-                                    ? "bg-white shadow-md text-black"
-                                    : "text-black"
-                            }
-                            variant={
-                                messageType === "recruits" ? "solid" : "light"
-                            }
-                            onClick={() => setMessageType("recruits")}
-                            disableAnimation
-                        >
-                            Recruits
-                        </Button>
-                    </div>
-                </div>
                 <Input
                     type="text"
                     label="Search Messages"

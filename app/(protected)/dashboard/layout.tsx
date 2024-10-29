@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
         >
             <body className={inter.className}>
                 <div className="w-screen font-PlusJakartaSans">
-                    <div className="sticky top-0 w-screen">
+                    <div className="sticky top-0 w-screen z-[60]">
                         <ProtectedNav
                             userInfoId={userInfo.id as string}
                             userName={

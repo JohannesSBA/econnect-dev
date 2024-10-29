@@ -123,7 +123,7 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
 
     return (
         <div className="w-screen md:h-screen overflow-clip bg-slate-100 flex flex-col md:flex-row justify-between font-PlusJakartSans p-4 gap-2">
-            <div className="h-[90%] w-3/4 flex flex-col overflow-scroll p-6 pl-12 bg-white shadow-md text-black ">
+            <div className="h-[90%] w-3/4 flex flex-col  p-6 pl-12 bg-white shadow-md text-black ">
                 <div className="w-full flex justify-between">
                     <h1 className="text-bold text-2xl text-slate-700">
                         {connections.length} Connections

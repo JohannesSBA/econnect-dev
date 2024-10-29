@@ -184,7 +184,7 @@ export default function Posts({ userId, fromPage }: PostProp) {
     };
 
     return (
-        <div className="w-full h-full flex flex-col gap-4 overflow-scroll scrollbar-webkit scrollbar-thin p-2">
+        <div className="w-full h-full flex flex-col gap-4 scrollbar-webkit scrollbar-thin p-2">
             {posts.length === 0 && !isLoading ? (
                 <h1 className="w-full flex justify-center text-center pt-4">
                     No Posts Currently Available. <br />
@@ -340,7 +340,7 @@ export default function Posts({ userId, fromPage }: PostProp) {
                     )
                 )
             )}
-            <div ref={sentinelRef} className="h-10 w-full overflow-scroll" />
+            <div ref={sentinelRef} className="h-10 w-full" />
             {isLoading && (
                 <div className="flex flex-col gap-4 w-full h-full">
                     <Skeleton className="w-full h-24 rounded-md flex flex-col justify-between gap-2 m-4 light" />

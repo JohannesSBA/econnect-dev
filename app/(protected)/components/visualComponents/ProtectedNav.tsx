@@ -101,9 +101,9 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex flex-shrink-0 items-center">
-                            <div className="h-8 w-autho flex items-center md:-translate-x-10 text-blue-800">
+                            <div className="h-8 w-autho md:flex items-center md:-translate-x-10 text-blue-800 hidden ">
                                 <GiWaterDrop />
-                                <p className="flex font-bold text-inherit">
+                                <p className=" font-bold text-inherit flex">
                                     Econnect
                                 </p>
                             </div>
