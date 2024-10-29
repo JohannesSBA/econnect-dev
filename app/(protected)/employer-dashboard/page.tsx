@@ -18,6 +18,7 @@ import { MdSpaceDashboard } from "react-icons/md";
 import JobListing from "../components/visualComponents/JobListing";
 import { getListing } from "@/app/helpers/getListing";
 import { Jobs } from "@/app/types/db";
+import { IoIosAdd } from "react-icons/io";
 
 const Page = async () => {
     const session = await getServerSession(options);
@@ -44,7 +45,7 @@ const Page = async () => {
     }
 
     const nonExpiredJobs = (user?.jobListingsPosted ?? []).filter(
-        (job) => !job.Expired
+        (job: { Expired: any }) => !job.Expired
     );
 
     const stats = [
@@ -71,16 +72,8 @@ const Page = async () => {
     ];
 
     return (
-        <div className="bg-slate-100 w-screen h-[calc(100vh-5rem)] flex justify-center">
-            <div className="hidden md:flex border-r-1 shadow-md w-1/6 h-full flex-col justify-between">
-                <div className="text-slate-800 bg-red-40 mx-auto mt-12"></div>
-                <div className="flex flex-col text-slate-400 text-sm">
-                    <a href="">Privacy</a>
-                    <a href="">Terms</a>
-                    <a href="">Accessability</a>
-                </div>
-            </div>
-            <div className="bg-slate-100 w-full md:w-5/6 h-full flex flex-col p-8 gap-8">
+        <div className="bg-slate-100 w-full h-full flex justify-center">
+            <div className="bg-slate-100 w-full h-full flex flex-col p-8 gap-8">
                 <div className=" text-slate-800 text-2xl md:text-6xl font-bold ">
                     Welcome, {user.firstName}
                 </div>
@@ -103,7 +96,15 @@ const Page = async () => {
                         </span>
                         Archived Jobs
                     </Link>
-                    <NewJobListing id={session?.user.id} />
+                    <Link
+                        href={"/employer-dashboard/newListing"}
+                        className="rounded-lg bg-green-500 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
+                    >
+                        <span className="rounded-full h-12 w-12 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
+                            <IoIosAdd />
+                        </span>
+                        New Listing
+                    </Link>
                 </div>
                 <div className=" rounded-md w-full h-full shadow-md flex flex-col">
                     <h1 className="w-full h-12 p-4 border-b-2 shadow-md text-slate-900 font-semibold">

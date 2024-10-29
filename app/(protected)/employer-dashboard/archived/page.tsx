@@ -52,14 +52,16 @@ const Page = () => {
     };
 
     return (
-        <div className="flex w-screen h-[calc(100vh-5rem)] bg-slate-100">
+        <div className="flex w-full h-[calc(100vh-5rem)] bg-slate-100">
             <div className="h-full w-full p-6">
                 <h1 className="text-black font-bold text-2xl">
                     Archived Job Listings
                 </h1>
                 <div className="flex flex-col gap-4 mt-4 p-4">
                     {jobs?.length === 0 ? (
-                        <div className="text-black">No Active Job Listings</div>
+                        <div className="text-black">
+                            No Archived Job Listings
+                        </div>
                     ) : (
                         jobs?.map((job) => (
                             <div

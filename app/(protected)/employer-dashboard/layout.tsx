@@ -12,6 +12,7 @@ import Search from "../components/SearchComponents/Search";
 import SignOutButton from "../components/functionComponents/SignOutButton";
 import axios from "axios";
 import ProtectedNav from "../components/visualComponents/ProtectedNav";
+import EmployerSideNav from "../components/visualComponents/EmployerSideNav";
 
 interface LayoutProps {
     children: ReactNode;
@@ -35,20 +36,22 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
     const friendsList = userInfo.friends as unknown as Friend[];
 
     return (
-        <html lang="en" className="scrollbar-thin scrollbar-webkit bg-zinc-100">
+        <html
+            lang="en"
+            className="scrollbar-thin scrollbar-webkit bg-zinc-100 h-full"
+        >
             <body className={inter.className}>
-                <div className="h-full w-screen font-PlusJakartaSans bg-zinc-100">
-                    <ProtectedNav
-                        userInfoId={userInfo.id as string}
-                        userName={
-                            ((userInfo.firstName as string) +
-                                " " +
-                                userInfo.lastName) as string
-                        }
-                        userEmail={userInfo.email as string}
-                    />
+                <div className="h-full w-screen flex font-PlusJakartaSans bg-zinc-100">
+                    <div className="sticky top-0 left-0 h-screen">
+                        <EmployerSideNav
+                            userInfo={userInfo}
+                            userId={session.user.id as string}
+                        />
+                    </div>
 
-                    <aside>{children}</aside>
+                    <aside className="flex-1 overflow-y-auto overflow-x-clip">
+                        {children}
+                    </aside>
                     <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
                 </div>
             </body>

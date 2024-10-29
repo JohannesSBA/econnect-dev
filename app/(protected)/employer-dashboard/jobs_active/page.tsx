@@ -52,7 +52,7 @@ const Page = () => {
     };
 
     return (
-        <div className="flex w-screen h-[calc(100vh-5rem)] bg-slate-100">
+        <div className="flex w-full h-[calc(100vh-5rem)] bg-slate-100">
             <div className="h-full w-full p-6">
                 <h1 className="text-black font-bold text-2xl">
                     Active Job Listings

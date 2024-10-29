@@ -34,16 +34,18 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
             className="scrollbar-thin scrollbar-webkit h-fit bg-zinc-100"
         >
             <body className={inter.className}>
-                <div className="w-screen font-PlusJakartaSans sticky">
-                    <ProtectedNav
-                        userInfoId={userInfo.id as string}
-                        userName={
-                            ((userInfo.firstName as string) +
-                                " " +
-                                userInfo.lastName) as string
-                        }
-                        userEmail={userInfo.email as string}
-                    />
+                <div className="w-screen font-PlusJakartaSans">
+                    <div className="sticky top-0 w-screen">
+                        <ProtectedNav
+                            userInfoId={userInfo.id as string}
+                            userName={
+                                ((userInfo.firstName as string) +
+                                    " " +
+                                    userInfo.lastName) as string
+                            }
+                            userEmail={userInfo.email as string}
+                        />
+                    </div>
                     <aside className="w-full bg-zinc-100">{children}</aside>
                     <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
                 </div>

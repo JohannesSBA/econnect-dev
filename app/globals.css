@@ -5,36 +5,42 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  scroll-behavior: smooth;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+    scroll-behavior: smooth;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+            to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))
+        )
+        rgb(var(--background-start-rgb));
+}
+
+.tiptap p {
+    margin: 1em 0;
+    padding: 1em;
+    max-width: 36rem;
 }
 
 .cs-background {
-  background-color: #5b5bf7;
-  opacity: 0.8;
-  background-image: repeating-radial-gradient(
-      circle at 0 0,
-      transparent 0,
-      #9393fe 31px
-    ),
-    repeating-linear-gradient(#0014a855, #0016a8);
+    background-color: #5b5bf7;
+    opacity: 0.8;
+    background-image: repeating-radial-gradient(
+            circle at 0 0,
+            transparent 0,
+            #9393fe 31px
+        ),
+        repeating-linear-gradient(#0014a855, #0016a8);
 }
 
 .about-bg {
-  background-color: #e5e5f7;
-  opacity: 1;
-  background-image: radial-gradient(#444cf7 1.25px, #e5e5f7 1.25px);
-  background-size: 25px 25px;
+    background-color: #e5e5f7;
+    opacity: 1;
+    background-image: radial-gradient(#444cf7 1.25px, #e5e5f7 1.25px);
+    background-size: 25px 25px;
 }
