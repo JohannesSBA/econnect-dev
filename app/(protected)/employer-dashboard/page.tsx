@@ -3,9 +3,6 @@ import { getUserContent } from "@/app/helpers/getUser";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
-import { CgProfile } from "react-icons/cg";
-import NewJobListing from "../components/functionComponents/NewJobListing";
-import Image from "next/image";
 import {
     FaArchive,
     FaBriefcase,
