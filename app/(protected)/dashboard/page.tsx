@@ -125,7 +125,7 @@ const Page = async () => {
                     </div>
                 </aside>
 
-                <main className="flex-1 overflow-scroll shadow-md p-2">
+                <main className="flex-1 shadow-md p-2">
                     <div className="flex pt-2">
                         <User
                             name={""} // Add the 'name' property with a value
@@ -142,11 +142,11 @@ const Page = async () => {
                     </div>
                     <Link
                         href="/dashboard/my-posts"
-                        className="text-blue-400 font-light text-center overflow-scroll"
+                        className="text-blue-400 font-light text-center"
                     >
                         Your Posts
                     </Link>
-                    <div className="h-full bg-white rounded-md m-4 text-black overflow-scroll">
+                    <div className="h-full bg-white rounded-md m-4 text-black">
                         <Posts
                             id={session.user.id}
                             userId={session.user.id}

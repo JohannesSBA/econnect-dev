@@ -19,6 +19,7 @@ import { useUser } from "../functionComponents/UserContext";
 import Search from "../SearchComponents/Search";
 import Link from "next/link";
 import { FaBars, FaBell, FaTimes } from "react-icons/fa";
+import { usePathname } from "next/navigation";
 
 interface appProps {
     userInfoId: string;
@@ -26,6 +27,7 @@ interface appProps {
     userEmail: string;
 }
 export default function App({ userInfoId, userName, userEmail }: appProps) {
+    const path = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [messageCounter, setMessageCounter] = useState(0); // New state for unread message count
     const [notificationCounter, setNotificationCounter] = useState(0); // New state for unread notification count
@@ -111,14 +113,20 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                             {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                             <a
                                 href="/dashboard"
-                                className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2"
+                                className={`inline-flex items-center border-b-2 ${
+                                    path === "/dashboard"
+                                        ? "border-indigo-500"
+                                        : ""
+                                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
                             >
                                 <IoHome />
                                 Dashboard
                             </a>
                             <a
                                 href="/chat"
-                                className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2"
+                                className={`inline-flex items-center border-b-2 ${
+                                    path === "/chat" ? "border-indigo-500" : ""
+                                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
                             >
                                 <Badge
                                     content={messageCounter} // Show unread messages count
@@ -137,14 +145,22 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                             </a>
                             <a
                                 href="/listings"
-                                className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2"
+                                className={`inline-flex items-center border-b-2 ${
+                                    path === "/listings"
+                                        ? "border-indigo-500"
+                                        : ""
+                                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
                             >
                                 <IoBriefcase />
                                 Listing
                             </a>
                             <a
                                 href="/dashboard/connections"
-                                className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2"
+                                className={`inline-flex items-center border-b-2 ${
+                                    path === "/dashboard/connections"
+                                        ? "border-indigo-500"
+                                        : ""
+                                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
                             >
                                 <IoLink />
                                 Connects

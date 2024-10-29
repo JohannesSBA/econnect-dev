@@ -57,7 +57,7 @@ const page = async () => {
     }
 
     return (
-        <div className="w-screen md:h-[calc(100vh-5rem)] flex flex-col md:flex-row overflow-scroll md:overflow-clip bg-[#F4F2EE]">
+        <div className="w-screen md:h-[calc(100vh-5rem)] flex flex-col md:flex-row md:overflow-clip bg-[#F4F2EE]">
             <div className="md:w-1/3 h-full flex flex-col px-8 bg-white/75 m-2 rounded-md">
                 <ProfileImage id={session?.user.id as string} />
                 <div className="w-full flex flex-col justify-center items-center mb-12">

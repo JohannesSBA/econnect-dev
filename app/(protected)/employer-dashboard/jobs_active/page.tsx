@@ -6,7 +6,6 @@ import { Session, getServerSession } from "next-auth";
 import React, { useState, useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { toast } from "sonner";
-import NewJobListing from "../../components/functionComponents/NewJobListing";
 import {
     Button,
     Modal,

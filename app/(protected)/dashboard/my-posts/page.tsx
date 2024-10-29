@@ -142,7 +142,7 @@ const Page = async () => {
                 >
                     All Posts
                 </Link>
-                <div className="h-full bg-white rounded-md m-4 text-black overflow-scroll">
+                <div className="h-full bg-white rounded-md m-4 text-black">
                     <Posts
                         id={session.user.id}
                         userId={session.user.id}
