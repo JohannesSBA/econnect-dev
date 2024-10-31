@@ -10,6 +10,8 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { User } from "@/app/types/db";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 interface Comment {
   id: string;
@@ -59,7 +61,7 @@ export default function PostWithComments({
 
   const canDeleteComment = (commentUserId: string) => {
     // A user can delete if they are the post author or the comment author
-    return commentUserId === post.authorId || commentUserId === commentUserId;
+    return commentUserId === post.authorId;
   };
 
   const handleDeleteComment = async (commentId: string) => {

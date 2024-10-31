@@ -34,6 +34,7 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
         chatPartner: chatPartner,
         chatRoom: chatRoom,
       });
+      editor?.commands.clearContent();
       setInput("");
       textareaRef.current?.focus();
     } catch {
@@ -109,7 +110,7 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
   ];
 
   return (
-    <div className="border-t border-gray-200 px-4 py-4 mb-2 sm:mb-0">
+    <div className="border-t border-gray-200 px-4 mb-2 sm:mb-0">
       <div className="text-black relative flex-1 overlow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-blue-600">
         <EditorProvider
           slotBefore={<MenuBar />}
@@ -118,7 +119,7 @@ const ChatInput: FunctionComponent<ChatInputProps> = ({
 
         <div
           onClick={() => textareaRef.current?.focus()}
-          className="py-4"
+          className=""
           aria-hidden="true"
         >
           {/* <div className="py-px"><div className="h-9"></div></div> */}
