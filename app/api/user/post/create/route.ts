@@ -22,6 +22,26 @@ export async function POST(req: Request, res: Response) {
       response = e.message;
     });
 
+  const friends = await prisma.user.findMany({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      friends: true,
+    },
+  });
+
+  const postNotification = `$asq!${session.user.id}content-${body.post}$ast%%${body.title}`;
+
+  for (const friend of friends[0].friends) {
+    await prisma.notification.create({
+      data: {
+        content: postNotification,
+        userId: friend.id as string,
+      },
+    });
+  }
+
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 403 });
   }
