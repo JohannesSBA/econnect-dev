@@ -73,7 +73,8 @@ const Page = ({ params }: { params: { id: string } }) => {
           {listing?.title}
         </h1>
         <p className="overflow-y-scroll overflow-x-hidden p-2 scrollbar-thin scrollbar-webkit">
-          {parse(listing?.description)}
+          {parse(listing.shortDescription)}
+          {/* {parse(listing?.shortDescription as string)} */}
         </p>
       </div>
       <div className="w-1/3 h-full  flex flex-col items-center pt-4">

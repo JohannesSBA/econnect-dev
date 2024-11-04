@@ -5,7 +5,7 @@ import { User } from "@nextui-org/react";
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from "axios";
-import { Jobs } from "@/app/types/db";
+import parse from "html-react-parser";
 import { debounce } from "lodash"; // Import debounce function
 
 const JobListing = () => {
@@ -113,7 +113,7 @@ const JobListing = () => {
             <div>
               <span className="text-blue-800 text-sm">{job.title}</span>
               <h3 className="font-bold mt-px text-black">
-                {job.shortDescription}
+                {parse(job.shortDescription)}
               </h3>
               <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-600">
                 <span className="bg-blue-100 text-blue-700 rounded-full px-2 py-1">
