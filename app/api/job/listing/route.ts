@@ -20,7 +20,7 @@ export async function POST(req: Request, res: Response) {
       location: true,
       createdAt: true,
       updatedAt: true,
-      applicants: true,
+      applicant: true,
       description: true,
       jobType: true,
       postedById: true,

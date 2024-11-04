@@ -15,7 +15,7 @@ export async function POST(req: Request, res: Response) {
       id: listing as string,
     },
     select: {
-      applicants: true,
+      applicant: true,
       hired: true,
       ComputerScreened: true,
       HumanScreened: true,

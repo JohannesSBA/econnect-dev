@@ -19,7 +19,7 @@ export async function POST(req: Request, res: Response) {
         id: body.listingId,
       },
       include: {
-        applicants: true,
+        applicant: true,
       },
     });
 
@@ -28,7 +28,7 @@ export async function POST(req: Request, res: Response) {
     }
 
     if (
-      applications.applicants.find(
+      applications.applicant.find(
         (applicant) => applicant.id === session.user.id
       )
     ) {
@@ -40,7 +40,7 @@ export async function POST(req: Request, res: Response) {
         id: body.listingId,
       },
       data: {
-        applicants: {
+        applicant: {
           connect: {
             id: session.user.id,
           },

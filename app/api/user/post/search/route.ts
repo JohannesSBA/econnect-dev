@@ -72,7 +72,7 @@ export async function GET(req: Request) {
         location: true,
         createdAt: true,
         updatedAt: true,
-        applicants: true,
+        applicant: true,
         description: true,
         jobType: true,
         postedById: true,

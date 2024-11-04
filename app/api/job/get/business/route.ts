@@ -18,7 +18,7 @@ export async function POST(req: Request, res: Response) {
       shortDescription: true,
       Expired: true,
       expireDate: true,
-      applicants: true,
+      applicant: true,
       postedById: true,
       ComputerScreened: true,
       hired: true,

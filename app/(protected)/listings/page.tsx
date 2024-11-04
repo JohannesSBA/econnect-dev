@@ -32,8 +32,10 @@ const Page = async () => {
   const applications = user.jobApplications;
   const recentApplications = applications
     ?.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      (
+        a: { createdAt: string | number | Date },
+        b: { createdAt: string | number | Date }
+      ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
     .slice(0, 2);
 
