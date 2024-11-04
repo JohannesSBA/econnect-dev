@@ -29,9 +29,8 @@ import { toast } from "sonner";
 const Page = ({ params }: { params: { id: string } }) => {
   const [listing, setListing] = useState<any>();
   const [letter, setLetter] = useState<string>("");
-  const [postedBy, setPostedBy] = useState<any>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
   const [company, setCompany] = useState<any>();
 
   useEffect(() => {
@@ -40,38 +39,12 @@ const Page = ({ params }: { params: { id: string } }) => {
         id: params.id,
       });
       setListing(listingData.data);
-      const postedBy = await getUserContent(listingData.data.postedById);
-      setPostedBy(postedBy);
+      console.log(listingData.data);
     };
 
     fetchData();
+    // setIsLoading(false);
   }, [params.id]);
-
-  useEffect(() => {
-    if (!listing) return;
-    const getPoster = async () => {
-      const post = await axios.post("/api/user/get", {
-        id: listing.postedById,
-      });
-      setPostedBy(post.data);
-      setIsLoading(false);
-    };
-
-    getPoster();
-  }, [listing]);
-
-  useEffect(() => {
-    if (!postedBy) return;
-    const getPoster = async () => {
-      const company = await axios.post("/api/user/get", {
-        id: postedBy.id,
-      });
-      setCompany(company);
-      setIsLoading(false);
-    };
-
-    getPoster();
-  }, [postedBy]);
 
   const handleSubmit = async () => {
     const res = await axios.post("/api/job/apply", {
@@ -86,21 +59,21 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <div className="w-screen h-[calc(100vh-5rem)] p-4 bg-slate-100 flex text-black">
       <div className="w-2/3 h-full bg-slate-200 flex flex-col p-4">
         <h1 className="text-xl text-[#1E40AF] font-bold w-full flex justify-between">
-          Join {postedBy.firstName} &lsquo;s Team as
+          Join {listing?.postedBy.firstName} &lsquo;s Team as
         </h1>
         <h1 className="w-full overflow-ellipsis text-slate-800 text-7xl font-bold">
           {listing?.title}
         </h1>
         <p className="overflow-y-scroll overflow-x-hidden p-2 scrollbar-thin scrollbar-webkit">
-          {parse(listing?.description as string)}
+          {parse(listing?.description)}
         </p>
       </div>
       <div className="w-1/3 h-full  flex flex-col items-center pt-4">
@@ -108,15 +81,15 @@ const Page = ({ params }: { params: { id: string } }) => {
           Learn about the company
         </h1>
         <Avatar
-          src={`https://econnectbucket.s3.amazonaws.com/image/${postedBy.id}`}
+          src={`https://econnectbucket.s3.amazonaws.com/image/${listing?.postedById}`}
           className="w-40 h-40 text-large"
         />
-        <h1 className="font-bold text-lg">{postedBy.fullName}</h1>
-        <h1>{postedBy.location}</h1>
+        <h1 className="font-bold text-lg">{listing?.postedBy.firstName}</h1>
+        <h1>{listing?.postedBy.location}</h1>
         <p className="w-[30rem] h-[20rem] overflow-clip text-center mt-2">
-          {postedBy.bio}
+          {listing?.postedBy.bio}
         </p>
-        <Link href={`/ec/${postedBy.id}`}>
+        <Link href={`/ec/${listing?.postedBy.id}`}>
           <Button variant="flat">Comapny Page</Button>
         </Link>
         <Button onPress={onOpen} className="mt-6">
@@ -132,7 +105,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <ModalBody className="text-slate-900">
                   <label htmlFor="Textarea">
                     Please give a reason as to why you want to work at{" "}
-                    {postedBy?.firstName}
+                    {listing?.postedBy?.firstName}
                   </label>
                   <Textarea
                     label="Cover Letter"

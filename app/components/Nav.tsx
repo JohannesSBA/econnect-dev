@@ -1,7 +1,8 @@
-import { Button } from "@nextui-org/react";
+"use client";
+import { Button, Spinner } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { GiWaterDrop } from "react-icons/gi";
 
 interface NavProps {
@@ -10,6 +11,13 @@ interface NavProps {
 
 const Nav = ({ lang }: NavProps) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleLoginClick = () => {
+    setLoading(true); // Show loading indicator
+    router.push("/login");
+    setLoading(false); // Reset loading after navigation completes
+  };
 
   return (
     <div className="sticky top-0 w-screen h-20 bg-transparent shadow-md bg-blue-900 backdrop-blur-lg flex justify-between items-center p-8 z-40 dark">
@@ -23,9 +31,9 @@ const Nav = ({ lang }: NavProps) => {
       <Button
         color="primary"
         variant="shadow"
-        onClick={() => {
-          router.push("/login");
-        }}
+        onClick={handleLoginClick}
+        isLoading={loading} // Show loading spinner
+        disabled={loading} // Disable button when loading
       >
         {lang === "en" ? "Login" : "ግባ"}
       </Button>

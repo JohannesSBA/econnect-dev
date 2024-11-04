@@ -3,134 +3,163 @@ import { FaPlus } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 
 interface Question {
-    name: string;
-    question: string;
-    input: string;
-    options?: string[];
+  name: string;
+  question: string;
+  input: string;
+  options?: string[];
 }
 
 interface QuestionSelectorProps {
-    screenQ: Question[];
-    setScreeningQuestions: React.Dispatch<
-        React.SetStateAction<Record<string, string>>
-    >;
+  screenQ: Question[];
+  setScreeningQuestions: React.Dispatch<
+    React.SetStateAction<Record<string, string>>
+  >;
 }
 
 const QuestionSelector: React.FC<QuestionSelectorProps> = ({
-    screenQ,
-    setScreeningQuestions,
+  screenQ,
+  setScreeningQuestions,
 }) => {
-    return (
-        <div className="flex gap-2">
-            {screenQ.map((question, index) => (
-                <div key={index} className="mt-4">
-                    <button
-                        type="button"
-                        className="text-sm font-semibold leading-6 text-gray-900"
-                        onClick={() => {
-                            const questionElement = document.getElementById(
-                                `question-${index}`
-                            );
-                            const selectedQuestions = document.querySelectorAll(
-                                '[id^="question-"]:not(:empty)'
-                            ).length;
+  const [selectedQuestions, setSelectedQuestions] = useState<Question[]>([]);
+  const [pendingQuestion, setPendingQuestion] = useState<Question | null>(null);
+  const [error, setError] = useState("");
 
-                            if (questionElement) {
-                                if (questionElement.innerHTML === "") {
-                                    if (selectedQuestions < 3) {
-                                        questionElement.innerHTML = `
-                                            <div class="border rounded bg-slate-200 p-4 mt-2">
-                                                <div class="flex justify-between items-center">
-                                                    <p>${question.question}</p>
-                                                    <button type="button" class="text-red-500" onclick="document.getElementById('question-${index}').innerHTML = '';"><MdCancel /></button>
-                                                </div>
-                                                ${
-                                                    question.input ===
-                                                    "checkbox"
-                                                        ? question.options
-                                                              ?.map(
-                                                                  (option) => `
-                                                    <label>
-                                                        <input type="text" value="${option}" class="rounded-md border"/>
-                                                        ${option}
-                                                    </label>
-                                                `
-                                                              )
-                                                              .join("")
-                                                        : `<input type="${question.input}" class="rounded-md border-2 p-1 mt-2" placeholder="Ideal Number" />`
-                                                }
-                                            </div>
-                                        `;
-                                        setScreeningQuestions((prev) => ({
-                                            ...prev,
-                                            [question.name]: `${
-                                                question.question
-                                            }!sq_as;!;${
-                                                question.input === "checkbox"
-                                                    ? question.options?.join(
-                                                          ", "
-                                                      )
-                                                    : ""
-                                            }`,
-                                        }));
-                                    } else {
-                                        const errorMessage =
-                                            document.getElementById(
-                                                "error-message"
-                                            );
-                                        if (errorMessage) {
-                                            errorMessage.innerText =
-                                                "You can only select up to 3 questions.";
-                                        }
-                                    }
-                                } else {
-                                    questionElement.innerHTML = "";
-                                    setScreeningQuestions((prev) => {
-                                        const updated = { ...prev };
-                                        delete (updated as any)[question.name];
-                                        return updated;
-                                    });
-                                    const errorMessage =
-                                        document.getElementById(
-                                            "error-message"
-                                        );
-                                    if (errorMessage) {
-                                        errorMessage.innerText = "";
-                                    }
-                                }
-                            }
+  const handleAddQuestion = (question: Question) => {
+    if (selectedQuestions.length >= 3) {
+      setError("You can only select up to 3 questions.");
+      return;
+    }
+    setPendingQuestion(question); // Set the question as pending for confirmation
+    setError("");
+  };
 
-                            const allButtons = document.querySelectorAll(
-                                'button[type="button"]'
-                            );
-                            allButtons.forEach((button) => {
-                                if (
-                                    selectedQuestions >= 3 &&
-                                    button.innerHTML.includes("FaPlus")
-                                ) {
-                                    (button as HTMLButtonElement).disabled =
-                                        true;
-                                } else {
-                                    (button as HTMLButtonElement).disabled =
-                                        false;
-                                }
-                            });
-                        }}
-                    >
-                        <div className="flex gap-2 text-center border rounded-lg items-center p-4 hover:bg-slate-200">
-                            <FaPlus />
-                            <h1>{question.name}</h1>
-                        </div>
-                    </button>
-                    <p
-                        id="error-message"
-                        className="text-red-500 text-sm mt-2"
-                    ></p>
-                    <div id={`question-${index}`} className="mt-2"></div>
-                </div>
-            ))}
+  const handleConfirmQuestion = () => {
+    if (pendingQuestion) {
+      setSelectedQuestions((prev) => [...prev, pendingQuestion]);
+      setScreeningQuestions((prev) => ({
+        ...prev,
+        [pendingQuestion.name]: `${pendingQuestion.question}!sq_as;!;${
+          pendingQuestion.options ? pendingQuestion.options.join(", ") : ""
+        }`,
+      }));
+      setPendingQuestion(null); // Clear the pending question
+    }
+  };
+
+  const handleCancelQuestion = () => {
+    setPendingQuestion(null);
+  };
+
+  const handleRemoveQuestion = (questionName: string) => {
+    setSelectedQuestions((prev) => prev.filter((q) => q.name !== questionName));
+    setScreeningQuestions((prev) => {
+      const updated = { ...prev };
+      delete updated[questionName];
+      return updated;
+    });
+    setError("");
+  };
+
+  return (
+    <div>
+      <div className="flex gap-2">
+        {screenQ.map((question, index) => (
+          <button
+            key={index}
+            type="button"
+            className="flex gap-2 text-center border rounded-lg items-center p-4 hover:bg-slate-200"
+            onClick={() => handleAddQuestion(question)}
+            disabled={
+              selectedQuestions.some((q) => q.name === question.name) ||
+              selectedQuestions.length >= 3
+            }
+          >
+            <FaPlus />
+            <h1>{question.name}</h1>
+          </button>
+        ))}
+      </div>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
+      {/* Display Pending Question for Confirmation */}
+      {pendingQuestion && (
+        <div className="border rounded bg-slate-200 p-4 mt-4">
+          <div className="flex justify-between items-center">
+            <p>{pendingQuestion.question}</p>
+            <button
+              type="button"
+              className="text-red-500"
+              onClick={handleCancelQuestion}
+            >
+              <MdCancel />
+            </button>
+          </div>
+          {pendingQuestion.input === "checkbox" ? (
+            pendingQuestion.options?.map((option, idx) => (
+              <label key={idx} className="flex items-center gap-2 mt-2">
+                <input type="checkbox" value={option} />
+                {option}
+              </label>
+            ))
+          ) : (
+            <input
+              type={pendingQuestion.input}
+              className="rounded-md border-2 p-1 mt-2 w-full"
+              placeholder="Enter answer"
+            />
+          )}
+          <div className="flex gap-2 mt-4">
+            <button
+              type="button"
+              onClick={handleConfirmQuestion}
+              className="px-4 py-2 bg-green-500 text-white rounded"
+            >
+              Confirm
+            </button>
+            <button
+              type="button"
+              onClick={handleCancelQuestion}
+              className="px-4 py-2 bg-red-500 text-white rounded"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-    );
+      )}
+
+      {/* Display Selected Questions */}
+      <div className="mt-4">
+        {selectedQuestions.map((question, index) => (
+          <div key={index} className="border rounded bg-slate-200 p-4 mt-2">
+            <div className="flex justify-between items-center">
+              <p>{question.question}</p>
+              <button
+                type="button"
+                className="text-red-500"
+                onClick={() => handleRemoveQuestion(question.name)}
+              >
+                <MdCancel />
+              </button>
+            </div>
+            {question.input === "checkbox" ? (
+              question.options?.map((option, idx) => (
+                <label key={idx} className="flex items-center gap-2 mt-2">
+                  <input type="checkbox" value={option} />
+                  {option}
+                </label>
+              ))
+            ) : (
+              <input
+                type={question.input}
+                className="rounded-md border-2 p-1 mt-2 w-full"
+                placeholder="Enter answer"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default QuestionSelector;
