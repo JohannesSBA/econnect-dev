@@ -92,6 +92,16 @@ const Page = ({ params }: { params: { id: string } }) => {
       const isNumber =
         questionText.includes("GPA") || questionText.includes("experience");
 
+      if (questionText.includes("GPA")) {
+        questionText = questionText.replace("GPA", "What is your GPA?");
+      }
+
+      if (questionText.includes("experience")) {
+        questionText = questionText.replace(
+          "experience",
+          "How many years of experience do you have?"
+        );
+      }
       return (
         <div key={name} className="mb-4">
           <label className="block font-semibold text-gray-700 mb-2">
