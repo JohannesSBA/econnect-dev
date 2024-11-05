@@ -112,7 +112,7 @@ const JobListing = () => {
             </div>
             <div>
               <span className="text-blue-800 text-sm">{job.title}</span>
-              <h3 className="font-bold mt-px text-black">
+              <h3 className="font-bold mt-px text-black line-clamp-3">
                 {parse(job.shortDescription)}
               </h3>
               <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-600">
@@ -125,13 +125,13 @@ const JobListing = () => {
                 <span>{new Date(job.createdAt).toLocaleDateString()}</span>
               </div>
               <span className="text-slate-400 text-xs mt-2 block">
-                {job.applicants.length > 100
+                {job.applicant.length > 100
                   ? "Over 100 applicants"
-                  : job.applicants.length === 0
+                  : job.applicant.length === 0
                   ? "No applicants"
-                  : job.applicants.length === 1
+                  : job.applicant.length === 1
                   ? "1 applicant"
-                  : `${job.applicants.length} applicants`}
+                  : `${job.applicant.length} applicants`}
               </span>
             </div>
           </Link>

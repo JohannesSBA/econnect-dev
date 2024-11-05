@@ -38,14 +38,14 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   return (
     <html lang="en" className="scrollbar-thin scrollbar-webkit">
       <body className={inter.className}>
-        <div className="h-screen w-screen overflow-clip font-PlusJakartaSans">
+        <div className="h-screen w-screen font-PlusJakartaSans">
           <ProtectedNav
             userInfoId={userInfo.id}
             userName={userInfo.firstName + " " + userInfo.lastName}
             userEmail={userInfo.email as string}
           />
           <aside>{children}</aside>
-          <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
+          {/* <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div> */}
         </div>
       </body>
     </html>

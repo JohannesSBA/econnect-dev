@@ -148,7 +148,7 @@ const NewJobListing = () => {
       name: "Languages",
       question:
         "What languages are required for this job? Separate them using commas (e.g. English, Amharic, French)",
-      input: "checkbox",
+      input: "text",
       options: [""],
     },
     {

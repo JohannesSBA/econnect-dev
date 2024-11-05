@@ -29,7 +29,7 @@ const Page = async () => {
 
   const connections = user.friends ?? [];
   const posts = user.posts;
-  const applications = user.jobApplications;
+  const applications = user.applicant;
   const recentApplications = applications
     ?.sort(
       (
@@ -52,59 +52,28 @@ const Page = async () => {
                   No recent applications
                 </div>
               )}
-              {recentApplications?.map(
-                (application: {
-                  id: React.Key | null | undefined;
-                  postedById: any;
-                  title:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | Iterable<React.ReactNode>
-                    | React.ReactPortal
-                    | React.PromiseLikeOfReactNode
-                    | null
-                    | undefined;
-                  description:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | Iterable<React.ReactNode>
-                    | React.ReactPortal
-                    | React.PromiseLikeOfReactNode
-                    | null
-                    | undefined;
-                }) => (
-                  <div
-                    key={application.id}
-                    className="flex items-center gap-4 shadow-md rounded-md"
-                  >
-                    <div className="flex p-6 gap-2">
-                      <Image
-                        width={50}
-                        height={50}
-                        className="rounded-full"
-                        alt="Application Image"
-                        src={`https://econnectbucket.s3.amazonaws.com/image/${application.postedById}`}
-                      />
-                      <h2 className="text-lg font-semibold">
-                        {application.title}
-                        <p className="text-sm text-light">
-                          {application.description}
-                        </p>
-                      </h2>
-                    </div>
+              {/* {recentApplications?.map((application: {}) => (
+                <div
+                  key={application.id}
+                  className="flex items-center gap-4 shadow-md rounded-md"
+                >
+                  <div className="flex p-6 gap-2">
+                    <Image
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                      alt="Application Image"
+                      src={`https://econnectbucket.s3.amazonaws.com/image/${application.postedById}`}
+                    />
+                    <h2 className="text-lg font-semibold">
+                      {application.title}
+                      <p className="text-sm text-light">
+                        {application.description}
+                      </p>
+                    </h2>
                   </div>
-                )
-              )}
+                </div>
+              ))} */}
             </div>
             <div>
               <Link className="flex gap-3" href="/">
