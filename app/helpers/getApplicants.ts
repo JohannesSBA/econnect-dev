@@ -8,70 +8,43 @@ export const getApplicants = async (id: string) => {
         id: id,
       },
       select: {
-        applicants: {
+        applicant: {
           select: {
             id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
+            computerScreened: true,
+            humanScreened: true,
+            hired: true,
+            coverLetter: true,
+            resume: true,
             createdAt: true,
             updatedAt: true,
-            phoneNumber: true,
-            bio: true,
-            title: true,
-            // Add other properties here
-          },
-        },
-        ComputerScreened: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            createdAt: true,
-            updatedAt: true,
-            phoneNumber: true,
-            bio: true,
-            title: true,
-            // Add other properties here
-          },
-        },
-        hired: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            createdAt: true,
-            updatedAt: true,
-            phoneNumber: true,
-            bio: true,
-            title: true,
-            // Add other properties here
-          },
-        },
-        HumanScreened: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            createdAt: true,
-            updatedAt: true,
-            phoneNumber: true,
-            bio: true,
-            title: true,
-            // Add other properties here
+            infromation: true,
+            job: true,
+            user: {
+              select: {
+                bio: true,
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                phoneNumber: true,
+                title: true,
+                createdAt: true,
+                updatedAt: true,
+                location: true,
+                pronouns: true,
+              },
+            },
+            jobId: true,
+            status: true,
+            userId: true,
           },
         },
       },
     });
 
     return {
-      applicants: listing?.[0]?.applicants,
-      computerScreened: listing?.[0]?.ComputerScreened,
-      humanScreened: listing?.[0]?.HumanScreened,
-      hired: listing?.[0]?.hired,
+      listingData: listing,
     };
   } catch (error) {
     // Handle the error, log it, or return a meaningful error response.
