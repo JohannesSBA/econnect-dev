@@ -214,7 +214,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="#"
+                    href="/chat"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Messaging
@@ -222,7 +222,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="#"
+                    href="/listings"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Listings
@@ -230,7 +230,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="#"
+                    href="/dashboard/connections"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Connects

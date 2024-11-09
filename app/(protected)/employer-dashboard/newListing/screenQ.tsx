@@ -1,3 +1,4 @@
+import { Input } from "@nextui-org/react";
 import React, { useState, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
@@ -22,7 +23,9 @@ const QuestionSelector: React.FC<QuestionSelectorProps> = ({
 }) => {
   const [selectedQuestions, setSelectedQuestions] = useState<Question[]>([]);
   const [pendingQuestion, setPendingQuestion] = useState<Question | null>(null);
-  const [responses, setResponses] = useState<Record<string, string>>({});
+  const [responses, setResponses] = useState<Record<string, string | string[]>>(
+    {}
+  );
   const [error, setError] = useState("");
 
   const handleAddQuestion = useCallback(
@@ -39,16 +42,21 @@ const QuestionSelector: React.FC<QuestionSelectorProps> = ({
 
   const handleSaveResponse = useCallback(() => {
     if (pendingQuestion) {
+      const questionTitle = pendingQuestion.question;
+      const answerValue = Array.isArray(responses[pendingQuestion.name])
+        ? (responses[pendingQuestion.name] as string[]).join(", ")
+        : responses[pendingQuestion.name] || "";
+
+      const formattedResponse = `!questionStart!${questionTitle}~!questionAns!~${answerValue}!questionEnd!`;
+
       setSelectedQuestions((prev) => [...prev, pendingQuestion]);
       setScreeningQuestions((prev) => ({
         ...prev,
-        [pendingQuestion.name]: `${pendingQuestion.question}!sq_as;!;${
-          pendingQuestion.options ? pendingQuestion.options.join(", ") : ""
-        }`,
+        [pendingQuestion.name]: formattedResponse,
       }));
       setPendingQuestion(null);
     }
-  }, [pendingQuestion, setScreeningQuestions]);
+  }, [pendingQuestion, responses, setScreeningQuestions]);
 
   const handleCancelQuestion = useCallback(() => {
     setPendingQuestion(null);
@@ -85,6 +93,22 @@ const QuestionSelector: React.FC<QuestionSelectorProps> = ({
     }));
   };
 
+  const handleCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    questionName: string
+  ) => {
+    const { value } = event.target;
+    setResponses((prev) => {
+      const existingValues = (prev[questionName] as string[]) || [];
+      return {
+        ...prev,
+        [questionName]: existingValues.includes(value)
+          ? existingValues.filter((v) => v !== value)
+          : [...existingValues, value],
+      };
+    });
+  };
+
   const PendingQuestion: React.FC = () => (
     <div className="border rounded bg-slate-200 p-4 mt-4">
       <div className="flex justify-between items-center">
@@ -104,24 +128,28 @@ const QuestionSelector: React.FC<QuestionSelectorProps> = ({
             <input
               type="checkbox"
               value={option}
+              checked={(responses[pendingQuestion.name] as string[])?.includes(
+                option
+              )}
               onChange={(e) =>
-                setResponses((prev) => ({
-                  ...prev,
-                  [pendingQuestion.name]: prev[pendingQuestion.name]
-                    ? `${prev[pendingQuestion.name]}, ${option}`
-                    : option,
-                }))
+                pendingQuestion && handleCheckboxChange(e, pendingQuestion.name)
               }
             />
             {option}
           </label>
         ))
       ) : (
-        <input
+        <Input
           type={pendingQuestion?.input}
           className="rounded-md border-2 p-1 mt-2 w-full"
           placeholder="Enter answer"
-          value={responses[pendingQuestion?.name || ""] || ""}
+          value={
+            pendingQuestion && Array.isArray(responses[pendingQuestion.name])
+              ? (responses[pendingQuestion.name] as string[]).join(", ")
+              : pendingQuestion
+              ? (responses[pendingQuestion.name] as string) || ""
+              : ""
+          }
           onChange={(e) =>
             pendingQuestion && handleInputChange(e, pendingQuestion.name)
           }
@@ -162,11 +190,11 @@ const QuestionSelector: React.FC<QuestionSelectorProps> = ({
       {question.input === "checkbox" ? (
         question.options?.map((option, idx) => (
           <label key={idx} className="flex items-center gap-2 mt-2">
-            <input
+            <Input
               type="checkbox"
               value={option}
               disabled
-              checked={responses[question.name]?.includes(option)}
+              checked={(responses[question.name] as string[])?.includes(option)}
             />
             {option}
           </label>
