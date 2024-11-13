@@ -8,22 +8,25 @@ import ErrorPage from "./not-found";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Econnect",
-    description: "Get a job with Us",
-    icons: "water-drop.svg",
+  title: "Econnect",
+  description: "Get a job with Us",
+  icons: "water-drop.svg",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en" className="scrollbar-thin scrollbar-webkit dark">
-            <ErrorBoundary fallback={<ErrorPage />}>
-                <Toaster position="top-center" richColors />
-                <body className={inter.className}>{children}</body>
-            </ErrorBoundary>
-        </html>
-    );
+  return (
+    <html
+      lang="en"
+      className="scrollbar-thin scrollbar-webkit light bg-zinc-100"
+    >
+      <ErrorBoundary fallback={<ErrorPage />}>
+        <Toaster position="top-center" richColors />
+        <body className={inter.className}>{children}</body>
+      </ErrorBoundary>
+    </html>
+  );
 }

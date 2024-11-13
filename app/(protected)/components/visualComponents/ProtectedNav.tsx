@@ -81,7 +81,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
   }, []);
 
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-white shadow sticky top-0 z-50">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -214,7 +214,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="#"
+                    href="/chat"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Messaging
@@ -222,7 +222,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="#"
+                    href="/listings"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Listings
@@ -230,7 +230,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 </MenuItem>
                 <MenuItem>
                   <a
-                    href="#"
+                    href="/dashboard/connections"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Connects

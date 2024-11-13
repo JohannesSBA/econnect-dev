@@ -6,15 +6,17 @@ import axios from "axios";
 export async function POST(req: Request, res: Response) {
   const session = await getServerSession(options);
   const body = await req.formData();
+  const param = await req.json();
   const image = body.get("newImage");
   const resume = body.get("newResume");
+  const coverLetter = body.get("newCoverLetter");
   const ImageId = body.get("Imageid");
   const entries = Array.from(body.entries());
   const newPostImages = entries.filter(([key]) =>
     key.startsWith("newPostImage")
   );
 
-  if (!image && !resume && newPostImages.length === 0) {
+  if (!image && !resume && !coverLetter && newPostImages.length === 0) {
     return new Response("File is required.", { status: 400 });
   }
 
@@ -47,6 +49,22 @@ export async function POST(req: Request, res: Response) {
       const fileParams = {
         Bucket: process.env.BUCKET_NAME,
         Key: `resume/${session?.user.id}`,
+        ContentType: "application/pdf",
+        Body: buffer,
+      };
+
+      const command = new PutObjectCommand(fileParams);
+      await s3.send(command);
+    }
+
+    if (coverLetter) {
+      const file = new Blob([coverLetter as BlobPart], {
+        type: "application/pdf",
+      });
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const fileParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: `coverLetter/${session?.user.id}/${param.id}`,
         ContentType: "application/pdf",
         Body: buffer,
       };

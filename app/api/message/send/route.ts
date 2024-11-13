@@ -70,12 +70,13 @@ export async function POST(req: Request, res: Response) {
     },
   });
 
-  const messageNotification = `message-${messageData.text}`;
-
+  const messageNotification = `$asq!${messageData.senderId}message-${
+    messageData.text
+  }$user!${user.firstName + " " + user.lastName}`;
   await prisma.notification.create({
     data: {
       content: messageNotification,
-      userId: messageData.senderId,
+      userId: messageData.recipientId,
     },
   });
 

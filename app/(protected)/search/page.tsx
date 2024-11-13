@@ -212,13 +212,13 @@ const SearchPage = () => {
                         </span>
                       </div>
                       <span className="text-slate-400 text-xs">
-                        {job.applicants.length > 100
+                        {job.applicant.length > 100
                           ? "Over 100 applicants"
-                          : job.applicants.length == 0
+                          : job.applicant.length == 0
                           ? "No applicants"
-                          : job.applicants.length == 1
+                          : job.applicant.length == 1
                           ? "1 applicant"
-                          : `${job.applicants.length} applicants`}
+                          : `${job.applicant.length} applicants`}
                       </span>
                     </div>
                   </div>

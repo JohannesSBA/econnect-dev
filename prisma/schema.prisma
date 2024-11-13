@@ -38,7 +38,6 @@ model User {
   messagesRead         Message[]    @relation("messagesRead")
 
   jobListingsPosted    JobListing[] @relation("jobListingsPosted")
-  jobApplications      JobListing[] @relation("jobApplications")
 
   education        Education[] @relation("education")
   experience       Experience[] @relation("experience")
@@ -55,6 +54,24 @@ model User {
   JobCScreened JobListing[] @relation("jobCScreen")
   JobHScreened JobListing[] @relation("jobHScreen")
   JobHired JobListing[] @relation("jobHired")
+  applicant applicant[]
+}
+
+model applicant {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  job JobListing @relation(fields: [jobId], references: [id])
+  jobId String
+  status String
+  resume String
+  coverLetter String
+  infromation String?
+  computerScreened Boolean @default(false)
+  humanScreened Boolean @default(false)
+  hired Boolean @default(false)
 }
 
 model Message {
@@ -82,13 +99,14 @@ model JobListing {
   location         String
   postedBy         User       @relation("jobListingsPosted", fields: [postedById], references: [id])
   postedById       String
-  applicants       User[]     @relation("jobApplications")
   ComputerScreened          User[]     @relation("jobCScreen")
   HumanScreened             User[]     @relation("jobHScreen")
   hired                      User[]     @relation("jobHired")
   Expired          Boolean    @default(false)
   expireDate       DateTime?
   expireCode       String?
+
+  applicant applicant[]
 }
 
 model Post {

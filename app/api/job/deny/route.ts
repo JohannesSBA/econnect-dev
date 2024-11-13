@@ -17,7 +17,7 @@ export async function POST(req: Request, res: Response) {
       id: body.listing,
     },
     select: {
-      applicants: true,
+      applicant: true,
       ComputerScreened: true,
       hired: true,
       HumanScreened: true,
@@ -30,7 +30,7 @@ export async function POST(req: Request, res: Response) {
       id: body.listing,
     },
     data: {
-      applicants: {
+      applicant: {
         disconnect: { id: body.user },
       },
       HumanScreened: {

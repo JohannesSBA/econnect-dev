@@ -7,12 +7,9 @@ import { options } from "../../../auth/[...nextauth]/options";
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
 
-  await prisma.notification.update({
+  await prisma.notification.delete({
     where: {
       id: body.notificationId,
-    },
-    data: {
-      read: true,
     },
   });
 
