@@ -67,7 +67,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
             <SideInfo
               user={userInfo}
               posts={userInfo.posts}
-              applications={userInfo.jobApplications}
+              applications={userInfo.applicant}
             />
           </div>
         </div>

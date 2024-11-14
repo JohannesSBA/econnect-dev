@@ -6,36 +6,36 @@ import { AiOutlinePaperClip } from "react-icons/ai";
 import ClientComponent from "./ClientComponent";
 
 interface PageProps {
-    params: {
-        listing: string;
-        applicant: string;
-    };
+  params: {
+    listing: string;
+    applicant: string;
+  };
 }
 
 export default async function Page({
-    params,
+  params,
 }: {
-    params: { applicant: string; listing: string };
+  params: { applicant: string; listing: string };
 }) {
-    const user = await getUserContent(params.applicant);
-    const listing = await getListing(params.listing);
+  const user = await getUserContent(params.applicant);
+  const listing = await getListing(params.listing);
 
-    return (
-        <div className=" h-screen bg-white shadow sm:rounded-lg max-w-[calc(100vw-12rem)]">
-            <ClientComponent
-                user={{
-                    id: user.id as string,
-                    firstName: user.firstName as string,
-                    lastName: user.lastName as string,
-                    email: user.email as string,
-                    bio: user.bio as string,
-                }}
-                listing={{
-                    title: listing?.title as string,
-                }}
-                listingId={listing?.id ?? ""}
-                applicantId={listing?.applicants[0]?.id ?? ""}
-            />
-        </div>
-    );
+  return (
+    <div className=" h-screen bg-white shadow sm:rounded-lg max-w-[calc(100vw-12rem)]">
+      <ClientComponent
+        user={{
+          id: user.id as string,
+          firstName: user.firstName as string,
+          lastName: user.lastName as string,
+          email: user.email as string,
+          bio: user.bio as string,
+        }}
+        listing={{
+          title: listing?.title as string,
+        }}
+        listingId={listing?.id ?? ""}
+        applicantId={listing?.applicant[0]?.id ?? ""}
+      />
+    </div>
+  );
 }

@@ -30,9 +30,16 @@ const Page = async () => {
 
   const connections = user.friends ?? [];
   const posts = user.posts;
-  const applications = user.jobApplications;
+  const applications = user.applicant;
   const recentApplications = applications
-    ?.sort(
+    ?.map((application: any) => ({
+      id: application.id,
+      postedById: application.userId,
+      title: application.jobTitle, // Assuming jobTitle is the correct field
+      description: application.jobDescription, // Assuming jobDescription is the correct field
+      createdAt: application.createdAt,
+    }))
+    .sort(
       (
         a: { createdAt: string | number | Date },
         b: { createdAt: string | number | Date }
