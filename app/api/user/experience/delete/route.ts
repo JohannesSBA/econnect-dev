@@ -10,20 +10,8 @@ export async function POST(req: Request, res: Response) {
   const session = (await getServerSession(options)) as Session;
 
   await prisma.experience
-    .create({
-      data: {
-        userId: session.user.id as string,
-        title: body.title,
-        employmentType: body.EmploymentType,
-        companyName: body.CompanyName,
-        locationName: body.LocationName,
-        locationType: body.LocationType,
-        description: body.Description,
-        id: body.id,
-        startDate: body.startDate,
-        endDate: body.endDate,
-        currently: body.currently, // Added the missing 'currently' property
-      },
+    .delete({
+      where: { id: body.id },
     })
     .catch((error) => {
       console.log("Error", error);

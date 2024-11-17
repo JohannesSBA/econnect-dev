@@ -191,7 +191,7 @@ export default function CreatePost() {
       <Button
         onPress={onOpen}
         disableAnimation
-        className=" w-full h-16 mx-8 border rounded-full border-slate-300 bg-white flex gap-4 py-6 justify-between"
+        className="w-full md:w-96 h-16 mx-8 border rounded-full border-slate-300 bg-white flex gap-4 py-6 justify-between"
       >
         <h1 className="font-PlusJakartaSans ml-2 text-base text-[#676667]">
           Create new Post
@@ -203,7 +203,7 @@ export default function CreatePost() {
         onOpenChange={onOpenChange}
         placement="top"
         size="5xl"
-        className="light"
+        className="light scale-75"
       >
         <ModalContent>
           {(onClose) => (

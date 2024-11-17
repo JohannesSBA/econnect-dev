@@ -28,13 +28,13 @@ export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [title, setTitle] = useState<string>();
   const [employmentType, setEmploymentType] = useState<string>("Full-time");
-  const [companyName, setcompanyName] = useState<string>();
-  const [locationName, setLocationName] = useState<string>();
+  const [companyName, setcompanyName] = useState<string>("");
+  const [locationName, setLocationName] = useState<string>("");
   const [locationType, setLocationType] = useState<string>("On-Site");
   const [currently, setCurrently] = useState<boolean>(true);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [description, setDescription] = useState<string>();
+  const [description, setDescription] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLElement>) => {
@@ -52,6 +52,7 @@ export default function App() {
         startDate: startDate,
         endDate: endDate,
         Description: description,
+        employmentType: employmentType,
       });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -59,7 +60,7 @@ export default function App() {
       } // Render the error message instead of the entire error object
     } finally {
       setLoading(false);
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -71,9 +72,9 @@ export default function App() {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        placement="top-center"
+        placement="center"
         size="3xl"
-        className="m-2 h-[calc(100vh-4rem)] overflow-scroll light"
+        className="m-2 h-[calc(100vh-4rem)] overflow-scroll light scale-90"
       >
         <ModalContent>
           {(onClose) => (

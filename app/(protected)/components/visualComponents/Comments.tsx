@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  User as StylingUser,
 } from "@nextui-org/react";
 import axios from "axios";
 import { User } from "@/app/types/db";
@@ -85,13 +86,15 @@ export default function PostWithComments({
           className="text-sm text-gray-700 flex items-center gap-2 justify-between"
         >
           <div className="flex gap-2 items-center">
-            <Image
-              src={`https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`}
-              width={50}
-              height={50}
-              alt=""
-              className="rounded-full border"
+            <StylingUser
+              name={""} // Add the 'name' property with a value
+              avatarProps={{
+                isBordered: true,
+                src: `https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`,
+              }}
+              className="transition-transform "
             />
+
             <div>
               <h1 className="font-semibold">
                 {post.author.firstName} {post.author.lastName}

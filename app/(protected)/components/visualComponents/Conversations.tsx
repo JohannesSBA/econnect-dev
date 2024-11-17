@@ -94,7 +94,7 @@ const Conversations: React.FC<conversationProps> = ({
 
   return (
     <div
-      className="w-full h-full mb-44 px-4 overflow-scroll flex flex-col"
+      className="w-full h-full mb-44 px-4 overflow-scroll flex flex-col border-t-1"
       id="messages"
       key={chatPartner}
     >
@@ -125,7 +125,7 @@ const Conversations: React.FC<conversationProps> = ({
         return (
           <div key={message.id} className="w-full">
             {hasMessageOnNewDay ? (
-              <div className="flex justify-center border-l-2 border-r-2 font-semibold text-xs text-slate-500 bg-slate-200">
+              <div className="flex justify-center border-l-2 border-r-2 font-semibold text-xs text-black ">
                 {`${day}/${month}/${year}`}
               </div>
             ) : (
@@ -139,7 +139,7 @@ const Conversations: React.FC<conversationProps> = ({
               }
             >
               <div className="items-start flex gap-2.5">
-                <div className="flex flex-col gap-1 w-full max-w-[460px]">
+                <div className="flex flex-col gap-1 w-full">
                   <div
                     className={
                       isCurrentUser

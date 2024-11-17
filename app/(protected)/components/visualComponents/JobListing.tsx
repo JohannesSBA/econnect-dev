@@ -93,7 +93,7 @@ const JobListing = () => {
       />
 
       {/* Job Listings */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 w-full max-w-5xl">
         {jobs.map((job) => (
           <Link
             key={job.id}

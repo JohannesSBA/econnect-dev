@@ -16,6 +16,7 @@ import {
   ModalFooter,
   ModalHeader,
   Link,
+  User as StylingUser,
 } from "@nextui-org/react";
 import axios from "axios";
 import parse from "html-react-parser";
@@ -203,18 +204,21 @@ export default function Posts({ userId, fromPage }: PostProp) {
           }) => (
             <div
               key={post.id}
-              className="shadow-md my-2 mx-1 rounded-md bg-white p-2 max-w-full text-wrap whitespace-normal"
+              className="border-2 mx-1 bg-white p-2 max-w-full text-wrap whitespace-normal"
             >
               <div className="flex justify-between">
                 <Link href={`/ec/${post.authorId}`} className="flex gap-2">
-                  <Image
-                    src={`https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`}
-                    alt=""
-                    className="rounded-full border"
-                    width={50}
+                  <StylingUser
+                    name={""} // Add the 'name' property with a value
+                    avatarProps={{
+                      isBordered: true,
+                      src: `https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`,
+                    }}
+                    className="transition-transform "
                   />
+
                   <div className="flex flex-col m-0 p-0">
-                    <h1 className="font-bold">{`${post.author.firstName} ${post.author.lastName}`}</h1>
+                    <h1 className="font-bold text-black">{`${post.author.firstName} ${post.author.lastName}`}</h1>
                     <h1 className="text-slate-600 pl-2 text-[0.65rem] font-light">
                       {post.author.email}
                     </h1>

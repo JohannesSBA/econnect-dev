@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { GiWaterDrop } from "react-icons/gi";
 import { IoBriefcase, IoChatbox, IoHome, IoLink } from "react-icons/io5";
 import SignOutButton from "../functionComponents/SignOutButton";
-import { useUser } from "../functionComponents/UserContext";
 import Search from "../SearchComponents/Search";
 import Link from "next/link";
 import { FaBars, FaBell, FaTimes } from "react-icons/fa";
@@ -107,22 +106,27 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
               </div>
               <div className="h-8 w-auto"> </div>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <div className="hidden sm:ml-6 sm:flex ">
               {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+
               <a
                 href="/dashboard"
                 className={`inline-flex items-center border-b-2 ${
-                  path === "/dashboard" ? "border-indigo-500" : ""
-                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
+                  path.includes("/dashboard")
+                    ? "border-indigo-500 "
+                    : "font-normal text-slate-600 "
+                }  px-1 pt-1 text-sm font-medium rounded-md hover:bg-gray-200 group text-gray-900 flex-col justify-center gap-2 w-24`}
               >
-                <IoHome />
-                Dashboard
+                <IoHome className="group-hover:scale-125 motion-reduce:hidden group-hover:text-black text-slate-700" />
+                <h1 className="hidden md:flex text-xs">Dashboard</h1>
               </a>
               <a
                 href="/chat"
                 className={`inline-flex items-center border-b-2 ${
-                  path === "/chat" ? "border-indigo-500" : ""
-                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
+                  path.includes("/chat")
+                    ? "border-indigo-500 "
+                    : "font-normal text-slate-600 "
+                }  group px-1 pt-1 text-sm font-medium rounded-md hover:bg-gray-200 text-gray-900 flex-col justify-center gap-2 w-24`}
               >
                 <Badge
                   content={messageCounter} // Show unread messages count
@@ -133,29 +137,33 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                   // hidden={messageCounter == 0} // Hide badge when there are no unread messages
                   className="border-none"
                 >
-                  <IoChatbox />
+                  <IoChatbox className="group-hover:scale-125 motion-reduce:hidden group-hover:text-black text-slate-700" />
                 </Badge>
                 <h1 className="hidden md:flex text-xs">Messaging</h1>
               </a>
               <a
                 href="/listings"
                 className={`inline-flex items-center border-b-2 ${
-                  path === "/listings" ? "border-indigo-500" : ""
-                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
+                  path.includes("/listings") || path.includes("/job")
+                    ? "border-indigo-500 "
+                    : "font-normal text-slate-600 "
+                }  group px-1 pt-1 text-sm font-medium rounded-md hover:bg-gray-200 text-gray-900 flex-col justify-center gap-2 w-24`}
               >
-                <IoBriefcase />
-                Listing
+                <IoBriefcase className="group-hover:scale-125 motion-reduce:hidden group-hover:text-black text-slate-700" />
+                <h1 className="hidden md:flex text-xs">Listings</h1>
               </a>
               <a
                 href="/dashboard/connections"
                 className={`inline-flex items-center border-b-2 ${
-                  path === "/dashboard/connections" ? "border-indigo-500" : ""
-                }  px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2`}
+                  path === "/dashboard/connections"
+                    ? "border-indigo-500 "
+                    : "font-normal text-slate-600 "
+                }  group px-1 pt-1 text-sm font-medium rounded-md hover:bg-gray-200 text-gray-900 flex-col justify-center gap-2 w-24 `}
               >
-                <IoLink />
-                Connects
+                <IoLink className="group-hover:scale-125 motion-reduce:hidden group-hover:text-black text-slate-700" />
+                <h1 className="hidden md:flex text-xs">Connects</h1>
               </a>
-              <div className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium text-gray-900 flex-col justify-center gap-2">
+              <div className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium rounded-md  text-gray-900 flex-col justify-center">
                 <Search />
               </div>
             </div>
@@ -204,38 +212,17 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 transition
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
-                <MenuItem>
-                  <a
-                    href="/dashboard/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                  >
-                    Profile
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="/chat"
-                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                  >
-                    Messaging
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="/listings"
-                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                  >
-                    Listings
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="/dashboard/connections"
-                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                  >
-                    Connects
-                  </a>
-                </MenuItem>
+                {menuItems.map(([label, href]) => (
+                  <MenuItem key={href}>
+                    <a
+                      href={href}
+                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                    >
+                      {label}
+                    </a>
+                  </MenuItem>
+                ))}
+
                 <MenuItem>
                   <div className="flex w-full h-full justify-center">
                     <SignOutButton />
@@ -254,7 +241,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
             as="a"
             href="/dashboard"
             className={`block border-l-4 ${
-              path === "/dashboard"
+              path.includes("/dashboard") && !path.includes("/connections")
                 ? "border-indigo-500 bg-indigo-50 text-indigo-700"
                 : "border-transparent text-gray-500"
             } py-2 pl-3 pr-4 text-base font-medium`}

@@ -36,6 +36,7 @@ export const getUserContent = cache(async (userId: string) => {
       lastName: user?.lastName as string,
       fullName: user?.firstName + " " + user?.lastName,
       email: user?.email,
+      phoneNumber: user?.phoneNumber as string,
       pronouns: user?.pronouns as string,
       location: user?.location as string,
       education: user?.education,

@@ -1,12 +1,15 @@
 import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
-import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(options);
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
   const body = await req.formData();
-  const param = await req.json();
   const image = body.get("newImage");
   const resume = body.get("newResume");
   const coverLetter = body.get("newCoverLetter");
@@ -17,7 +20,7 @@ export async function POST(req: Request, res: Response) {
   );
 
   if (!image && !resume && !coverLetter && newPostImages.length === 0) {
-    return new Response("File is required.", { status: 400 });
+    return new NextResponse("File is required.", { status: 400 });
   }
 
   const s3 = new S3({
@@ -30,11 +33,10 @@ export async function POST(req: Request, res: Response) {
 
   try {
     if (image) {
-      const file = new Blob([image]);
-      const buffer = Buffer.from(await file.arrayBuffer());
+      const buffer = Buffer.from(await (image as Blob).arrayBuffer());
       const fileParams = {
         Bucket: process.env.BUCKET_NAME,
-        Key: `image/${session?.user.id}`,
+        Key: `image/${session.user.id}`,
         ContentType: "image/jpg",
         Body: buffer,
       };
@@ -44,11 +46,10 @@ export async function POST(req: Request, res: Response) {
     }
 
     if (resume) {
-      const file = new Blob([resume as BlobPart], { type: "application/pdf" });
-      const buffer = Buffer.from(await file.arrayBuffer());
+      const buffer = Buffer.from(await (resume as Blob).arrayBuffer());
       const fileParams = {
         Bucket: process.env.BUCKET_NAME,
-        Key: `resume/${session?.user.id}`,
+        Key: `resume/${session.user.id}`,
         ContentType: "application/pdf",
         Body: buffer,
       };
@@ -58,13 +59,10 @@ export async function POST(req: Request, res: Response) {
     }
 
     if (coverLetter) {
-      const file = new Blob([coverLetter as BlobPart], {
-        type: "application/pdf",
-      });
-      const buffer = Buffer.from(await file.arrayBuffer());
+      const buffer = Buffer.from(await (coverLetter as Blob).arrayBuffer());
       const fileParams = {
         Bucket: process.env.BUCKET_NAME,
-        Key: `coverLetter/${session?.user.id}/${param.id}`,
+        Key: `coverLetter/${session.user.id}/${ImageId}`,
         ContentType: "application/pdf",
         Body: buffer,
       };
@@ -75,11 +73,12 @@ export async function POST(req: Request, res: Response) {
 
     if (newPostImages.length > 0) {
       for (let i = 0; i < newPostImages.length; i++) {
-        const file = new Blob([newPostImages[i][1]]);
-        const buffer = Buffer.from(await file.arrayBuffer());
+        const buffer = Buffer.from(
+          await (newPostImages[i][1] as Blob).arrayBuffer()
+        );
         const fileParams = {
           Bucket: process.env.BUCKET_NAME,
-          Key: `newPostImage/${session?.user.id}/${ImageId}/${i}`,
+          Key: `newPostImage/${session.user.id}/${ImageId}/${i}`,
           ContentType: "image/jpg",
           Body: buffer,
         };
@@ -89,8 +88,9 @@ export async function POST(req: Request, res: Response) {
       }
     }
 
-    return new Response("OK", { status: 200 });
+    return new NextResponse("OK", { status: 200 });
   } catch (error) {
-    return new Response("Error", { status: 400 });
+    console.error("Error uploading to S3:", error);
+    return new NextResponse("Error", { status: 500 });
   }
 }

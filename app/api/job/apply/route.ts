@@ -22,7 +22,9 @@ export async function POST(req: Request, res: Response) {
         id: body.listingId,
       },
       select: {
+        postedById: true,
         applicant: true,
+        title: true,
       },
     });
 
@@ -38,7 +40,11 @@ export async function POST(req: Request, res: Response) {
       return new Response("Already applied", { status: 401 });
     }
 
-    const responses = JSON.stringify(body.responses);
+    const responses = `!postedBy!${
+      applications.postedById
+    }!responses!${JSON.stringify(body.responses)}!jobTitle!${
+      applications.title
+    }`;
 
     const application = await prisma.applicant.create({
       data: {
