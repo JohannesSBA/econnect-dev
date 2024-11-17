@@ -8,6 +8,7 @@ import ProtectedNav from "../components/visualComponents/ProtectedNav";
 import SideInfo from "../components/visualComponents/SideInfo";
 import Messages from "../components/visualComponents/Messages";
 import EmployerSideNav from "../components/visualComponents/EmployerSideNav";
+import { IoChatbox } from "react-icons/io5";
 
 interface PageProps {
   params: {
@@ -23,7 +24,6 @@ interface PageProps {
 
 const page = async ({ params }: { params: { chatid: string } }) => {
   const { chatid } = params;
-  console.log("chatId", chatid);
   const session = await getServerSession(options);
   if (!session) notFound();
 
@@ -47,7 +47,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
       ) : (
         ""
       )}
-      <div className="w-screen h-full overflow-clip flex bg-slate-100">
+      <div className="w-screen h-full overflow-clip flex justify-between bg-white">
         <div className="w-full md:w-1/5">
           {userInfo.role === "EMPLOYEE" ? (
             <Messages
@@ -59,9 +59,19 @@ const page = async ({ params }: { params: { chatid: string } }) => {
             <EmployerSideNav userInfo={userInfo} userId={session.user.id} />
           )}
         </div>
-        <div className="w-full md:w-3/5 hidden md:flex translate-x-24 p-4">
-          <div className="hidden md:flex w-2/3 text-black p-4">
-            <h1 className="text-bold text-2xl">Start Chatting</h1>
+        <div className="w-full md:w-3/5 flex translate-x-24 p-4">
+          <div className="hidden md:flex w-auto text-black p-4 justify-center items-center">
+            <div className="text-bold text-2xl flex flex-col items-center justify-center gap-4 -translate-x-96 scale-50 md:scale-100 md:-translate-x-24">
+              <div className="rounded-full p-4 border-2 border-black">
+                <IoChatbox className="scale-150" />
+              </div>
+              <div className="flex flex-col items-center justify-center text-center">
+                <h1>Your Messages</h1>
+                <p className="text-medium text-slate-600">
+                  Select a User to start Chatting
+                </p>
+              </div>
+            </div>
           </div>
           <div className="hidden shadow-md rounded-md translate-x-24 m-2 p-2 md:flex flex-col gap-3 items-center justify-between ">
             <SideInfo

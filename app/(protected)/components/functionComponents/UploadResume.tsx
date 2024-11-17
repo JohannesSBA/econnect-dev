@@ -47,18 +47,14 @@ const UploadResume = () => {
 
   return (
     <div className="w-full flex justify-center flex-col items-end rounded-2xl">
-      <Button
-        onPress={onOpen}
-        color="primary"
-        variant="light"
-        className=" flex text-xl text-end"
-      >
-        <h1 className="text-end">Upload Your Resume</h1>
+      <Button onPress={onOpen} color="default" className="w-full mt-2">
+        Upload Resume
       </Button>
+
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        placement="top-center"
+        placement="center"
         className="text-black light"
       >
         <ModalContent>

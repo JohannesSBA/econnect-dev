@@ -66,9 +66,9 @@ export default function App() {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        placement="top-center"
-        size="3xl"
-        className="m-2 h-[calc(100vh-4rem)] overflow-scroll light"
+        placement="center"
+        size="2xl"
+        className="m-2  overflow-scroll light scale-90"
       >
         <ModalContent>
           {(onClose) => (
