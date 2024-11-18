@@ -33,12 +33,12 @@ const Page = async () => {
   const applications = user.applicant;
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col overflow-scroll bg-white">
+    <div className="flex h-[calc(100vh-4rem)] flex-col overflow-scroll bg-gradient-to-br from-white to-blue-100 ">
       <div className="flex w-full mx-auto md:mx-0 items-start gap-x-8 pr-4  sm:pr-6 lg:pr-8">
         <aside className="sticky top-4 hidden shrink-0 xl:flex border-r max-h-full">
           <RecentApps user={session.user.id} applicants={applications ?? []} />
         </aside>
-        <main className="flex-1 flex-col shadow-md p-2 max-w-full">
+        <main className="flex-1 flex-col p-2 max-w-full">
           <div className="flex pt-2 justify-between w-full">
             <div className="flex">
               <User
@@ -62,11 +62,7 @@ const Page = async () => {
             Your Posts
           </Link>
           <div className="h-full bg-white rounded-md text-black">
-            <Posts
-              id={session.user.id}
-              userId={session.user.id}
-              fromPage={"default"}
-            />
+            <Posts userId={session.user.id} fromPage={"default"} />
           </div>
         </main>
 

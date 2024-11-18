@@ -53,10 +53,6 @@ const page = async ({ params }: { params: { id: string } }) => {
   const pageName = "profile";
 
   const role = accUser.role as string;
-
-  if (userInfo.role === "EMPLOYER") {
-    redirect(`/company/${params.id}`);
-  }
   let userActionButton;
   if (role === "EMPLOYER") {
     const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
@@ -67,67 +63,16 @@ const page = async ({ params }: { params: { id: string } }) => {
         </a>
       </div>
     );
-  } else if (accUser.friends?.some((friend) => friend.id === userInfo.id)) {
-    const chatRoom = chatHrefConstructor(userInfo.id, session.user.id);
-    userActionButton = (
-      <Button color="primary" as={Link} href={`/chat/${chatRoom}`}>
-        {" "}
-        <FaMessage />
-        Send a Message
-      </Button>
-    );
-  } else if (
-    accUser.sentFriendRequest?.some((request) => request.id === userInfo.id)
-  ) {
-    userActionButton = (
-      <Button color="primary" disabled>
-        Pending
-      </Button>
-    );
-  } else if (
-    accUser.pendingFriendRequest?.some((request) => request.id === userInfo.id)
-  ) {
-    userActionButton = <Button color="primary">Accept</Button>;
-  } else {
-    userActionButton = <AddFriendButton id={accUser.id} />;
   }
-
-  const educationList = await getEducation(userInfo.id as string);
-  const parsedEducation = educationList as {
-    school: string;
-    degree: string;
-    GPA: number | null;
-    major: string;
-    startDate: Date;
-    endDate: Date;
-    description: string | null;
-  }[];
-
-  const experienceList = await getExperience(userInfo.id as string);
-  const parsedExperience = experienceList as unknown as {
-    title: string;
-    EmploymentType: string;
-    CompanyName: string;
-    LocationName: string;
-    LocationType: string;
-    currently: Boolean;
-    startDate: Date;
-    endDate: Date | null;
-    Description: string | null;
-  }[];
-
-  const numOfConnection = userInfo.friends?.length ?? 0;
 
   const dateJoined = userInfo.emailVerified;
 
-  if (userInfo.role === "EMPLOYER") {
-    let TotalApplicants = 0;
-    if (userInfo.jobListingsPosted && userInfo.jobListingsPosted.length > 0) {
-      for (const job of userInfo.jobListingsPosted) {
-        const listing = await getListing(job.id);
-        if (listing) {
-          TotalApplicants += listing.applicant.length;
-        }
+  let TotalApplicants = 0;
+  if (userInfo.jobListingsPosted && userInfo.jobListingsPosted.length > 0) {
+    for (const job of userInfo.jobListingsPosted) {
+      const listing = await getListing(job.id);
+      if (listing) {
+        TotalApplicants += listing.applicant.length;
       }
     }
   }
@@ -138,7 +83,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-7xl">
+    <div className="container mx-auto p-4 max-w-7xl overflow-scroll">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
@@ -166,14 +111,6 @@ const page = async ({ params }: { params: { id: string } }) => {
                       ? "No Location Available"
                       : userInfo.location}
                   </p>
-                  {userInfo.role === "EMPLOYER" ? (
-                    <p className="flex items-center justify-center md:justify-start mt-2 text-sm text-default-500">
-                      <IoLink className="mr-2 h-4 w-4" />{" "}
-                      {userInfo.friends?.length} connections
-                    </p>
-                  ) : (
-                    ""
-                  )}
 
                   <div className="mt-2 flex gap-4 items-center">
                     {userActionButton}
@@ -209,81 +146,16 @@ const page = async ({ params }: { params: { id: string } }) => {
               <p className="text-lg font-bold">Experience</p>
               <NewExperience />
             </CardHeader>
-            <CardBody className="space-y-6">
-              {parsedExperience.map((exp, index) => (
-                <div key={index}>
-                  <div className="flex justify-between">
-                    <div>
-                      <h3 className="font-semibold">{exp.title}</h3>
-                      <p className="text-xs ml-2">{exp.CompanyName}</p>
-                      <p className="text-sm text-default-500">
-                        {new Date(exp.startDate).toLocaleDateString()} -{" "}
-                        {exp.endDate === null
-                          ? "Present"
-                          : new Date(exp.endDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div>
-                      {/* <Button
-                        isIconOnly
-                        variant="light"
-                        size="sm"
-                        aria-label="Delete experience"
-                        onPress={() => deleteExperience(index)}
-                      >
-                        <MdDelete className="h-5 w-5" />
-                      </Button> */}
-                    </div>
-                  </div>
-                  <ul className="list-disc list-inside mt-2 text-sm">
-                    {exp.Description &&
-                      exp.Description.split("\n").map(
-                        (desc: string, descIndex: number) => (
-                          <li key={descIndex}>{desc}</li>
-                        )
-                      )}
-                  </ul>
-                  {index < parsedExperience.length - 1 && (
-                    <Divider className="my-4" />
-                  )}
-                  {parsedExperience.length === 0
-                    ? "No Expereicnes available"
-                    : ""}
-                </div>
-              ))}
-            </CardBody>
+            <CardBody className="space-y-6"></CardBody>
           </Card>
 
           {/* Education */}
           <Card>
-            <CardHeader className="flex justify-between items-center">
-              <p className="text-lg font-bold">Education</p>
-              <NewEducation />
+            <CardHeader className="flex justify-between flex-col flex-start">
+              <p className="text-lg font-bold">Recent Posts</p>
+              <Posts userId={userInfo.id} fromPage={"my"} />
             </CardHeader>
-            <CardBody>
-              {parsedEducation.map((edu, index) => (
-                <div key={index} className="mb-4">
-                  <h3 className="font-semibold">{edu.school}</h3>
-                  <p className="text-sm text-default-500">
-                    {edu.degree} Degree,{" "}
-                    {new Date(edu.startDate).toLocaleDateString()} -{" "}
-                    {edu.endDate === null
-                      ? "Present"
-                      : new Date(edu.endDate).toLocaleDateString()}
-                  </p>
-                  <p>GPA: {edu.GPA}</p>
-                  <ul className="list-disc list-inside mt-2 text-sm">
-                    {edu.description !== null && edu.description !== undefined
-                      ? edu.description
-                          .split("\n")
-                          .map((desc: string, descIndex: number) => (
-                            <li key={descIndex}>{desc}</li>
-                          ))
-                      : ""}
-                  </ul>
-                </div>
-              ))}
-            </CardBody>
+            <CardBody></CardBody>
           </Card>
 
           {/* Skills */}
@@ -332,55 +204,12 @@ const page = async ({ params }: { params: { id: string } }) => {
               </p>
               <p className="flex items-center">
                 <MdPinDrop className="mr-2 h-5 w-5" />
-                {userInfo.location}
+                {userInfo.location && userInfo.location.includes("undefined")
+                  ? "No Location Available"
+                  : userInfo.location}
               </p>
             </CardBody>
           </Card>
-
-          {userInfo.role === "EMPLOYER" ? (
-            ""
-          ) : (
-            <Card>
-              <CardHeader className="flex gap-3">
-                <div className="flex flex-col">
-                  <p className="text-lg font-bold">Languages</p>
-                </div>
-              </CardHeader>
-              {/* <CardBody>
-              <ul className="space-y-2">
-                {profile.languages.map((language, index) => (
-                  <li key={index}>{language}</li>
-                ))}
-              </ul>
-            </CardBody> */}
-            </Card>
-          )}
-          {/* Languages */}
-
-          {/* Resume */}
-          {userInfo.role === "EMPLOYER" ? (
-            ""
-          ) : (
-            <Card>
-              <CardHeader className="flex gap-3">
-                <div className="flex flex-col">
-                  <p className="text-lg font-bold">Resume</p>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <Button
-                  as={Link}
-                  href={`https://econnectbucket.s3.amazonaws.com/resume/${userInfo.id}`}
-                  color="primary"
-                  className="w-full"
-                  target="_blank"
-                >
-                  <MdFileDownload className="mr-2 h-5 w-5" />
-                  View Resume
-                </Button>
-              </CardBody>
-            </Card>
-          )}
         </div>
       </div>
     </div>

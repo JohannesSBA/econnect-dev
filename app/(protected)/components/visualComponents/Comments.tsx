@@ -165,8 +165,8 @@ export default function PostWithComments({
                         </p>
                       </div>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <h1>
+                    <div className="flex justify-end items-center">
+                      <h1 className="bg-red-400">
                         {new Date(comment.createdAt).toLocaleDateString(
                           "en-GB",
                           {
