@@ -58,7 +58,7 @@ const page = async () => {
   }
 
   return (
-    <div className="w-screen  flex flex-col md:flex-row md:overflow-clip bg-white">
+    <div className="w-screen  flex flex-col md:flex-row md:overflow-clip bg-gradient-to-br from-white to-blue-100">
       <ClientComponent
         user={{
           name: userInfo.firstName + " " + userInfo.lastName,

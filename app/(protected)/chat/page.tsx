@@ -47,7 +47,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
       ) : (
         ""
       )}
-      <div className="w-screen h-full overflow-clip flex justify-between bg-white">
+      <div className="w-screen h-full overflow-clip flex justify-between bg-gradient-to-br from-white to-blue-100">
         <div className="w-full md:w-1/5">
           {userInfo.role === "EMPLOYEE" ? (
             <Messages

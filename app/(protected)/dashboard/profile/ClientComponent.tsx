@@ -4,23 +4,17 @@ import { useState } from "react";
 import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
-import { Chip } from "@nextui-org/chip";
 import { Divider } from "@nextui-org/divider";
 import {
   MdLocationOn,
   MdEmail,
   MdPhone,
   MdFileDownload,
-  MdAdd,
-  MdDelete,
   MdPinDrop,
 } from "react-icons/md";
-import { z } from "zod";
 import { Link } from "@nextui-org/react";
 import UploadResume from "../../components/functionComponents/UploadResume";
 import NewExperience from "../../components/functionComponents/NewExperience";
-import axios from "axios";
-import { toast } from "sonner";
 import NewEducation from "../../components/functionComponents/NewEducation";
 
 interface UserProfileProps {
@@ -118,21 +112,23 @@ export default function UserProfile(UserProfile: UserProfileProps) {
               <NewExperience />
             </CardHeader>
             <CardBody className="space-y-6">
-              {experiences.map((exp, index) => (
-                <div key={index}>
-                  <div className="flex justify-between">
-                    <div>
-                      <h3 className="font-semibold">{exp.title}</h3>
-                      <p className="text-xs ml-2">{exp.companyName}</p>
-                      <p className="text-sm text-default-500">
-                        {new Date(exp.startDate).toLocaleDateString()} -{" "}
-                        {exp.endDate === null
-                          ? "Present"
-                          : new Date(exp.endDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div>
-                      {/* <Button
+              {experiences.length === 0
+                ? "No Experiences to display"
+                : experiences.map((exp, index) => (
+                    <div key={index}>
+                      <div className="flex justify-between">
+                        <div>
+                          <h3 className="font-semibold">{exp.title}</h3>
+                          <p className="text-xs ml-2">{exp.companyName}</p>
+                          <p className="text-sm text-default-500">
+                            {new Date(exp.startDate).toLocaleDateString()} -{" "}
+                            {exp.endDate === null
+                              ? "Present"
+                              : new Date(exp.endDate).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div>
+                          {/* <Button
                         isIconOnly
                         variant="light"
                         size="sm"
@@ -141,21 +137,23 @@ export default function UserProfile(UserProfile: UserProfileProps) {
                       >
                         <MdDelete className="h-5 w-5" />
                       </Button> */}
+                        </div>
+                      </div>
+                      <ul className="list-disc list-inside mt-2 text-sm">
+                        {exp.description
+                          .split("\n")
+                          .map((desc: string, descIndex: number) => (
+                            <li key={descIndex}>{desc}</li>
+                          ))}
+                      </ul>
+                      {index < experiences.length - 1 && (
+                        <Divider className="my-4" />
+                      )}
+                      {experiences.length === 0
+                        ? "No Expereicnes available"
+                        : ""}
                     </div>
-                  </div>
-                  <ul className="list-disc list-inside mt-2 text-sm">
-                    {exp.description
-                      .split("\n")
-                      .map((desc: string, descIndex: number) => (
-                        <li key={descIndex}>{desc}</li>
-                      ))}
-                  </ul>
-                  {index < experiences.length - 1 && (
-                    <Divider className="my-4" />
-                  )}
-                  {experiences.length === 0 ? "No Expereicnes available" : ""}
-                </div>
-              ))}
+                  ))}
             </CardBody>
           </Card>
 

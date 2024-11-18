@@ -3,9 +3,12 @@ import { ReactNode } from "react";
 import { Inter } from "next/font/google";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { Friend } from "@/app/types/db";
-import { getUserContent } from "@/app/helpers/getUser";
+import Search from "../components/SearchComponents/Search";
+import SignOutButton from "../components/functionComponents/SignOutButton";
+import axios from "axios";
 import ProtectedNav from "../components/visualComponents/ProtectedNav";
+import { getUserContent } from "@/app/helpers/getUser";
+import { Friend } from "@/app/types/db";
 
 interface LayoutProps {
   children: ReactNode;
@@ -29,26 +32,15 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const friendsList = userInfo.friends as unknown as Friend[];
 
   return (
-    <html
-      lang="en"
-      className="scrollbar-thin scrollbar-webkit overflow-scroll h-screen bg-zinc-100"
-    >
+    <html lang="en" className="scrollbar-thin scrollbar-webkit">
       <body className={inter.className}>
-        <div className="w-screen font-PlusJakartaSans">
-          <div className="sticky top-0 w-screen z-[60]">
-            <ProtectedNav
-              userInfoId={userInfo.id as string}
-              userName={
-                ((userInfo.firstName as string) +
-                  " " +
-                  userInfo.lastName) as string
-              }
-              userEmail={userInfo.email as string}
-            />
-          </div>
-          <aside className="w-full h-full overflow-clip bg-zinc-100">
-            {children}
-          </aside>
+        <div className="h-screen w-screen overflow-scroll font-PlusJakartaSans">
+          <ProtectedNav
+            userInfoId={userInfo.id as string}
+            userName={userInfo.firstName + " " + userInfo.lastName}
+            userEmail={userInfo.email as string}
+          />
+          <aside>{children}</aside>
           <div className="fixed bottom-0 right-0 p-8 flex flex-col gap-5"></div>
         </div>
       </body>

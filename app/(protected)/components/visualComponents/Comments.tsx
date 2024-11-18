@@ -79,11 +79,11 @@ export default function PostWithComments({
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 flex flex-col gap-4 w-full">
       {latestComments.map((comment: Comment, index: number) => (
         <div
           key={index}
-          className="text-sm text-gray-700 flex items-center gap-2 justify-between"
+          className="text-sm text-gray-700 flex items-center gap-2 justify-between w-full "
         >
           <div className="flex gap-2 items-center">
             <StylingUser
@@ -165,8 +165,8 @@ export default function PostWithComments({
                         </p>
                       </div>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <h1>
+                    <div className="flex justify-end items-center">
+                      <h1 className="bg-red-400">
                         {new Date(comment.createdAt).toLocaleDateString(
                           "en-GB",
                           {

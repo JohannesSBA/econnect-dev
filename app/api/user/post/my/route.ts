@@ -18,7 +18,7 @@ export async function POST(req: Request, res: Response) {
   if (body.from === "my") {
     try {
       const posts = await prisma.post.findMany({
-        where: { authorId: session.user.id },
+        where: { authorId: body.userId },
         skip: offset,
         take: body.limit,
         orderBy: { createdAt: "desc" },

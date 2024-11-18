@@ -17,6 +17,12 @@ import {
   ModalHeader,
   Link,
   User as StylingUser,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Input,
 } from "@nextui-org/react";
 import axios from "axios";
 import parse from "html-react-parser";
@@ -24,12 +30,11 @@ import { User } from "@/app/types/db";
 import "@/app/rich.css";
 import { usePathname } from "next/navigation";
 import { MdDelete } from "react-icons/md";
-import { IoMdThumbsUp } from "react-icons/io";
+import { IoMdChatbubbles, IoMdThumbsUp } from "react-icons/io";
 import { getUserContent } from "@/app/helpers/getUser";
 import Comments from "./Comments";
 
 interface PostProp {
-  id: any;
   userId: string;
   fromPage: string;
 }
@@ -183,160 +188,120 @@ export default function Posts({ userId, fromPage }: PostProp) {
   };
 
   return (
-    <div className="w-full h-full mb-32 flex flex-col gap-4 scrollbar-webkit scrollbar-thin  overflow-scroll">
-      {posts.length === 0 && !isLoading ? (
-        <h1 className="w-full flex justify-center text-center pt-4">
-          No Posts Currently Available. <br />
-          Add some friends to see their posts.
-        </h1>
-      ) : (
-        posts.map(
-          (post: {
-            images: any;
-            id: React.Key | null | undefined;
-            content: any;
-            title: any;
-            createdAt: Date;
-            author: User;
-            authorId: string;
-            likes: any[];
-            comments: any[];
-          }) => (
-            <div
-              key={post.id}
-              className="border-2 mx-1 bg-white p-2 max-w-full text-wrap whitespace-normal"
-            >
-              <div className="flex justify-between">
-                <Link href={`/ec/${post.authorId}`} className="flex gap-2">
-                  <StylingUser
-                    name={""} // Add the 'name' property with a value
-                    avatarProps={{
-                      isBordered: true,
-                      src: `https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`,
-                    }}
-                    className="transition-transform "
-                  />
-
-                  <div className="flex flex-col m-0 p-0">
-                    <h1 className="font-bold text-black">{`${post.author.firstName} ${post.author.lastName}`}</h1>
-                    <h1 className="text-slate-600 pl-2 text-[0.65rem] font-light">
-                      {post.author.email}
-                    </h1>
-                    <h1 className="text-slate-600 pl-2 text-[0.65rem] font-light">
-                      {post.author.title}
-                    </h1>
-                  </div>
-                </Link>
-                <h1 className="text-xs font-light text-slate-600">
-                  {new Date(post.createdAt).toLocaleDateString("en-us", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </h1>
-              </div>
-              <h1 className="font-bold">{post.title}</h1>
-              <div>{parse(post.content)}</div>
-
-              <div className="flex gap-4 m-3">
-                <Image
-                  width={200}
-                  alt="Application Image"
-                  src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/0`}
-                />
-              </div>
-              <div className=" w-full shadow-sm flex justify-between">
-                <h1 className="text-xs text-slate-600">
-                  {post.likes.length + " Liked this post"}
-                </h1>
-                <h1 className="text-xs text-slate-600">
-                  {post.comments.length} Comments
-                </h1>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex gap-2">
-                  <Button
-                    color="primary"
-                    variant="light"
-                    className={`rounded-md ${
-                      post.likes.some(
-                        (like: { userId: any }) => like.userId === userId
-                      )
-                        ? "text-blue-400"
-                        : "text-black"
-                    }`}
-                    onPress={() =>
-                      handleLike(
-                        post.id as string,
-                        post.likes.some(
-                          (like: { userId: any }) => like.userId === userId
-                        )
-                      )
-                    }
-                  >
-                    <IoMdThumbsUp
-                      color={
-                        post.likes.some(
-                          (like: { userId: any }) => like.userId === userId
-                        )
-                          ? "blue"
-                          : "black"
-                      }
-                    />
-                    {post.likes.some(
-                      (like: { userId: any }) => like.userId === userId
-                    )
-                      ? "Unlike"
-                      : "Like"}
-                  </Button>
+    <div className="w-full space-y-4 bg-transparent">
+      {posts.map((post) => (
+        <Card key={post.id} className="w-full">
+          <CardHeader className="justify-between">
+            <StylingUser
+              name={`${post.author.firstName} ${post.author.lastName}`}
+              description={
+                <div>
+                  <p className="text-small text-default-500">
+                    {post.author.email}
+                  </p>
+                  <p className="text-small text-default-500">
+                    {post.author.title}
+                  </p>
                 </div>
-              </div>
-
-              {/* Comment Section */}
-              <div className="mt-4 relative">
-                {/* Comment Input Field */}
-                <input
-                  type="text"
-                  value={commentInput}
-                  onChange={handleInputChange}
-                  placeholder="Add a comment..."
-                  className="p-2 border border-gray-300 rounded-md w-full light"
-                />
-
-                {/* Character Counter */}
-                <div className="absolute right-0 top-0 mt-2 mr-2 text-xs text-gray-500">
-                  {commentInput.length}/{maxChars}
-                </div>
-
-                {/* Submit Button */}
-                <Button
-                  color="primary"
-                  variant="light"
-                  className="mt-2"
-                  disabled={commentInput.length === 0} // Disable if no input
-                  onPress={() => handleComment(post.id as string)}
-                >
-                  Submit
-                </Button>
-              </div>
-
-              <div className="mt-4">
-                <Comments
-                  post={post}
-                  commentUserId={userId as unknown as string}
-                />
-              </div>
+              }
+              avatarProps={{
+                src: `https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`,
+              }}
+            />
+            <p className="text-small text-default-500">
+              {new Date(post.createdAt).toLocaleDateString("en-us", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </p>
+          </CardHeader>
+          <CardBody>
+            <h2 className="text-lg font-semibold mb-2">{post.title}</h2>
+            <div className="mb-4">{parse(post.content)}</div>
+            {post.images && (
+              <Image
+                alt="Post image"
+                className="object-cover rounded-xl"
+                src={`https://econnectbucket.s3.amazonaws.com/newPostImage/${post.authorId}/${post.images}/0`}
+                width={300}
+              />
+            )}
+          </CardBody>
+          <Divider />
+          <CardFooter className="flex flex-col items-start gap-4">
+            <div className="flex justify-between w-full text-small text-default-500">
+              <span>{post.likes.length} Likes</span>
+              <span>{post.comments.length} Comments</span>
             </div>
-          )
-        )
-      )}
-      <div ref={sentinelRef} className="h-10 w-full" />
+            <div className="flex gap-2 w-full">
+              <Button
+                color={
+                  post.likes.some(
+                    (like: { userId: string }) => like.userId === userId
+                  )
+                    ? "primary"
+                    : "default"
+                }
+                variant="flat"
+                startContent={<IoMdThumbsUp />}
+                onPress={() =>
+                  handleLike(
+                    post.id,
+                    post.likes.some(
+                      (like: { userId: string }) => like.userId === userId
+                    )
+                  )
+                }
+              >
+                {post.likes.some(
+                  (like: { userId: string }) => like.userId === userId
+                )
+                  ? "Unlike"
+                  : "Like"}
+              </Button>
+              <Button
+                color="default"
+                variant="flat"
+                startContent={<IoMdChatbubbles />}
+              >
+                Comment
+              </Button>
+            </div>
+            <div className="w-full">
+              <Input
+                type="text"
+                value={commentInput}
+                onChange={handleInputChange}
+                placeholder="Add a comment..."
+                endContent={
+                  <div className="text-small text-default-500">
+                    {commentInput.length}/{maxChars}
+                  </div>
+                }
+              />
+              <Button
+                color="primary"
+                className="mt-2"
+                disabled={commentInput.length === 0}
+                onPress={() => {
+                  handleComment(post.id);
+                  setCommentInput("");
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+            <Comments post={post} commentUserId={userId} />
+          </CardFooter>
+        </Card>
+      ))}
       {isLoading && (
-        <div className="flex flex-col gap-4 w-full h-full">
-          <Skeleton className="w-full h-24 rounded-md flex flex-col justify-between gap-2 m-4 light" />
-          <Skeleton className="w-full h-24 rounded-md flex flex-col justify-between gap-2 m-4 light" />
-        </div>
+        <Card className="w-full p-4 space-y-4">
+          <div className="h-4 bg-default-300 rounded"></div>
+          <div className="h-4 bg-default-300 rounded w-3/4"></div>
+          <div className="h-4 bg-default-300 rounded w-1/2"></div>
+        </Card>
       )}
     </div>
   );
