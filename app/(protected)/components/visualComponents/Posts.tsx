@@ -188,7 +188,7 @@ export default function Posts({ userId, fromPage }: PostProp) {
   };
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-4 bg-transparent">
       {posts.map((post) => (
         <Card key={post.id} className="w-full">
           <CardHeader className="justify-between">
