@@ -74,11 +74,19 @@ const page = async ({ params }: { params: { chatid: string } }) => {
             </div>
           </div>
           <div className="hidden shadow-md rounded-md translate-x-24 m-2 p-2 md:flex flex-col gap-3 items-center justify-between ">
-            <SideInfo
-              user={userInfo}
-              posts={userInfo.posts}
-              applications={userInfo.applicant}
-            />
+            {userInfo.role === "EMPLOYEE" ? (
+              <SideInfo
+                user={userInfo}
+                posts={userInfo.posts}
+                applications={userInfo.applicant}
+              />
+            ) : (
+              <Messages
+                userId={session?.user.id as string}
+                friends={friendsList}
+                role={userInfo.role ?? ""}
+              />
+            )}
           </div>
         </div>
       </div>

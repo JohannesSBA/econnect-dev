@@ -163,7 +163,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                 <IoLink className="group-hover:scale-125 motion-reduce:hidden group-hover:text-black text-slate-700" />
                 <h1 className="hidden md:flex text-xs">Connects</h1>
               </a>
-              <div className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium rounded-md  text-gray-900 flex-col justify-center">
+              <div className="inline-flex items-center border-b-2   px-1 pt-1 text-sm font-medium  text-gray-900 flex-col justify-center">
                 <Search />
               </div>
             </div>
@@ -210,7 +210,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
               </div>
               <MenuItems
                 transition
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                className="absolute right-0 z-10 mt-2 w-48 origin-top-right bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
                 {menuItems.map(([label, href]) => (
                   <MenuItem key={href}>
