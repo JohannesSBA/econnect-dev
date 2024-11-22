@@ -97,7 +97,7 @@ export async function POST(req: Request, res: Response) {
               This code will only be valid for the next 5 minutes. If the code does not work, you can use this login verification link:
           </p>
 
-          <a href="https://main.d1lrbytgl21u6i.amplifyapp.com/api/user/verify-email?token=${verificationToken}" className="px-6 py-2 mt-6 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+          <a href="https://www.econnectpilot.com/api/user/verify-email?token=${verificationToken}" className="px-6 py-2 mt-6 text-sm font-medium tracking-wider text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
               Verify email
           </a>
 
