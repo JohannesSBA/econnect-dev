@@ -49,6 +49,7 @@
     "react-error-boundary": "^4.1.2",
     "react-icons": "^4.11.0",
     "react-query": "^3.39.3",
+    "resend": "^4.0.1",
     "sharp": "^0.33.5",
     "sonner": "^1.0.3",
     "universal-cookie": "^6.1.1",

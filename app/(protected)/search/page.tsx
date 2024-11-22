@@ -27,6 +27,7 @@ import {
   MdWork,
   MdAttachMoney,
 } from "react-icons/md";
+import Search from "../components/SearchComponents/Search";
 
 const SearchPage = () => {
   const search = useSearchParams();
@@ -45,6 +46,7 @@ const SearchPage = () => {
     setLoading(true);
 
     try {
+      console.log("Fetching data...");
       const response = await axios.get(`/api/search`, {
         params: { q: encodedSearchQuery, page, pageSize: 20 }, // Pass pagination parameters
       });
@@ -56,6 +58,8 @@ const SearchPage = () => {
         currentPage,
         pageSize,
       } = response.data;
+
+      console.log("Data fetched:", response.data);
 
       // Update results
       setUsers((prev) => [...prev, ...newUsers]);
@@ -81,10 +85,17 @@ const SearchPage = () => {
   }, [encodedSearchQuery, hasMore, loading, page]);
 
   useEffect(() => {
+    console.log("Component mounted or search query changed");
+    setUsers([]);
+    setPosts([]);
+    setListings([]);
+    setPage(0);
+    setHasMore(true);
+  }, [encodedSearchQuery]);
+
+  useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  console.log(users[0]);
 
   return (
     <div className="w-screen h-screen flex overflow-scroll pb-12 flex-col items-center bg-gradient-to-br from-white to-blue-100">
@@ -92,7 +103,7 @@ const SearchPage = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Search Results for &quot;{searchQuery}&quot;
         </h2>
-
+        <Search />
         <Tabs
           aria-label="Search result categories"
           color="default"
@@ -105,6 +116,87 @@ const SearchPage = () => {
             tabContent: "group-data-[selected=true]:text-gray-800",
           }}
         >
+          <Tab
+            key="users"
+            title={
+              <div className="flex items-center gap-2">
+                <MdPerson className="text-gray-700" />
+                <span>Users</span>
+                <Chip
+                  size="sm"
+                  variant="flat"
+                  className="bg-gray-200 text-gray-700"
+                >
+                  {users.length}
+                </Chip>
+              </div>
+            }
+          >
+            <div className="grid gap-6 mt-6">
+              {users.map((user) => (
+                <Card
+                  key={user.id}
+                  className="bg-white shadow-sm border border-gray-200"
+                >
+                  <CardBody>
+                    <div className="flex items-center gap-4">
+                      <Avatar
+                        src={`https://econnectbucket.s3.amazonaws.com/image/${user.id}`}
+                        className="h-20 w-20"
+                      />
+                      <div className="flex-grow">
+                        <h4 className="text-large font-semibold text-gray-800">
+                          {user.firstName + " " + user.lastName}
+                        </h4>
+                        <p className="text-small text-gray-500">
+                          {user.role === "EMPLOYEE" ? "" : "Company"}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <MdBusinessCenter className="text-gray-400" />
+                          <span className="text-xs text-gray-600">
+                            {user.email}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MdLocationOn className="text-gray-400" />
+                          <span className="text-xs text-gray-600">
+                            {user.location}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-small font-semibold text-gray-700">
+                          {user.connections}
+                        </p>
+                        <p className="text-tiny text-gray-500">connections</p>
+                        {user.role === "EMPLOYEE" ? (
+                          <Button
+                            color="default"
+                            as={Link}
+                            href={`/ec/${user.id}`}
+                            variant="flat"
+                            className="mt-2 bg-gray-100 text-gray-700"
+                          >
+                            Profile
+                          </Button>
+                        ) : (
+                          <Button
+                            color="default"
+                            as={Link}
+                            href={`/company/${user.id}`}
+                            variant="flat"
+                            className="mt-2 bg-gray-100 text-gray-700"
+                          >
+                            Profile
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </Tab>
           <Tab
             key="posts"
             title={
@@ -196,87 +288,7 @@ const SearchPage = () => {
               ))}
             </div>
           </Tab>
-          <Tab
-            key="users"
-            title={
-              <div className="flex items-center gap-2">
-                <MdPerson className="text-gray-700" />
-                <span>Users</span>
-                <Chip
-                  size="sm"
-                  variant="flat"
-                  className="bg-gray-200 text-gray-700"
-                >
-                  {users.length}
-                </Chip>
-              </div>
-            }
-          >
-            <div className="grid gap-6 mt-6">
-              {users.map((user) => (
-                <Card
-                  key={user.id}
-                  className="bg-white shadow-sm border border-gray-200"
-                >
-                  <CardBody>
-                    <div className="flex items-center gap-4">
-                      <Avatar
-                        src={`https://econnectbucket.s3.amazonaws.com/image/${user.id}`}
-                        className="h-20 w-20"
-                      />
-                      <div className="flex-grow">
-                        <h4 className="text-large font-semibold text-gray-800">
-                          {user.firstName + " " + user.lastName}
-                        </h4>
-                        <p className="text-small text-gray-500">
-                          {user.role === "EMPLOYEE" ? "" : "Company"}
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <MdBusinessCenter className="text-gray-400" />
-                          <span className="text-xs text-gray-600">
-                            {user.email}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <MdLocationOn className="text-gray-400" />
-                          <span className="text-xs text-gray-600">
-                            {user.location}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-small font-semibold text-gray-700">
-                          {user.connections}
-                        </p>
-                        <p className="text-tiny text-gray-500">connections</p>
-                        {user.role === "EMPLOYEE" ? (
-                          <Button
-                            color="default"
-                            as={Link}
-                            href={`/ec/${user.id}`}
-                            variant="flat"
-                            className="mt-2 bg-gray-100 text-gray-700"
-                          >
-                            Profile
-                          </Button>
-                        ) : (
-                          <Button
-                            color="default"
-                            as={Link}
-                            href={`/company/${user.id}`}
-                            variant="flat"
-                            className="mt-2 bg-gray-100 text-gray-700"
-                          >
-                            Profile
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              ))}
-            </div>
-          </Tab>
+
           <Tab
             key="listings"
             title={
@@ -361,8 +373,6 @@ const SearchPage = () => {
           </Tab>
         </Tabs>
       </div>
-
-      {/* Repeat similar structure for posts and listings */}
     </div>
   );
 };
