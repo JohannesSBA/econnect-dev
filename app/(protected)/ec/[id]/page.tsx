@@ -89,7 +89,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   ) {
     userActionButton = <Button color="primary">Accept</Button>;
   } else {
-    userActionButton = <AddFriendButton id={accUser.id} />;
+    userActionButton = <AddFriendButton id={userInfo.id} />;
   }
 
   const educationList = await getEducation(userInfo.id as string);

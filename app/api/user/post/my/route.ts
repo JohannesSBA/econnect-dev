@@ -35,13 +35,28 @@ export async function POST(req: Request, res: Response) {
             },
           },
           likes: true,
-          comments: true,
+          comments: {
+            select: {
+              author: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  email: true,
+                },
+              },
+              content: true,
+              createdAt: true,
+              postId: true,
+            },
+          },
           categories: true,
           reports: true,
           savedBy: true,
         }, // Include only the id and name of the author
       });
       const stringifiedPosts = JSON.stringify(posts);
+      console.log(posts);
 
       return new Response(stringifiedPosts, { status: 200 });
     } catch (error) {
@@ -74,7 +89,21 @@ export async function POST(req: Request, res: Response) {
             },
           },
           likes: true,
-          comments: true,
+          comments: {
+            select: {
+              author: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  email: true,
+                },
+              },
+              content: true,
+              createdAt: true,
+              postId: true,
+            },
+          },
           categories: true,
           reports: true,
           savedBy: true,
@@ -107,7 +136,21 @@ export async function POST(req: Request, res: Response) {
             },
           },
           likes: true,
-          comments: true,
+          comments: {
+            select: {
+              author: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  email: true,
+                },
+              },
+              content: true,
+              createdAt: true,
+              postId: true,
+            },
+          },
           categories: true,
           reports: true,
           savedBy: true,

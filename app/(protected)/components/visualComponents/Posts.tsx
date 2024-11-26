@@ -292,7 +292,7 @@ export default function Posts({ userId, fromPage }: PostProp) {
                 Submit
               </Button>
             </div>
-            <Comments post={post} commentUserId={userId} />
+            <Comments post={post} id={userId} />
           </CardFooter>
         </Card>
       ))}

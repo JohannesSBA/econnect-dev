@@ -35,9 +35,9 @@ const Page = async () => {
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col overflow-scroll bg-gradient-to-br from-white to-blue-100 ">
       <div className="flex w-full mx-auto md:mx-0 items-start gap-x-8 pr-4  sm:pr-6 lg:pr-8">
-        <aside className="sticky top-4 hidden shrink-0 xl:flex border-r max-h-full">
-          <RecentApps user={session.user.id} applicants={applications ?? []} />
-        </aside>
+        {/* <aside className="sticky top-4 hidden shrink-0 xl:flex border-r max-h-full"> */}
+        {/* <RecentApps user={session.user.id} applicants={applications ?? []} /> */}
+        {/* </aside> */}
         <main className="flex-1 flex-col p-2 max-w-full">
           <div className="flex p-2 w-full rounded-md border bg-white">
             <User

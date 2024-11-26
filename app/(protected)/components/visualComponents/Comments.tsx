@@ -16,6 +16,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 
 interface Comment {
   id: string;
+  author: Author;
   content: string;
   createdAt: string;
   commentUserId: string; // Comment creator's user ID
@@ -41,10 +42,10 @@ interface Post {
 
 export default function PostWithComments({
   post,
-  commentUserId,
+  id,
 }: {
   post: Post;
-  commentUserId: string;
+  id: string;
 }) {
   const [comments, setComments] = useState<Comment[]>(post.comments); // Manage comments state locally
   const [showModal, setShowModal] = useState(false);
@@ -62,7 +63,11 @@ export default function PostWithComments({
 
   const canDeleteComment = (commentUserId: string) => {
     // A user can delete if they are the post author or the comment author
-    return commentUserId === post.authorId;
+    return (
+      commentUserId === post.authorId ||
+      commentUserId === id ||
+      post.authorId === id
+    );
   };
 
   const handleDeleteComment = async (commentId: string) => {
@@ -78,6 +83,8 @@ export default function PostWithComments({
     }
   };
 
+  console.log(latestComments);
+
   return (
     <div className="mt-4 flex flex-col gap-4 w-full">
       {latestComments.map((comment: Comment, index: number) => (
@@ -90,14 +97,14 @@ export default function PostWithComments({
               name={""} // Add the 'name' property with a value
               avatarProps={{
                 isBordered: true,
-                src: `https://econnectbucket.s3.amazonaws.com/image/${post.authorId}`,
+                src: `https://econnectbucket.s3.amazonaws.com/image/${comment.author.id}`,
               }}
               className="transition-transform "
             />
 
             <div>
               <h1 className="font-semibold">
-                {post.author.firstName} {post.author.lastName}
+                {comment.author.firstName} {comment.author.lastName}
               </h1>
               <p className="text-slate-800 text-xs pl-2">{comment.content}</p>
             </div>
@@ -109,7 +116,7 @@ export default function PostWithComments({
               })}
             </h1>
             {/* Show delete button if the user is the author or comment creator */}
-            {canDeleteComment(comment.commentUserId) && (
+            {canDeleteComment(comment.author.id) && (
               <Button
                 color="danger"
                 variant="light"
@@ -175,7 +182,7 @@ export default function PostWithComments({
                         )}
                       </h1>
                       {/* Show delete button if the user is the author or comment creator */}
-                      {canDeleteComment(comment.commentUserId) && (
+                      {canDeleteComment(comment.author.id) && (
                         <Button
                           color="danger"
                           variant="light"

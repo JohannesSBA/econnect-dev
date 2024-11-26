@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import RequestHandler from "../../components/functionComponents/RequestHandler";
 import { FaUserFriends } from "react-icons/fa";
 import SideInfo from "../../components/visualComponents/SideInfo";
+import FindPeople from "../../components/visualComponents/FindPeople";
 
 interface ClientComponentProps {
   user: any;
@@ -121,144 +122,153 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
       ));
 
   return (
-    <div className="w-screen md:h-screen overflow-clip bg-slate-100 flex flex-col md:flex-row justify-between font-PlusJakartSans p-4 gap-2">
-      <div className="h-[90%] md:w-3/4 flex flex-col  p-6 pl-12 bg-white shadow-md text-black ">
-        <div className="w-full flex justify-between">
-          <h1 className="text-bold text-2xl text-slate-700">
-            {connections.length} Connections
-          </h1>
-          <div className="group hover:bg-slate-200 p-4 bottom-0 rounded-md">
-            {requestElement}
+    <div className="w-screen md:min-h-screen overflow-scroll bg-slate-100 flex flex-col md:flex-row justify-between font-PlusJakartSans p-4 gap-2">
+      <div className="h-[90%] md:w-3/4 flex flex-col p-5 pl-12 bg-white">
+        <div className=" text-black ">
+          <div className="w-full flex justify-between">
+            <h1 className="text-bold text-2xl text-slate-700">
+              {connections.length} Connections
+            </h1>
+            <div className="group hover:bg-slate-200 p-4 bottom-0 rounded-md">
+              {requestElement}
+            </div>
           </div>
-        </div>
 
-        {/* Search Input */}
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 mt-2 mb-4 border rounded bg-slate-100 shadow-sm"
-        />
+          {/* Search Input */}
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 mt-2 mb-4 border rounded bg-slate-100 shadow-sm"
+          />
 
-        {/* Sort Options */}
-        <div className="flex gap-4 mb-4">
-          <h1 className="text-slate-400 text-sm p-4">Sorted by</h1>
-          <button
-            className={`p-2 ${sortOption === "recent" ? "font-bold" : ""}`}
-            onClick={() => setSortOption("recent")}
-          >
-            Recent
-          </button>
-          <button
-            className={`p-2 ${sortOption === "lastName" ? "font-bold" : ""}`}
-            onClick={() => setSortOption("lastName")}
-          >
-            Last Name
-          </button>
-        </div>
-
-        {/* Render sorted connections */}
-        {sortedConnections.map(
-          (connection: {
-            id: React.Key | null | undefined;
-            firstName: string;
-            lastName: string;
-            email: string;
-          }) => (
-            <div
-              className="flex p-6 flex-col md:flex-row gap-2 justify-between border shadow-sm mb-4"
-              key={connection.id}
+          {/* Sort Options */}
+          <div className="flex gap-4 mb-4">
+            <h1 className="text-slate-400 text-sm p-4">Sorted by</h1>
+            <button
+              className={`p-2 ${sortOption === "recent" ? "font-bold" : ""}`}
+              onClick={() => setSortOption("recent")}
             >
-              <div className="flex flex-col md:flex-col">
-                <div className="">
-                  <Image
-                    src={`https://econnectbucket.s3.amazonaws.com/image/${connection.id}`}
-                    alt="Application Image"
-                    width={50}
-                    height={50}
-                    className="rounded-full"
-                  />
+              Recent
+            </button>
+            <button
+              className={`p-2 ${sortOption === "lastName" ? "font-bold" : ""}`}
+              onClick={() => setSortOption("lastName")}
+            >
+              Last Name
+            </button>
+          </div>
 
-                  <div className="flex flex-col">
-                    <p className="text-sm md:text-lg font-semibold">
-                      {connection.firstName + " " + connection.lastName}
-                    </p>
-                    <p className="text-xs md:text-sm text-slate-400">
-                      {connection.email}
-                    </p>
+          {/* Render sorted connections */}
+          {sortedConnections.map(
+            (connection: {
+              id: React.Key | null | undefined;
+              firstName: string;
+              lastName: string;
+              email: string;
+            }) => (
+              <div
+                className="flex p-6 flex-col md:flex-row gap-2 justify-between border shadow-sm mb-4"
+                key={connection.id}
+              >
+                <div className="flex flex-col md:flex-col">
+                  <div className="">
+                    <Image
+                      src={`https://econnectbucket.s3.amazonaws.com/image/${connection.id}`}
+                      alt="Application Image"
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                    />
+
+                    <div className="flex flex-col">
+                      <p className="text-sm md:text-lg font-semibold">
+                        {connection.firstName + " " + connection.lastName}
+                      </p>
+                      <p className="text-xs md:text-sm text-slate-400">
+                        {connection.email}
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <div className="flex flex-row gap-2 justify-center items-center scale-75 md:scale-100">
+                  <Button
+                    color="primary"
+                    as={Link}
+                    href={`/chat/${chatHrefConstructor(
+                      connection.id as string,
+                      sessionId
+                    )}`}
+                  >
+                    Message
+                  </Button>
+                  <Button
+                    color="default"
+                    href={`/ec/${connection.id}`}
+                    as={Link}
+                  >
+                    Profile
+                  </Button>
+                  <Button
+                    onPress={() => handleOpenModal(connection)}
+                    color="danger"
+                  >
+                    Unfriend
+                  </Button>
+                  <Modal
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    backdrop="blur"
+                    className="light"
+                  >
+                    <ModalContent>
+                      {(onClose) => (
+                        <>
+                          <ModalHeader className="flex flex-col gap-1 text-black ">
+                            Are You Sure?
+                          </ModalHeader>
+                          <ModalBody>
+                            <p className="text-black">
+                              This action cannot be undone! Are you sure you
+                              want to remove {selectedFriend?.firstName} from
+                              your friends list?
+                            </p>
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button
+                              color="default"
+                              variant="light"
+                              className="z-50"
+                              onPress={onClose}
+                            >
+                              Close
+                            </Button>
+                            <Button
+                              color="danger"
+                              className="z-50"
+                              onPress={() =>
+                                removeFriend(
+                                  selectedFriend?.id as string,
+                                  selectedFriend?.email
+                                )
+                              }
+                            >
+                              Confirm
+                            </Button>
+                          </ModalFooter>
+                        </>
+                      )}
+                    </ModalContent>
+                  </Modal>
+                </div>
               </div>
-              <div className="flex flex-row gap-2 justify-center items-center scale-75 md:scale-100">
-                <Button
-                  color="primary"
-                  as={Link}
-                  href={`/chat/${chatHrefConstructor(
-                    connection.id as string,
-                    sessionId
-                  )}`}
-                >
-                  Message
-                </Button>
-                <Button color="default" href={`/ec/${connection.id}`} as={Link}>
-                  Profile
-                </Button>
-                <Button
-                  onPress={() => handleOpenModal(connection)}
-                  color="danger"
-                >
-                  Unfriend
-                </Button>
-                <Modal
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  backdrop="blur"
-                  className="light"
-                >
-                  <ModalContent>
-                    {(onClose) => (
-                      <>
-                        <ModalHeader className="flex flex-col gap-1 text-black ">
-                          Are You Sure?
-                        </ModalHeader>
-                        <ModalBody>
-                          <p className="text-black">
-                            This action cannot be undone! Are you sure you want
-                            to remove {selectedFriend?.firstName} from your
-                            friends list?
-                          </p>
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button
-                            color="default"
-                            variant="light"
-                            className="z-50"
-                            onPress={onClose}
-                          >
-                            Close
-                          </Button>
-                          <Button
-                            color="danger"
-                            className="z-50"
-                            onPress={() =>
-                              removeFriend(
-                                selectedFriend?.id as string,
-                                selectedFriend?.email
-                              )
-                            }
-                          >
-                            Confirm
-                          </Button>
-                        </ModalFooter>
-                      </>
-                    )}
-                  </ModalContent>
-                </Modal>
-              </div>
-            </div>
-          )
-        )}
+            )
+          )}
+        </div>
+        <div>
+          <FindPeople />
+        </div>
       </div>
       <div className="w-1/4 h-[90%] md:flex hidden">
         <SideInfo
