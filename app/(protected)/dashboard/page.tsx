@@ -9,7 +9,7 @@ import { FiAirplay, FiExternalLink } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
 import SideInfo from "../components/visualComponents/SideInfo";
-import Posts from "../components/visualComponents/Posts";
+import Posts from "../components/visualComponents/Posts/Posts";
 import RecentApps from "../components/visualComponents/RecentApps";
 import FindPeople from "../components/visualComponents/FindPeople";
 import { FaArrowRight } from "react-icons/fa";

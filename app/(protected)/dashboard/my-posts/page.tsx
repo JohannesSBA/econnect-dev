@@ -8,7 +8,7 @@ import { FiAirplay, FiExternalLink } from "react-icons/fi";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import NewPost from "../../components/functionComponents/NewPost";
-import Posts from "../../components/visualComponents/Posts";
+import Posts from "../../components/visualComponents/Posts/Posts";
 import SideInfo from "../../components/visualComponents/SideInfo";
 
 const Page = async () => {
