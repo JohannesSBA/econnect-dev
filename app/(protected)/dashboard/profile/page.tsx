@@ -12,7 +12,7 @@ import NewEducation from "../../components/functionComponents/NewEducation";
 import { getEducation } from "@/app/helpers/getEducation";
 import NewExperience from "../../components/functionComponents/NewExperience";
 import { getExperience } from "@/app/helpers/getExperience";
-import Posts from "../../components/visualComponents/Posts/Posts";
+import Posts from "../../components/visualComponents/Posts/Post";
 import ClientComponent from "./ClientComponent";
 
 const page = async () => {

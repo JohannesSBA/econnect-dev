@@ -102,7 +102,13 @@ const Page = async () => {
                         Home
                     </Link>
                     <div className="h-full bg-white rounded-md text-black">
-                        <Posts userId={session.user.id} fromPage={"my"} />
+                        <Posts
+                            userId={session.user.id}
+                            fromPage={"my"}
+                            currentUserName={
+                                user.firstName + " " + user.lastName
+                            }
+                        />
                     </div>
                 </main>
 

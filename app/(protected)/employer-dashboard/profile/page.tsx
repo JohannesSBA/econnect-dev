@@ -1,7 +1,7 @@
 import React from "react";
 import EditContent from "../../components/functionComponents/EditContent";
 import { getUserContent } from "@/app/helpers/getUser";
-import { Button, Card, Image } from "@nextui-org/react";
+import { Button, Card, Image, user } from "@nextui-org/react";
 import ProfileImage from "../../components/functionComponents/ProfileImage";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -94,7 +94,13 @@ const page = async () => {
                     <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
                         Posts
                     </h1>
-                    <Posts userId={userInfo?.id as string} fromPage="his" />
+                    <Posts
+                        userId={userInfo?.id as string}
+                        fromPage="his"
+                        currentUserName={
+                            userInfo.firstName + " " + userInfo.lastName
+                        }
+                    />
                 </div>
             </div>
             <div className="w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">

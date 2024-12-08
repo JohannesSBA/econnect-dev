@@ -22,7 +22,7 @@ import { FiUserPlus, FiMessageSquare, FiExternalLink } from "react-icons/fi";
 import UploadResume from "../../components/functionComponents/UploadResume";
 import { getEducation } from "@/app/helpers/getEducation";
 import { getExperience } from "@/app/helpers/getExperience";
-import Posts from "../../components/visualComponents/Posts/Posts";
+import Posts from "../../components/visualComponents/Posts/Post";
 import {
     MdLocationOn,
     MdEmail,

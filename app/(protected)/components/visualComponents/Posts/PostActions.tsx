@@ -1,64 +1,127 @@
+"use client";
 import { Heart, MessageSquare, Share2, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog";
+import axios from "axios";
 
 interface PostActionsProps {
-    likes: number;
-    comments: Comment[];
-    shares: number;
+    postId: string;
+    likes: {
+        id: string;
+        userId: string;
+    }[];
+    comments: {
+        id: string;
+        content: string;
+        createdAt: Date;
+        author: {
+            id: string;
+            firstName: string;
+            lastName: string;
+        };
+    }[];
+    currentUserId: string;
+    currentUserName: string;
 }
 
 const MAX_COMMENT_LENGTH = 400;
 
 const PostActions = ({
-    likes: initialLikes,
-    comments,
-    shares,
+    postId,
+    likes,
+    comments: initialComments,
+    currentUserId,
+    currentUserName,
 }: PostActionsProps) => {
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [comment, setComment] = useState("");
-    const [liked, setLiked] = useState(false);
-    const [likes, setLikes] = useState(initialLikes);
+    const [commentInput, setCommentInput] = useState("");
+    const [liked, setLiked] = useState(
+        likes.some((like) => like.userId === currentUserId)
+    );
+    const [localLikes, setLocalLikes] = useState(likes);
+    const [comments, setComments] = useState(initialComments);
 
-    // Mock comments data - in a real app, this would come from props or an API
-    const [commentsList, setCommentsList] = useState<Comment[]>([comments]);
-
-    const handleLike = () => {
-        setLiked(!liked);
-        setLikes((prev) => (liked ? prev - 1 : prev + 1));
-    };
+    async function handleLike(postId: string, isLiked: boolean) {
+        try {
+            if (isLiked) {
+                await axios.post("/api/user/post/unlike", {
+                    postId: postId,
+                });
+                setLocalLikes((prev) =>
+                    prev.filter((like) => like.userId !== currentUserId)
+                );
+            } else {
+                await axios.post("/api/user/post/like", {
+                    postId: postId,
+                });
+                setLocalLikes((prev) => [
+                    ...prev,
+                    { id: Date.now().toString(), userId: currentUserId },
+                ]);
+            }
+            setLiked(!liked);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         if (value.length <= MAX_COMMENT_LENGTH) {
-            setComment(value);
+            setCommentInput(value);
         }
     };
 
-    const handleSubmitComment = () => {
-        if (comment.trim()) {
-            const newComment: Comment = {
-                id: Date.now(),
-                user: "Current User", // In a real app, this would come from auth
-                text: comment.trim(),
-                timestamp: "Just now",
-                isAuthor: true,
-            };
-            setCommentsList((prev) => [...prev, newComment]);
-            setComment("");
+    async function handleSubmitComment() {
+        try {
+            const res = await axios.post("/api/user/post/comment", {
+                postId: postId,
+                comment: commentInput,
+            });
+        } catch (error) {
+            console.log(error);
         }
-    };
+        const newComment = {
+            id: Date.now().toString(),
+            content: commentInput.trim(),
+            createdAt: new Date(),
+            author: {
+                id: currentUserId,
+                firstName: currentUserName,
+                lastName: "",
+            },
+        };
+        setComments((prev) => [...prev, newComment]);
+        setComment("");
+    }
 
-    const handleDeleteComment = (commentId: number) => {
-        setCommentsList((prev) =>
-            prev.filter((comment) => comment.id !== commentId)
-        );
-    };
+    async function handleDeleteComment(commentId: string) {
+        console.log("p", commentId);
+        try {
+            await axios.post("/api/user/post/comment/delete", { commentId });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setComments((prev) =>
+                prev.filter((comment) => comment.id !== commentId)
+            );
+        }
+    }
 
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
                 <button
-                    onClick={handleLike}
+                    onClick={() => handleLike(postId, liked)}
                     className={`flex items-center gap-2 transition-colors ${
                         liked
                             ? "text-blue-600"
@@ -69,7 +132,7 @@ const PostActions = ({
                         className="w-5 h-5"
                         fill={liked ? "currentColor" : "none"}
                     />
-                    <span>{likes}</span>
+                    <span>{localLikes.length}</span>
                 </button>
 
                 <button
@@ -77,31 +140,35 @@ const PostActions = ({
                     className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
                 >
                     <MessageSquare className="w-5 h-5" />
-                    <span>{comments}</span>
+                    <span>{comments.length}</span>
                 </button>
 
                 <button className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
                     <Share2 className="w-5 h-5" />
-                    <span>{shares}</span>
+                    <span>0</span>
                 </button>
             </div>
 
             {/* Comments Section */}
             <div className="space-y-4">
-                {commentsList.slice(0, 3).map((comment) => (
+                {comments.slice(0, 3).map((comment) => (
                     <div
                         key={comment.id}
                         className="flex flex-col space-y-1 p-2 rounded-lg bg-gray-50"
                     >
                         <div className="flex items-center justify-between">
                             <span className="font-semibold text-sm">
-                                {comment.user}
+                                {comment.author.firstName +
+                                    " " +
+                                    comment.author.lastName}
                             </span>
                             <div className="flex items-center gap-2">
                                 <span className="text-xs text-gray-500">
-                                    {comment.timestamp}
+                                    {new Date(
+                                        comment.createdAt
+                                    ).toLocaleDateString()}
                                 </span>
-                                {comment.isAuthor && (
+                                {comment.author.id === currentUserId && (
                                     <button
                                         onClick={() =>
                                             handleDeleteComment(comment.id)
@@ -113,56 +180,65 @@ const PostActions = ({
                                 )}
                             </div>
                         </div>
-                        <p className="text-sm text-gray-700">{comment.text}</p>
+                        <p className="text-sm text-gray-700">
+                            {comment.content}
+                        </p>
                     </div>
                 ))}
 
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                            Show more comments
-                        </button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
-                        <DialogHeader>
-                            <DialogTitle>Comments</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4 pt-4">
-                            {commentsList.map((comment) => (
-                                <div
-                                    key={comment.id}
-                                    className="flex flex-col space-y-1 p-3 rounded-lg bg-gray-50"
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <span className="font-semibold text-sm">
-                                            {comment.user}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-xs text-gray-500">
-                                                {comment.timestamp}
+                {comments.length > 0 && comments.length > 3 && (
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                Show more comments
+                            </button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+                            <DialogHeader>
+                                <DialogTitle>Comments</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4 pt-4">
+                                {comments.map((comment) => (
+                                    <div
+                                        key={comment.id}
+                                        className="flex flex-col space-y-1 p-3 rounded-lg bg-gray-50"
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-sm">
+                                                {comment.author.firstName +
+                                                    " " +
+                                                    comment.author.lastName}
                                             </span>
-                                            {comment.isAuthor && (
-                                                <button
-                                                    onClick={() =>
-                                                        handleDeleteComment(
-                                                            comment.id
-                                                        )
-                                                    }
-                                                    className="text-red-500 hover:text-red-600"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            )}
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xs text-gray-500">
+                                                    {new Date(
+                                                        comment.createdAt
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                                {comment.author.id ===
+                                                    currentUserId && (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteComment(
+                                                                comment.id
+                                                            )
+                                                        }
+                                                        className="text-red-500 hover:text-red-600"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
+                                        <p className="text-sm text-gray-700">
+                                            {comment.content}
+                                        </p>
                                     </div>
-                                    <p className="text-sm text-gray-700">
-                                        {comment.text}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </DialogContent>
-                </Dialog>
+                                ))}
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                )}
             </div>
 
             {showCommentInput && (
@@ -170,7 +246,7 @@ const PostActions = ({
                     <div className="relative">
                         <Input
                             placeholder="Write a comment..."
-                            value={comment}
+                            value={commentInput}
                             onChange={handleCommentChange}
                             className="pr-16 w-full"
                         />
@@ -180,7 +256,7 @@ const PostActions = ({
                     </div>
                     <Button
                         onClick={handleSubmitComment}
-                        disabled={!comment.trim()}
+                        disabled={!commentInput.trim()}
                         className="w-full"
                     >
                         Submit Comment

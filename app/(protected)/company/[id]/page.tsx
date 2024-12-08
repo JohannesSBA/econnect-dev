@@ -167,7 +167,13 @@ const page = async ({ params }: { params: { id: string } }) => {
                     <Card>
                         <CardHeader className="flex justify-between flex-col flex-start">
                             <p className="text-lg font-bold">Recent Posts</p>
-                            <Posts userId={userInfo.id} fromPage={"my"} />
+                            <Posts
+                                userId={userInfo.id}
+                                fromPage={"my"}
+                                currentUserName={
+                                    userInfo.firstName + " " + userInfo.lastName
+                                }
+                            />
                         </CardHeader>
                         <CardBody></CardBody>
                     </Card>
