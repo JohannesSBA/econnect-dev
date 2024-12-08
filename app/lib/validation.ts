@@ -1,15 +1,23 @@
 import { z } from "zod";
 
 export const messageValidator = z.object({
-  id: z.string(),
-  text: z.string(),
-  image: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  seenIds: z.string(),
-  recipientId: z.string(),
-  senderId: z.string(),
+    id: z.string(),
+    text: z.string(),
+    image: z.string(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+    seenIds: z.string(),
+    recipientId: z.string(),
+    senderId: z.string(),
 });
+
+interface Comments {
+    id: number;
+    user: string;
+    text: string;
+    timestamp: string;
+    isAuthor?: boolean;
+}
 
 export const messageArrayValidator = z.array(messageValidator);
 

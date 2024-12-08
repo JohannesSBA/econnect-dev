@@ -8,7 +8,7 @@ import { FiAirplay, FiExternalLink } from "react-icons/fi";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import NewPost from "../../components/functionComponents/NewPost";
-import Posts from "../../components/visualComponents/Posts";
+import Posts from "../../components/visualComponents/Posts/Posts";
 import SideInfo from "../../components/visualComponents/SideInfo";
 
 const Page = async () => {
@@ -102,7 +102,13 @@ const Page = async () => {
                         Home
                     </Link>
                     <div className="h-full bg-white rounded-md text-black">
-                        <Posts userId={session.user.id} fromPage={"my"} />
+                        <Posts
+                            userId={session.user.id}
+                            fromPage={"my"}
+                            currentUserName={
+                                user.firstName + " " + user.lastName
+                            }
+                        />
                     </div>
                 </main>
 
