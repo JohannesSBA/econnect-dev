@@ -31,12 +31,14 @@ const StarterForms = ({ user }: StarterProps) => {
         toast.loading("Finishing setup...");
         try {
             await axios.post("/api/user/started", { id: user.id });
-            setTimeout(() => {
-                router.push("/dashboard");
-            }, 5000);
         } catch (error) {
             console.error("Error finishing setup:", error);
             // Handle error (e.g., show error message to user)
+        } finally {
+            toast.dismiss();
+            setTimeout(() => {
+                router.push("/dashboard");
+            }, 5000);
         }
     }
 
