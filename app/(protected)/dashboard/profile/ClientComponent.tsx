@@ -62,7 +62,7 @@ export default function UserProfile(UserProfile: UserProfileProps) {
     // }
 
     return (
-        <div className="container mx-auto p-4 max-w-7xl h-[calc(100vh-4rem)]">
+        <div className="container mx-auto p-4 max-w-7xl h-[calc(100vh-4rem)] overflow-scroll">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Main Content */}
                 <div className="md:col-span-2 space-y-6">
