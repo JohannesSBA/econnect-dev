@@ -6,6 +6,8 @@ import axios from "axios";
 import { Card, Spinner } from "@nextui-org/react";
 import Loading from "@/app/(protected)/job/[id]/loading";
 import WaterDropletLoader from "@/app/components/WaterDropLoader";
+import { divide } from "lodash";
+import FindPeople from "../FindPeople";
 
 interface PProps {
     userId: string;
@@ -75,24 +77,33 @@ const Posts = ({ userId, currentUserName, fromPage }: PProps) => {
         };
     }, [allPostsLoaded, isLoading]);
 
-    return (
-        <div className="h-full flex flex-col items-center rounded-md text-black">
-            {Array.isArray(posts) ? (
-                posts.map((post: any) => (
-                    <Post
-                        key={post.id}
-                        userId={userId}
-                        currentUserName={currentUserName}
-                        {...post}
-                    />
-                ))
-            ) : (
-                <p>{posts}</p>
-            )}
-            <div ref={sentinelRef}></div>
-            {isLoading && <Spinner />}
-        </div>
-    );
+    if (posts.length <= 0) {
+        return (
+            <div className="w-full h-full flex justify-center items-center flex-col md:pt-8">
+                <h1>You have No Friends Yet! Add some to see their Posts</h1>
+                <FindPeople />
+            </div>
+        );
+    } else {
+        return (
+            <div className="h-full flex flex-col items-center rounded-md text-black">
+                {Array.isArray(posts) ? (
+                    posts.map((post: any) => (
+                        <Post
+                            key={post.id}
+                            userId={userId}
+                            currentUserName={currentUserName}
+                            {...post}
+                        />
+                    ))
+                ) : (
+                    <p>{posts}</p>
+                )}
+                <div ref={sentinelRef}></div>
+                {isLoading && <Spinner />}
+            </div>
+        );
+    }
 };
 
 export default Posts;
