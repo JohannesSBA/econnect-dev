@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "../ui/dialog";
+import { checkImageExists } from "@/app/helpers/checkImage";
 
 interface PostImagesProps {
     images: string[];
@@ -33,16 +34,6 @@ const PostImages = ({ images, authorId }: PostImagesProps) => {
 
         validateImages();
     }, [images, authorId]);
-
-    // Check if an image exists at the given URL using Image object
-    const checkImageExists = (url: string): Promise<boolean> => {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.src = url;
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-        });
-    };
 
     // Render nothing if no valid images
     if (validImageUrls.length === 0) return null;

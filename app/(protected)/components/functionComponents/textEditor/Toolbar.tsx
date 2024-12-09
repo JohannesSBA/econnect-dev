@@ -9,6 +9,7 @@ import {
     Undo,
     Redo,
 } from "lucide-react";
+import { FaCode } from "react-icons/fa6";
 type Props = {
     editor: Editor | null;
     content: string;
@@ -66,6 +67,12 @@ const Toolbar = ({ editor }: Props) => {
                     className={buttonClasses(editor.isActive("blockquote"))}
                 >
                     <Quote className="w-4 h-4" />
+                </button>
+                <button
+                    onClick={() => editor.chain().focus().setCodeBlock().run()}
+                    disabled={editor.isActive("codeBlock")}
+                >
+                    <FaCode className="w-4 h-4" />
                 </button>
             </div>
             <div className="flex gap-2">

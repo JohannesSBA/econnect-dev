@@ -1,5 +1,5 @@
 import ChatInput from "@/app/(protected)/components/functionComponents/ChatInput";
-import Conversations from "@/app/(protected)/components/visualComponents/Conversations";
+import Conversations from "@/app/(protected)/components/visualComponents/Messaging/Conversations";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import {
@@ -20,7 +20,7 @@ import Search from "../../components/SearchComponents/Search";
 import SignOutButton from "../../components/functionComponents/SignOutButton";
 import { Friend } from "@/app/types/db";
 import ProtectedNav from "../../components/visualComponents/ProtectedNav";
-import Messages from "../../components/visualComponents/Messages";
+import Messages from "../../components/visualComponents/Messaging/Messages";
 import SideInfo from "../../components/visualComponents/SideInfo";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosInformationCircleOutline } from "react-icons/io";
@@ -81,6 +81,20 @@ const page = async ({ params }: { params: { chatid: string } }) => {
         notFound();
     }
 
+    const checkImageExists = async (url: string): Promise<boolean> => {
+        try {
+            const response = await fetch(url);
+            return response.ok;
+        } catch {
+            return false;
+        }
+    };
+    const exists = await checkImageExists(
+        `https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`
+    );
+
+    console.log(exists);
+
     return (
         <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
             <ProtectedNav
@@ -101,12 +115,21 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                         <div className="flex justify-between gap-4 p-4 rounded-2xl shadow-sm bg-white backdrop-blur-lg">
                             <div className="flex gap-4">
                                 <div className="flex items-center">
-                                    <Avatar
-                                        radius="lg"
-                                        size="lg"
-                                        src={`https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`}
-                                        className="flex items-center border-2"
-                                    />
+                                    {exists ? (
+                                        <Avatar
+                                            radius="lg"
+                                            size="lg"
+                                            src={`https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`}
+                                            className="flex items-center border-2"
+                                        />
+                                    ) : (
+                                        <Avatar
+                                            radius="lg"
+                                            size="lg"
+                                            src="/user-avatar.png"
+                                            className="flex items-center border-2"
+                                        />
+                                    )}
                                 </div>
                                 <h1 className="text-black flex flex-col justify-center font-bold">
                                     {friendContent.firstName}{" "}

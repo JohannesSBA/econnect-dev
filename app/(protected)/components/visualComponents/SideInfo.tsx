@@ -2,75 +2,93 @@ import { Button } from "@nextui-org/react";
 import React from "react";
 import { MdGroups } from "react-icons/md";
 import { GiWaterDrop } from "react-icons/gi";
-import Image from "next/image";
 import UserPicture from "./UserPicture";
-
 interface sideProps {
-  user: any;
-  posts: any;
-  applications: any;
+    user: any;
+    posts: any;
+    applications: any;
 }
-
 const SideInfo = ({ user, posts, applications }: sideProps) => {
-  const connections = user.friends ?? [];
+    const connections = user.friends ?? [];
+    return (
+        <div className="h-full flex flex-col bg-white rounded-lg p-6">
+            <div className="border-b border-gray-100 pb-6 flex justify-center">
+                <UserPicture />
+            </div>
 
-  return (
-    <div className="h-[calc(full-2rem)] rounded-2xl w-full flex flex-col items-center top-8 pb-2">
-      <div className="border-b border-black p-4">
-        <UserPicture />
-      </div>
-      <div className="border-y border-slate-200 rounded-md w-full flex justify-between p-3">
-        <div className="flex text-slate-500 font-semibold text-sm gap-2">
-          <MdGroups />
-          <h2>Your Connections</h2>
+            <div className="space-y-4 py-6">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <div className="flex items-center gap-3 text-gray-700">
+                        <MdGroups className="w-5 h-5" />
+                        <h2 className="font-medium">Your Connections</h2>
+                    </div>
+                    <span className="text-blue-500 font-semibold">
+                        {connections.length}
+                    </span>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <div className="flex items-center gap-3 text-gray-700">
+                        <MdGroups className="w-5 h-5" />
+                        <h2 className="font-medium">Your Posts</h2>
+                    </div>
+                    <span className="text-blue-500 font-semibold">
+                        {posts?.length ?? 0}
+                    </span>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <div className="flex items-center gap-3 text-gray-700">
+                        <MdGroups className="w-5 h-5" />
+                        <h2 className="font-medium">Open Job Applications</h2>
+                    </div>
+                    <span className="text-blue-500 font-semibold">
+                        {applications?.length ?? 0}
+                    </span>
+                </div>
+            </div>
+
+            <a href="/dashboard/profile" className="mt-6">
+                <Button
+                    variant="solid"
+                    className="w-full bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200"
+                >
+                    View Your Profile
+                </Button>
+            </a>
+
+            <div className="mt-auto pt-6">
+                <div className="grid grid-cols-4 gap-4 text-center text-sm text-gray-500">
+                    <a
+                        href="/about"
+                        target="_blank"
+                        className="hover:text-gray-700"
+                    >
+                        About
+                    </a>
+                    <span className="hover:text-gray-700 cursor-pointer">
+                        Accessibility
+                    </span>
+                    <span className="hover:text-gray-700 cursor-pointer">
+                        Privacy & Terms
+                    </span>
+                    <span className="hover:text-gray-700 cursor-pointer">
+                        FAQ&apos;s
+                    </span>
+                    <span className="col-start-2 hover:text-gray-700 cursor-pointer">
+                        Advertising
+                    </span>
+                    <span className="hover:text-gray-700 cursor-pointer">
+                        Contact
+                    </span>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-gray-500 text-sm mt-6">
+                    <GiWaterDrop />
+                    <span>Econnect Corporation © 2024</span>
+                </div>
+            </div>
         </div>
-        <h2 className="text-blue-400">{connections.length}</h2>
-      </div>
-      <div className="border-y border-slate-200 rounded-md w-full flex justify-between p-3">
-        <div className="flex text-slate-500 font-semibold text-sm gap-2 text-center">
-          <MdGroups />
-          <h2>Your Posts</h2>
-        </div>
-        <h2 className="text-blue-400">{posts?.length ?? 0}</h2>
-      </div>
-      <div className="border-y border-slate-200 rounded-md w-full flex justify-between p-3">
-        <div className="flex text-slate-500 font-semibold text-sm gap-2">
-          <MdGroups />
-          <h2>Open Job Applications</h2>
-        </div>
-        <h2 className="text-blue-400">{applications?.length ?? 0}</h2>
-      </div>
-      <a
-        href="/dashboard/profile"
-        className="w-full h-full flex justify-center"
-      >
-        <Button variant="solid" className=" w-full" href="/profile">
-          View Your Profile
-        </Button>
-      </a>
-      <div className="my-6 p-4">
-        {/* <Image width={400} height={400} alt="Advertisement" src="" /> */}
-      </div>
-      <div className="">
-        <div className="grid grid-cols-4 text-center gap-2 text-black font-light text-xs">
-          <a href="/about" target="_blank">
-            About
-          </a>
-          <p>Accessibility</p>
-          <p>Privacy & Terms</p>
-          <p>FAQ&apos;s</p>
-          <div className="col-start-2">
-            <p>Advertising</p>
-          </div>
-          <p>Contact</p>
-        </div>
-        <div className="text-center gap-2 pb-4 text-black text-xs font-light pt-4 flex justify-center">
-          <GiWaterDrop />
-          Econnect Corporation © 2024
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
-
 export default SideInfo;

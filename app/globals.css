@@ -44,3 +44,41 @@ body {
     background-image: radial-gradient(#444cf7 1.25px, #e5e5f7 1.25px);
     background-size: 25px 25px;
 }
+
+.message-bubble {
+    @apply px-4 py-2 max-w-[70%] h-full break-words rounded-2xl;
+}
+
+.message-bubble-sent {
+    @apply bg-blue-500 text-white message-bubble rounded-br-sm;
+}
+
+.message-bubble-received {
+    @apply bg-gray-100 text-gray-800 message-bubble rounded-bl-sm;
+}
+
+.message-timestamp {
+    @apply text-[10px] mt-1 opacity-70;
+}
+
+.date-separator {
+    @apply flex items-center justify-center my-4;
+}
+
+.date-separator::before,
+.date-separator::after {
+    content: "";
+    @apply flex-grow border-t border-gray-200 mx-4;
+}
+
+.date-separator-text {
+    @apply px-4 py-1 text-xs font-medium text-gray-500 bg-white rounded-full border border-gray-200;
+}
+
+.read-status {
+    @apply inline-flex items-center;
+}
+
+.read-status-check {
+    @apply ml-1;
+}

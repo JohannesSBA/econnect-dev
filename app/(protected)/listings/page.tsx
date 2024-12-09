@@ -44,8 +44,8 @@ const Page = async () => {
 
     return (
         <div className="flex min-h-full flex-col bg-slate-100">
-            <div className="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
-                <aside className="md:sticky top-4  w-full md:w-auto md:mb-4 shrink-0 xl:flex border-r md:max-h-full">
+            <div className="mx-auto flex w-full  items-start gap-x-8 py-10 sm:px-6 lg:px-8">
+                <aside className="md:sticky top-4  w-full md:w-auto md:mb-4 shrink-0 xl:flex border- left-0 md:max-h-full">
                     <ManageConnections
                         connectionsLength={connections.length}
                         pendingFriendRequests={
@@ -54,7 +54,7 @@ const Page = async () => {
                     />
                 </aside>
 
-                <main className="flex-1  w-2/3 flex-col shadow-md p-2 max-w-full">
+                <main className="flex-1 w-2/3 flex-col shadow-md p-2 max-w-full">
                     <div className="flex pt-2">
                         <h1 className="font-semibold w-full text-end p-2 pr-4 text-2xl text-slate-900 hidden md:flex">
                             Job Listings

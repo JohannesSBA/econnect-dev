@@ -6,7 +6,7 @@ import RequestHandler from "../../components/functionComponents/RequestHandler";
 import { getUserContent } from "@/app/helpers/getUser";
 import { Friend } from "@/app/types/db";
 import ProtectedNav from "../../components/visualComponents/ProtectedNav";
-import Messages from "../../components/visualComponents/Messages";
+import Messages from "../../components/visualComponents/Messaging/Messages";
 
 const page = async () => {
     const session = await getServerSession(options);

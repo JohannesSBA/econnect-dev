@@ -4,118 +4,158 @@ import { NextRequest, NextResponse } from "next/server";
 import { options } from "../auth/[...nextauth]/options";
 
 export async function POST(req: NextRequest) {
-  try {
-    const session = await getServerSession(options);
-    if (!session || !session.user) {
-      return new NextResponse("Unauthorized", { status: 401 });
+    try {
+        const session = await getServerSession(options);
+        if (!session || !session.user) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        const userId = session.user.id;
+
+        // Fetch the user's information and their friends
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                friends: { select: { id: true } },
+                location: true,
+                currentPosition: true,
+            },
+        });
+
+        if (!user) {
+            return new NextResponse("User not found", { status: 404 });
+        }
+
+        const friendIds = user.friends.map((friend) => friend.id);
+
+        // Fetch friends of friends
+        const friendsOfFriends = await prisma.user.findMany({
+            where: {
+                AND: [
+                    { id: { in: friendIds } },
+                    { friends: { some: { id: { not: userId } } } },
+                ],
+            },
+            select: {
+                friends: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                        title: true,
+                        email: true,
+                        role: true,
+                        location: true,
+                        currentPosition: true,
+                    },
+                },
+            },
+        });
+
+        // Fetch users who applied to the same jobs but are not already friends
+        const userApplications = await prisma.applicant.findMany({
+            where: { userId },
+            select: { jobId: true },
+        });
+
+        const jobIds = userApplications.map((app) => app.jobId);
+
+        const coApplicants = await prisma.applicant.findMany({
+            where: {
+                jobId: { in: jobIds },
+                userId: { notIn: [userId, ...friendIds] },
+            },
+            select: {
+                userId: true,
+                user: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                        title: true,
+                        email: true,
+                        role: true,
+                        location: true,
+                        currentPosition: true,
+                    },
+                },
+            },
+        });
+
+        // Fetch users with the same location or similar roles
+        const locationAndRoleMatches = await prisma.user.findMany({
+            where: {
+                AND: [
+                    { id: { notIn: [userId, ...friendIds] } },
+                    {
+                        OR: [
+                            { location: user.location },
+                            { currentPosition: user.currentPosition },
+                        ],
+                    },
+                ],
+            },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                title: true,
+                email: true,
+                role: true,
+                location: true,
+                currentPosition: true,
+            },
+        });
+
+        // Combine suggestions from all sources
+        const allSuggestions = [
+            ...friendsOfFriends.flatMap((friend) =>
+                friend.friends.filter(
+                    (f) => !friendIds.includes(f.id) && f.id !== userId
+                )
+            ),
+            ...coApplicants.map((app) => app.user),
+            ...locationAndRoleMatches,
+        ];
+
+        // Remove duplicates
+        const uniqueSuggestions = Array.from(
+            new Map(
+                allSuggestions.map((suggestion) => [suggestion.id, suggestion])
+            ).values()
+        );
+
+        // Filter out employers and limit the results
+        const limitedSuggestions = uniqueSuggestions
+            .filter((suggestion) => suggestion.role !== "EMPLOYER")
+            .slice(0, 10);
+
+        // Fallback: If no suggestions are found, fetch 4 random users
+        if (limitedSuggestions.length === 0) {
+            const randomUsers = await prisma.user.findMany({
+                where: {
+                    id: { not: userId },
+                },
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    title: true,
+                    email: true,
+                    role: true,
+                },
+                take: 4,
+                orderBy: { createdAt: "desc" }, // Order by latest users as a heuristic
+            });
+
+            return NextResponse.json(randomUsers);
+        }
+
+        return NextResponse.json(limitedSuggestions);
+    } catch (error) {
+        console.error("Error fetching suggested friends:", error);
+        return new NextResponse("Error fetching suggested friends", {
+            status: 500,
+        });
     }
-
-    const userId = session.user.id;
-
-    // Get the user's friends
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { friends: { select: { id: true } } },
-    });
-
-    if (!user) {
-      return new NextResponse("User not found", { status: 404 });
-    }
-
-    const friendIds = user.friends.map((friend) => friend.id);
-
-    // Get friends of the user's friends
-    const friendsOfFriends = await prisma.user.findMany({
-      where: {
-        AND: [
-          { id: { in: friendIds } },
-          { friends: { some: { id: { not: userId } } } },
-        ],
-      },
-      select: {
-        friends: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            title: true,
-            email: true,
-            role: true,
-          },
-        },
-      },
-    });
-
-    const sameApps = await prisma.applicant.findMany({
-      where: {
-        userId: userId,
-      },
-      select: {
-        jobId: true,
-      },
-    });
-
-    const sameAppsIds = sameApps.map((app) => app.jobId);
-
-    const appliedPeopleNotFriends = await prisma.applicant.findMany({
-      where: {
-        jobId: { in: sameAppsIds },
-        NOT: {
-          userId: { in: friendIds },
-        },
-      },
-      select: {
-        userId: true,
-        user: {
-          select: {
-            firstName: true,
-            lastName: true,
-            title: true,
-            email: true,
-            role: true,
-          },
-        },
-      },
-    });
-
-    friendsOfFriends.push(
-      ...appliedPeopleNotFriends.map((applicant) => ({
-        friends: [
-          {
-            id: applicant.userId,
-            firstName: applicant.user.firstName,
-            lastName: applicant.user.lastName,
-            title: applicant.user.title,
-            email: applicant.user.email,
-            role: applicant.user.role,
-          },
-        ],
-      }))
-    );
-
-    // Flatten the list of friends of friends and exclude the user's current friends and the user themselves
-    const suggestedFriends = friendsOfFriends.flatMap((friend) =>
-      friend.friends.filter((f) => !friendIds.includes(f.id) && f.id !== userId)
-    );
-
-    // Remove duplicates
-    const uniqueSuggestedFriends = Array.from(
-      new Map(suggestedFriends.map((f) => [f.id, f])).values()
-    );
-
-    // Limit to 5 suggested friends
-    const notEmployers = uniqueSuggestedFriends.filter(
-      (f) => f.role !== "EMPLOYER"
-    );
-    const limitedSuggestedFriends = notEmployers.slice(0, 4);
-
-    console.log(limitedSuggestedFriends);
-
-    return NextResponse.json(limitedSuggestedFriends);
-  } catch (error) {
-    console.error("Error fetching suggested friends:", error);
-    return new NextResponse("Error fetching suggested friends", {
-      status: 500,
-    });
-  }
 }

@@ -64,6 +64,11 @@ export default function Conversations({
                 toast.error("Sorry, this chat isn't available.");
             } finally {
                 setLoading(false);
+                if (scrollDownRef.current) {
+                    scrollDownRef.current.scrollIntoView({
+                        behavior: "smooth",
+                    });
+                }
             }
         };
 
@@ -129,7 +134,7 @@ export default function Conversations({
 
     return (
         <div
-            className="w-full h-full mb-44 px-4 overflow-y-scroll flex flex-col border-t-1"
+            className="w-full h-full mb-44 pb-4 px-4 overflow-y-scroll overflow-x-clip flex flex-col border-t-1"
             id="messages"
             key={chatPartner}
         >
@@ -144,62 +149,57 @@ export default function Conversations({
                 return (
                     <div key={message.id} className="w-full">
                         {isNewDay(message, index) && (
-                            <div className="flex justify-center border-l-2 border-r-2 font-semibold text-xs text-black">
-                                {`${day}/${month}/${year}`}
+                            <div className="date-separator">
+                                <span className="date-separator-text">
+                                    {`${day}/${month}/${year}`}
+                                </span>
                             </div>
                         )}
+
                         <div
-                            className={
-                                isCurrentUser
-                                    ? "flex justify-end my-2"
-                                    : "flex justify-start my-2"
-                            }
+                            className={`flex flex-col ${
+                                isCurrentUser ? "items-end" : "items-start"
+                            } max-w-full`}
                         >
-                            <div className="items-start flex gap-2.5">
-                                <div className="flex flex-col gap-1 w-full">
-                                    <div
-                                        className={
-                                            isCurrentUser
-                                                ? "flex flex-col leading-1.5 p-2 border-gray-200 bg-blue-400 rounded-s-xl rounded-se-xl"
-                                                : "flex flex-col leading-1.5 p-2 border-gray-200 bg-slate-200 rounded-e-xl rounded-es-xl text-black"
-                                        }
-                                    >
-                                        <span
-                                            className={
-                                                isCurrentUser
-                                                    ? "py-2 rounded-lg max-w-[75%] text-white break-words"
-                                                    : "py-2 rounded-lg max-w-[75%] break-words"
-                                            }
-                                        >
-                                            {parse(message.text)}
-                                        </span>
-                                        <span
-                                            className={
-                                                isCurrentUser
-                                                    ? "ml-2 text-[10px] p-1 text-gray-300 relative right-0 w-full text-right"
-                                                    : "ml-2 text-[10px] p-1 text-gray-400 relative right-0 w-full text-right"
-                                            }
-                                        >
-                                            {new Date(
-                                                message.createdAt
-                                            ).toLocaleTimeString("en-US", {
-                                                hour: "numeric",
-                                                minute: "numeric",
-                                            })}
-                                            {isCurrentUser &&
-                                                !isMessageRead && (
-                                                    <span> ✓</span>
-                                                )}
-                                            {isMessageRead && <span> ✓✓</span>}
-                                        </span>
-                                    </div>
-                                </div>
+                            <div
+                                className={`message-bubble ${
+                                    isCurrentUser
+                                        ? "message-bubble-sent"
+                                        : "message-bubble-received"
+                                }`}
+                            >
+                                {parse(message.text)}
+                            </div>
+                            <div
+                                className={`message-timestamp ${
+                                    isCurrentUser ? "text-right" : "text-left"
+                                }`}
+                            >
+                                {new Date(message.createdAt).toLocaleTimeString(
+                                    "en-US",
+                                    {
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                    }
+                                )}
+                                {isCurrentUser && (
+                                    <span className="read-status">
+                                        {isMessageRead ? (
+                                            <span className="read-status-check">
+                                                ✓✓
+                                            </span>
+                                        ) : (
+                                            <span className="read-status-check">
+                                                ✓
+                                            </span>
+                                        )}
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>
                 );
             })}
-
             <div ref={scrollDownRef} />
         </div>
     );
