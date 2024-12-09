@@ -36,7 +36,7 @@ export default function App({ userInfo, userId }: pageProps) {
     const navigation = [
         {
             name: "Dashboard",
-            href: "/employer-dashboard",
+            href: "/employer-dashboard/home",
             icon: FaHome,
             current: path === "/employer-dashboard/home",
         },
