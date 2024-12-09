@@ -10,6 +10,7 @@ import Image from "next/image";
 import NewPost from "../../components/functionComponents/NewPost";
 import Posts from "../../components/visualComponents/Posts/Posts";
 import SideInfo from "../../components/visualComponents/SideInfo";
+import Search from "../../components/SearchComponents/Search";
 
 const Page = async () => {
     const session = await getServerSession(options);
@@ -32,10 +33,10 @@ const Page = async () => {
     const applications = user.applicant;
 
     return (
-        <div className="flex h-[calc(100vh-4rem)] flex-col overflow-scroll bg-gradient-to-br from-white to-blue-100 ">
+        <div className="flex h-full flex-col overflow-y-scroll bg-gradient-to-br from-white to-blue-100 ">
             <div className="flex w-full mx-auto md:mx-0 items-start gap-x-8 pr-4  sm:pr-6 lg:pr-8">
                 <main className="flex-1 flex-col p-2 max-w-full">
-                    <div className="flex pt-2 justify-between w-full">
+                    <div className="flex pt-2 mx-auto  w-full ">
                         <div className="flex">
                             <User
                                 name={""} // Add the 'name' property with a value
@@ -47,16 +48,11 @@ const Page = async () => {
                             />
                             <NewPost />
                         </div>
-                        <h1 className="font-semibold w-full text-end p-2  text-2xl text-slate-900 hidden md:flex">
+                        <Search />
+                        <h1 className="font-semibold justify-end p-2 w-full text-2xl text-slate-900 hidden md:flex">
                             Your Activity
                         </h1>
                     </div>
-                    <Link
-                        href="/dashboard/my-posts"
-                        className="text-blue-400 font-light text-center"
-                    >
-                        Your Posts
-                    </Link>
                     <div className="h-full bg-white rounded-md text-black">
                         <Posts
                             userId={session.user.id}

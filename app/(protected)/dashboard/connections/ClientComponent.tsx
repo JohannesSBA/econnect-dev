@@ -41,6 +41,13 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
 
     const router = useRouter();
 
+    if (!user) {
+        router.push("/login");
+    }
+
+    if (user.role !== "EMPLOYEE") {
+        router.push("/employer-dashboard");
+    }
     const connections = user.friends ?? [];
     const filteredConnections = connections.filter(
         (connection: { firstName: any; lastName: any }) =>

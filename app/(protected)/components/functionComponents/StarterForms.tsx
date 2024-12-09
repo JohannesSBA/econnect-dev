@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import ProfileImage from "./ProfileImage";
 import AccountPreferences from "../../dashboard/settings/SideBarComponents/AccountPreferences";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 interface StarterProps {
     user: User;
@@ -27,6 +28,7 @@ const StarterForms = ({ user }: StarterProps) => {
     const totalPages = 2;
 
     async function finish() {
+        toast.loading("Finishing setup...");
         try {
             await axios.post("/api/user/started", { id: user.id });
             setTimeout(() => {
