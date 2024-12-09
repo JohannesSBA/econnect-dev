@@ -52,7 +52,7 @@ const page = async () => {
     }
 
     return (
-        <div className="w-screen h-[calc(100vh-5rem)] flex bg-[#F4F2EE]">
+        <div className="w-screen overflow-clip h-screen flex bg-[#F4F2EE]">
             <div className="w-1/3 h-full flex flex-col px-8 bg-white/75 m-2 rounded-md">
                 <ProfileImage id={session?.user.id as string} />
                 <div className="w-full flex flex-col justify-center items-center mb-12">
@@ -89,8 +89,8 @@ const page = async () => {
                     <div></div>
                 </div>
             </div>
-            <div className="w-1/3 h-full p-8 text-slate-800 bg-white/75 m-2 rounded-md">
-                <div className="w-full m-2  overflow-y-scroll scrollbar-thin scrollbar-webkit overflow-x-hidden">
+            <div className="w-1/3 h-full overflow-x-clip overflow-y-scroll p-8 text-slate-800 bg-white/75 m-2 rounded-md">
+                <div className="w-full m-2  scrollbar-thin scrollbar-webkit overflow-x-hidden">
                     <h1 className="text-[#4773C5] text-2xl text-end sticky pt-1 top-0 w-full backdrop-blur-md z-20">
                         Posts
                     </h1>

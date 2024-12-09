@@ -86,7 +86,7 @@ const Posts = ({ userId, currentUserName, fromPage }: PProps) => {
         );
     } else {
         return (
-            <div className="h-full flex flex-col items-center rounded-md text-black">
+            <div className="h-full flex  flex-col items-center rounded-md text-black">
                 {Array.isArray(posts) ? (
                     posts.map((post: any) => (
                         <Post
