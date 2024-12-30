@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import parse from "html-react-parser";
+import { Avatar } from "@nextui-org/react";
 
 interface NotificationToastProps {
   sessionId: string;
@@ -30,6 +31,9 @@ const NotificationToast: FC<NotificationToastProps> = ({
         <div className="flex items-start">
           <div className="flex-shrink-0 pt-0.5">
             <div className="relative h-10 w-10">
+              <Avatar 
+              
+              />
               <Image
                 referrerPolicy="no-referrer"
                 className="rounded-full"
@@ -42,7 +46,7 @@ const NotificationToast: FC<NotificationToastProps> = ({
           </div>
 
           <div className="ml-3 flex-1">
-            <p className="text-sm font-medium text-gray-900">{"senderName"}</p>
+            <p className="text-sm font-medium text-gray-900">{senderName}</p>
             <p className="mt-1 text-sm text-gray-500">{parse(senderMessage)}</p>
           </div>
         </div>

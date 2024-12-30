@@ -12,6 +12,7 @@ const page = async () => {
     session?.user.id as string
   )) as unknown as User;
 
+  redirect("pre-register");
   if (user.role === "EMPLOYER") {
     redirect("/employer-dashboard");
   }

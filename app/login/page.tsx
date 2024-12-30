@@ -6,9 +6,13 @@ import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GiWaterDrop } from "react-icons/gi";
-import Nav from "../components/Nav";
+import Nav from "@/app/components/Nav";
 
-export default function Login() {
+interface PageProps {
+  lang: string;
+}
+
+export default function Login({ lang }: PageProps) {
   const [password, setPassword] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [visible, setVisible] = useState<boolean>();

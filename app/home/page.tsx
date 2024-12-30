@@ -13,7 +13,6 @@ import Main from "../components/Main";
 import Progress from "../components/Progress";
 import Nav from "../components/Nav";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [lang, setLang] = useState<string>("en");
@@ -26,8 +25,8 @@ export default function Home() {
           <div className="fixed top-5 right-32 z-50">
             <Dropdown>
               <DropdownTrigger>
-                <Button variant="light" className="">
-                  lang: {lang}
+                <Button variant="light" className="text-white">
+                  Language: {lang}
                 </Button>
               </DropdownTrigger>
               <DropdownMenu

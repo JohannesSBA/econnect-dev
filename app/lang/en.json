@@ -1,0 +1,26 @@
+{
+  "main": {
+    "title": "Find Your Dream Job With Us",
+    "description": "Discover a wide range of job opportunities and take the next step in your career.",
+    "preRegister": "Pre Register",
+    "learnMore": "Learn More",
+    "getEmployedFaster": "Get Employed faster",
+    "everythingYouNeed": "Everything you need to get a job in Ethiopia",
+    "mobileFriendly": {
+      "title": "Mobile friendly",
+      "description": "View from any device, any where, any time. Our platform is built to be responsive and accessible."
+    },
+    "performance": {
+      "title": "Performance",
+      "description": "Hosted Locally in Ethiopia, our platform is built to be fast"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Your data is safe with us. We use the latest security protocols to keep your information secure."
+    },
+    "talkToRecruiters": {
+      "title": "Talk to recruiters",
+      "description": "Chat with recruiters and get the latest job updates and have industry insights by talking with company professionals"
+    }
+  }
+}
