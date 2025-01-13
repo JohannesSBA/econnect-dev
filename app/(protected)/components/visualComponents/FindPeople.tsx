@@ -93,18 +93,26 @@ export default function FindPeople() {
                                       </Chip>
                                   </div>
                               </CardBody>
-                              <CardFooter className="pt-2 flex gap-2 justify-center">
+                              <CardFooter className="pt-2 flex gap-2 justify-center flex-col">
                                   <Button
-                                      className="flex-1"
+                                      className="flex-1 p-2"
                                       color="primary"
                                       variant="light"
                                       startContent={<FaUser size={18} />}
                                       as="a"
                                       href={`mailto:${person.email}`}
                                   >
-                                      Profile
+                                      Email
                                   </Button>
                                   <AddFriendButton id={person.id} />
+                                  <Button
+                                      color="primary"
+                                      variant="ghost"
+                                      as="a"
+                                      href={`ec/${person.id}`}
+                                  >
+                                      Profile
+                                  </Button>
                               </CardFooter>
                           </Card>
                       ))}

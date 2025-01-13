@@ -9,6 +9,8 @@ import SideInfo from "../components/visualComponents/SideInfo";
 import Messages from "../components/visualComponents/Messaging/Messages";
 import EmployerSideNav from "../components/visualComponents/EmployerSideNav";
 import { IoChatbox } from "react-icons/io5";
+import axios from "axios";
+import { convoExists } from "@/app/helpers/convoExists";
 
 interface PageProps {
     params: {
@@ -20,9 +22,15 @@ const page = async ({ params }: { params: { chatid: string } }) => {
     const { chatid } = params;
     const session = await getServerSession(options);
     if (!session) notFound();
+    const messagesExistBetween = await convoExists();
 
     const userInfo = await getUserContent(session?.user.id as string);
     const friendsList = userInfo.friends as unknown as Friend[];
+
+    const updatedFriendsList = friendsList.concat(
+        messagesExistBetween as Friend[]
+    );
+    const friendIds = updatedFriendsList.map((friend) => friend.id);
 
     return (
         <div className="min-h-screen  bg-gradient-to-br from-slate-50 to-blue-50 font-PlusJakartaSans">
@@ -39,7 +47,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                     {userInfo.role === "EMPLOYEE" ? (
                         <Messages
                             userId={session?.user.id as string}
-                            friends={friendsList}
+                            friends={updatedFriendsList}
                             role={userInfo.role ?? ""}
                         />
                     ) : (
@@ -79,7 +87,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                         ) : (
                             <Messages
                                 userId={session?.user.id as string}
-                                friends={friendsList}
+                                friends={updatedFriendsList}
                                 role={userInfo.role ?? ""}
                             />
                         )}

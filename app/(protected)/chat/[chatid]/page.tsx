@@ -25,6 +25,7 @@ import SideInfo from "../../components/visualComponents/SideInfo";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import InfoDrawer from "../InfoDrawer";
+import EmployerSideNav from "../../components/visualComponents/EmployerSideNav";
 
 interface PageProps {
     params: {
@@ -93,22 +94,29 @@ const page = async ({ params }: { params: { chatid: string } }) => {
         `https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`
     );
 
-    console.log(exists);
-
     return (
         <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
-            <ProtectedNav
-                userInfoId={userInfo.id as string}
-                userName={userInfo.firstName + " " + userInfo.lastName}
-                userEmail={userInfo.email as string}
-            />
+            {userInfo.role === "EMPLOYEE" && (
+                <ProtectedNav
+                    userInfoId={userInfo.id as string}
+                    userName={userInfo.firstName + " " + userInfo.lastName}
+                    userEmail={userInfo.email as string}
+                />
+            )}
             <div className="w-screen h-full overflow-clip flex bg-white">
-                <div className="w-1/5 hidden md:flex">
-                    <Messages
-                        userId={session?.user.id as string}
-                        friends={friendsList}
-                        role={userInfo.role ?? ""}
-                    />
+                <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                    {userInfo.role === "EMPLOYEE" ? (
+                        <Messages
+                            userId={session?.user.id as string}
+                            friends={friendsList}
+                            role={userInfo.role ?? ""}
+                        />
+                    ) : (
+                        <EmployerSideNav
+                            userInfo={userInfo}
+                            userId={session.user.id}
+                        />
+                    )}
                 </div>
                 <div className="w-full md:w-4/5 h-full md:border border-white flex">
                     <div className="w-full h-full md:w-2/3 flex flex-col border border-white shadow-md m-1 p-1 pb-10">
@@ -171,12 +179,20 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                             />
                         </div>
                     </div>
-                    <div className="w-1/3 m-2 p-2 md:flex flex-col gap-3 items-center justify-between hidden">
-                        <SideInfo
-                            user={userInfo}
-                            posts={userInfo.posts}
-                            applications={userInfo.applicant}
-                        />
+                    <div className="bg-white rounded-lg shadow-lg h-full transition-all duration-300 hover:shadow-xl">
+                        {userInfo.role === "EMPLOYEE" ? (
+                            <SideInfo
+                                user={userInfo}
+                                posts={userInfo.posts}
+                                applications={userInfo.applicant}
+                            />
+                        ) : (
+                            <Messages
+                                userId={session?.user.id as string}
+                                friends={friendsList}
+                                role={userInfo.role ?? ""}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

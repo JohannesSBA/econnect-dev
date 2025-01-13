@@ -32,11 +32,11 @@ const Page = async () => {
     const applications = user.applicant;
 
     return (
-        <div className="flex h-[calc(100vh-4rem)] flex-col overflow-scroll bg-gradient-to-br from-white to-blue-100 ">
+        <div className="flex h-[calc(100vh-4rem)] min-h-screen flex-col overflow-scroll bg-gradient-to-br from-white to-blue-100 ">
             <div className="flex w-full mx-auto md:mx-0 items-start gap-x-8 pr-4  sm:pr-6 lg:pr-8">
                 <main className="flex-1 flex-col p-2 max-w-full">
-                    <div className="flex pt-2 justify-between w-full">
-                        <div className="flex">
+                    <div className="flex pt-2 justify-between w-full bg-red-400">
+                        <div className="flex bg-red-400">
                             <User
                                 name={""} // Add the 'name' property with a value
                                 avatarProps={{

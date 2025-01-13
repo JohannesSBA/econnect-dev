@@ -119,6 +119,8 @@ export default function Messages({ userId, friends, role }: MessageProps) {
                 <Spinner />
             </div>
         );
+
+    console.log(filteredFriends);
     return (
         <div
             className={

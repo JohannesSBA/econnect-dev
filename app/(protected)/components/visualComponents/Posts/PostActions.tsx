@@ -105,7 +105,6 @@ const PostActions = ({
     }
 
     async function handleDeleteComment(commentId: string) {
-        console.log("p", commentId);
         try {
             await axios.post("/api/user/post/comment/delete", { commentId });
         } catch (error) {
