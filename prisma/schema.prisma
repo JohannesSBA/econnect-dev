@@ -55,6 +55,8 @@ model User {
   JobHScreened JobListing[] @relation("jobHScreen")
   JobHired JobListing[] @relation("jobHired")
   applicant applicant[]
+
+  expoPushToken String?
 }
 
 model applicant {

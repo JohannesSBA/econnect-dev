@@ -45,6 +45,8 @@ export async function GET(req: Request) {
     // Optionally, remove sensitive information before sending back
     const { password, ...userData } = user;
 
+    console.log("user data", userData);
+
     return new Response(JSON.stringify(userData), {
       status: 200,
       headers: {

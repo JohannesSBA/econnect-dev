@@ -17,7 +17,6 @@ export async function OPTIONS() {
 
 export async function GET(req: Request) {
   const body = await req.url;
-  console.log(body);
   const email = body.split("email=")[1];
   const phoneNumber = body.split("phone=")[1];
   const user = await prisma.user.findFirst({
@@ -33,7 +32,6 @@ export async function GET(req: Request) {
     },
   });
 
-  console.log(user);
   if (user) {
     return NextResponse.json(JSON.stringify("Email already exists"), {
       status: 400,

@@ -5,20 +5,12 @@ import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
 import jwt from "jsonwebtoken";
-
-export async function OPTIONS() {
-  return new Response(null, {
-    headers: {
-      "Access-Control-Allow-Origin":
-        "http://localhost:8081, exp://192.168.1.72:8081",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
-}
+import axios from "axios";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
+
+  console.log("this is body", body);
 
   if (!body.text) {
     return new Response("Message text is required", { status: 400 });
@@ -119,6 +111,44 @@ export async function POST(req: Request, res: Response) {
       userId: messageData.recipientId,
     },
   });
+
+  console.log(newMessage);
+
+  const recipient = await prisma.user.findUnique({
+    where: { id: body.chatPartner },
+    select: { expoPushToken: true },
+  });
+
+  if (recipient?.expoPushToken) {
+    const senderId = body.chatId;
+    const message = body.text;
+
+    console.log(senderId, message);
+
+    try {
+      await axios.post(
+        "https://exp.host/--/api/v2/push/send",
+        {
+          to: recipient.expoPushToken,
+          sound: "default",
+          title: `${user.firstName}`,
+          body: message,
+          data: { senderId, message },
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("✅ Push notification sent successfully");
+    } catch (error) {
+      console.error("❌ Failed to send push notification:");
+      console.log(error);
+    }
+  }
 
   return new Response(JSON.stringify(newMessage), { status: 201 });
 }
