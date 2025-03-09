@@ -4,17 +4,13 @@ import jwt from "jsonwebtoken";
 import prisma from "@/app/lib/prisma";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
-export async function OPTIONS(req: {
-  headers: { get: (arg0: string) => any };
-}) {
-  const origin = req.headers.get("Origin");
-
+export async function OPTIONS() {
   return new Response(null, {
     headers: {
-      "Access-Control-Allow-Origin": origin || "*", // Dynamically allow incoming origin
+      "Access-Control-Allow-Origin":
+        "http://localhost:8081, exp://192.168.1.72:8081",
       "Access-Control-Allow-Methods": "GET, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Credentials": "true", // If needed
     },
   });
 }

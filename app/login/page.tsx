@@ -8,11 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { GiWaterDrop } from "react-icons/gi";
 import Nav from "@/app/components/Nav";
 
-interface PageProps {
-  lang: string;
-}
-
-export default function Login({ lang }: PageProps) {
+export default function Login() {
   const [password, setPassword] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [visible, setVisible] = useState<boolean>();
