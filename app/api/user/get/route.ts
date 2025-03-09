@@ -9,6 +9,11 @@ export async function POST(req: Request, res: Response) {
   if (!session) return new Response("Unauthorized", { status: 401 });
 
   try {
+    const getUserMobile = await prisma.user.findUnique({
+      where: {
+        id: body.id,
+      },
+    });
     const getUser = await prisma.user.findUnique({
       where: {
         id: session.user.id,

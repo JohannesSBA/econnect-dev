@@ -58,6 +58,31 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
+    const trendingPosts = await prisma.post.findMany({
+      orderBy: {
+        likes: {
+          _count: "desc",
+        },
+      },
+      take: 10, // Assuming you want the top 10 trending posts
+      select: {
+        author: true,
+        authorId: true,
+        categories: true,
+        content: true,
+        createdAt: true,
+        published: true,
+        title: true,
+        comments: true,
+        likes: true,
+        images: true,
+        reports: true,
+        savedBy: true,
+        updatedAt: true,
+        id: true,
+      },
+    });
+
     const stringifiedPosts = JSON.stringify(posts);
     return new Response(stringifiedPosts, { status: 200 });
   } catch (error) {

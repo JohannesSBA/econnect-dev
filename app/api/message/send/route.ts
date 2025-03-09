@@ -4,22 +4,62 @@ import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
 import { getServerSession } from "next-auth";
 import { options } from "../../auth/[...nextauth]/options";
 import { getUserContent } from "@/app/helpers/getUser";
+import jwt from "jsonwebtoken";
+
+export async function OPTIONS() {
+  return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin":
+        "http://localhost:8081, exp://192.168.1.72:8081",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
+}
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
-  const session = await getServerSession(options);
-  const timeStamp = Date();
-
-  // Vallidations for sending a message
-  if (!session) return new Response("Unauthorized", { status: 401 });
 
   if (!body.text) {
     return new Response("Message text is required", { status: 400 });
   }
 
-  if (session.user.id !== body.chatId && session.user.id !== body.chatPartner) {
-    return new Response("Unauthorized", { status: 401 });
+  if (body.from !== "mobile") {
+    const session = await getServerSession(options);
+    if (!session) return new Response("Unauthorized", { status: 401 });
+
+    if (!body.text) {
+      return new Response("Message text is required", { status: 400 });
+    }
+
+    if (
+      session.user.id !== body.chatId &&
+      session.user.id !== body.chatPartner
+    ) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+  } else {
+    const token = req.headers.get("Authorization");
+    if (!token) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+    const authToken = token.split(" ")[1];
+    const decoded = jwt.verify(
+      authToken,
+      process.env.NEXTAUTH_SECRET as string
+    );
+    if (!decoded) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const { userId } = decoded as { userId: string };
+    if (userId !== body.chatId && userId !== body.chatPartner) {
+      return new Response("Unauthorized", { status: 401 });
+    }
   }
+  const timeStamp = Date();
+
+  // Vallidations for sending a message
 
   //Sender object
   const user = await getUserContent(body.chatId);
