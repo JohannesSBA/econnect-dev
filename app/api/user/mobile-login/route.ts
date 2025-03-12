@@ -3,19 +3,8 @@ import prisma from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// Handle preflight OPTIONS requests
-export async function OPTIONS() {
-  return new Response(null, {
-    headers: {
-      "Access-Control-Allow-Origin":
-        "http://localhost:8081, exp://192.168.1.72:8081",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
-}
-
 export async function POST(req: Request) {
+  console.log("hi");
   const { email, password } = await req.json();
 
   console.log(email, password);

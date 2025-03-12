@@ -43,17 +43,17 @@ export async function middleware(req: NextRequest) {
 
   if (isLoginPage || isHomePage) {
     if (isAuth) {
-      return NextResponse.redirect(new URL("/dashboard", req.url), res);
+      return NextResponse.redirect(new URL("/dashboard", req.url)); // ✅ Removed `res`
     }
     return res;
   }
 
   if (!isAuth && isAccessingSensitiveRoute) {
-    return NextResponse.redirect(new URL("/home", req.url), res);
+    return NextResponse.redirect(new URL("/home", req.url)); // ✅ Removed `res`
   }
 
   if (pathname === "/") {
-    return NextResponse.redirect(new URL("/dashboard", req.url), res);
+    return NextResponse.redirect(new URL("/dashboard", req.url)); // ✅ Removed `res`
   }
 
   return res;
