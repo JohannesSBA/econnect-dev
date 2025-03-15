@@ -41,7 +41,7 @@ frontend:
         - 'echo "NODE_OPTIONS: $NODE_OPTIONS"'
         - 'echo "Running Next.js build"'
         # Simplified build command
-        - next build
+        - npm run build
         - 'echo "Build phase completed on $(date)"'
     postBuild:
       commands:
