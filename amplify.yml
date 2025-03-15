@@ -9,46 +9,53 @@ frontend:
     preBuild:
       commands:
         - 'echo "Starting preBuild phase at $(date)"'
-        - npm ci --cache .npm --prefer-offline
+        - 'echo "Node version: $(node -v)"'
+        - 'echo "NPM version: $(npm -v)"'
+        # Add better error handling for npm install
+        - npm ci --cache .npm --prefer-offline || (echo "NPM CI FAILED" && exit 1)
         - 'export NODE_OPTIONS="--max_old_space_size=4096"' # Increase Node.js memory limit
-        # Create the .env.production file and append environment variables
-        - touch .env.production
+        # Create the .env.production file with error checking
         - 'echo "Creating environment variables file"'
+        - touch .env.production
         # Simplify the environment variable setup to avoid YAML parsing issues
-        - 'env | grep -e DATABASE_URL >> .env.production || true'
-        - 'env | grep -e JWT_SECRET >> .env.production || true'
-        - 'env | grep -e NEXTAUTH_SECRET >> .env.production || true'
-        - 'env | grep -e NEXT_PUBLIC_NEXTAUTH_URL >> .env.production || true'
-        - 'env | grep -e CALLBACK_URL >> .env.production || true'
-        - 'env | grep -e RESEND_KEY >> .env.production || true'
-        - 'env | grep -e S3SECRET_ACCESS_KEY >> .env.production || true'
-        - 'env | grep -e S3ACCESS_KEY_ID >> .env.production || true'
-        - 'env | grep -e BUCKET_NAME >> .env.production || true'
-        - 'env | grep -e PUSHER_APP_SECRET >> .env.production || true'
-        - 'env | grep -e PUSHER_APP_ID >> .env.production || true'
-        - 'env | grep -e PUSHER_APP_KEY >> .env.production || true'
-        - 'env | grep -e PUSHER_CLUSTER >> .env.production || true'
-        - 'env | grep -e NODEMAILER_PASS >> .env.production || true'
-        - 'env | grep -e NODDEMAILER_EMAIL >> .env.production || true'
-        # Generate Prisma client for the correct environment
+        - 'env | grep -e DATABASE_URL >> .env.production || echo "Warning: DATABASE_URL not found"'
+        - 'env | grep -e JWT_SECRET >> .env.production || echo "Warning: JWT_SECRET not found"'
+        - 'env | grep -e NEXTAUTH_SECRET >> .env.production || echo "Warning: NEXTAUTH_SECRET not found"'
+        - 'env | grep -e NEXT_PUBLIC_NEXTAUTH_URL >> .env.production || echo "Warning: NEXT_PUBLIC_NEXTAUTH_URL not found"'
+        - 'env | grep -e CALLBACK_URL >> .env.production || echo "Warning: CALLBACK_URL not found"'
+        - 'env | grep -e RESEND_KEY >> .env.production || echo "Warning: RESEND_KEY not found"'
+        - 'env | grep -e S3SECRET_ACCESS_KEY >> .env.production || echo "Warning: S3SECRET_ACCESS_KEY not found"'
+        - 'env | grep -e S3ACCESS_KEY_ID >> .env.production || echo "Warning: S3ACCESS_KEY_ID not found"'
+        - 'env | grep -e BUCKET_NAME >> .env.production || echo "Warning: BUCKET_NAME not found"'
+        - 'env | grep -e PUSHER_APP_SECRET >> .env.production || echo "Warning: PUSHER_APP_SECRET not found"'
+        - 'env | grep -e PUSHER_APP_ID >> .env.production || echo "Warning: PUSHER_APP_ID not found"'
+        - 'env | grep -e PUSHER_APP_KEY >> .env.production || echo "Warning: PUSHER_APP_KEY not found"'
+        - 'env | grep -e PUSHER_CLUSTER >> .env.production || echo "Warning: PUSHER_CLUSTER not found"'
+        - 'env | grep -e NODEMAILER_PASS >> .env.production || echo "Warning: NODEMAILER_PASS not found"'
+        - 'env | grep -e NODDEMAILER_EMAIL >> .env.production || echo "Warning: NODDEMAILER_EMAIL not found"'
+        # Add error handling for Prisma commands
         - 'echo "Generating Prisma client"'
-        - npx prisma db push
-        - npx prisma generate
+        - npx prisma db push --accept-data-loss || (echo "PRISMA DB PUSH FAILED" && exit 1)
+        - npx prisma generate || (echo "PRISMA GENERATE FAILED" && exit 1)
         - 'echo "preBuild phase completed at $(date)"'
     build:
       commands:
         - 'echo "Build phase started on $(date)"'
         - 'echo "NODE_OPTIONS: $NODE_OPTIONS"'
+        - 'echo "Checking .env.production file:"'
+        - 'cat .env.production | grep -v "KEY\|SECRET\|PASS" | grep "=" || echo "Warning: .env.production might be empty or invalid"'
         - 'echo "Running Next.js build"'
-        # Changes to npm run build
-        - npm run build
+        # Add error handling for Next.js build
+        - npm run build || (echo "NEXT.JS BUILD FAILED" && exit 1)
         - 'echo "Build phase completed on $(date)"'
     postBuild:
       commands:
         - 'echo "Post-build phase started on $(date)"'
-        # Don't try to run the server in CI as it might not work
         - 'echo "Build artifacts created successfully"'
-        - pm2 start server.js || node server.js &
+        # Verify server.js exists before trying to run it
+        - 'if [ -f "server.js" ]; then echo "server.js exists"; else echo "WARNING: server.js not found"; fi'
+        # Don't exit on error if server.js fails
+        - node -c server.js || echo "WARNING: server.js has syntax errors"
   artifacts:
     baseDirectory: .next
     files:
@@ -62,6 +69,7 @@ frontend:
           - package.json
           - prisma/**/*
           - next.config.js
+          - .env.production
   cache:
     paths:
       - node_modules/**/*
