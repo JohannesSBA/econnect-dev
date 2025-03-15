@@ -11,12 +11,11 @@ const nextConfig = {
     domains: ["econnectbucket.s3.amazonaws.com"],
   },
   // Add specific support for WebSockets
-  webSocketDebuggerUrl: true,
   experimental: {
     // This improves WebSocket support
     esmExternals: true,
     // This helps with socket.io
-    outputFileTracingIgnores: ["**socket.io-client**"]
+    outputFileTracingExcludes: ["**socket.io-client**"]
   },
   webpack: (config) => {
     config.resolve.fallback = {
