@@ -6,7 +6,7 @@
     "kill-port": "lsof -ti:3000 | xargs kill -9 || true",
     "dev": "npm run kill-port && node server.js",
     "build": "next build",
-    "build:amplify": "node build-optimized.js",
+    "build:amplify": "node -e \"console.log('Starting optimized build'); require('./build-optimized.js');\"",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
