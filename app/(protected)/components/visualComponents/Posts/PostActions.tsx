@@ -11,6 +11,7 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import axios from "axios";
+import Link from "next/link";
 
 interface PostActionsProps {
     postId: string;
@@ -30,6 +31,7 @@ interface PostActionsProps {
     }[];
     currentUserId: string;
     currentUserName: string;
+    showComments: boolean;
 }
 
 const MAX_COMMENT_LENGTH = 400;
@@ -40,8 +42,8 @@ const PostActions = ({
     comments: initialComments,
     currentUserId,
     currentUserName,
+    showComments,
 }: PostActionsProps) => {
-    const [showCommentInput, setShowCommentInput] = useState(false);
     const [comment, setComment] = useState("");
     const [commentInput, setCommentInput] = useState("");
     const [liked, setLiked] = useState(
@@ -81,27 +83,33 @@ const PostActions = ({
         }
     };
 
-    async function handleSubmitComment() {
+    async function handleComment(e: React.FormEvent) {
+        e.preventDefault();
+        if (!commentInput.trim()) return;
+        
         try {
-            const res = await axios.post("/api/user/post/comment", {
-                postId: postId,
-                comment: commentInput,
+            await axios.post("/api/user/post/comment", {
+                postId,
+                content: commentInput
             });
+            
+            // Add the new comment to the local state
+            const newComment = {
+                id: Date.now().toString(),
+                content: commentInput,
+                createdAt: new Date(),
+                author: {
+                    id: currentUserId,
+                    firstName: currentUserName.split(" ")[0] || "",
+                    lastName: currentUserName.split(" ")[1] || ""
+                }
+            };
+            
+            setComments((prev) => [newComment, ...prev]);
+            setCommentInput("");
         } catch (error) {
             console.log(error);
         }
-        const newComment = {
-            id: Date.now().toString(),
-            content: commentInput.trim(),
-            createdAt: new Date(),
-            author: {
-                id: currentUserId,
-                firstName: currentUserName,
-                lastName: "",
-            },
-        };
-        setComments((prev) => [...prev, newComment]);
-        setComment("");
     }
 
     async function handleDeleteComment(commentId: string) {
@@ -118,150 +126,175 @@ const PostActions = ({
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <button
-                    onClick={() => handleLike(postId, liked)}
-                    className={`flex items-center gap-2 transition-colors ${
-                        liked
-                            ? "text-blue-600"
-                            : "text-gray-500 hover:text-blue-600"
-                    }`}
-                >
-                    <Heart
-                        className="w-5 h-5"
-                        fill={liked ? "currentColor" : "none"}
-                    />
-                    <span>{localLikes.length}</span>
-                </button>
-
-                <button
-                    onClick={() => setShowCommentInput(!showCommentInput)}
-                    className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                    <MessageSquare className="w-5 h-5" />
-                    <span>{comments.length}</span>
-                </button>
-
-                <button className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
-                    <Share2 className="w-5 h-5" />
-                    <span>0</span>
-                </button>
-            </div>
-
-            {/* Comments Section */}
-            <div className="space-y-4">
-                {comments.slice(0, 3).map((comment) => (
-                    <div
-                        key={comment.id}
-                        className="flex flex-col space-y-1 p-2 rounded-lg bg-gray-50"
+            <div className="flex flex-col items-center justify-between">
+                <div className="flex space-x-4">
+                    <button
+                        onClick={() => handleLike(postId, liked)}
+                        className={`flex items-center space-x-1.5 ${
+                            liked ? "text-pink-500" : "text-gray-500 hover:text-pink-500"
+                        }`}
                     >
-                        <div className="flex items-center justify-between">
-                            <span className="font-semibold text-sm">
-                                {comment.author.firstName +
-                                    " " +
-                                    comment.author.lastName}
-                            </span>
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs text-gray-500">
-                                    {new Date(
-                                        comment.createdAt
-                                    ).toLocaleDateString()}
-                                </span>
-                                {comment.author.id === currentUserId && (
-                                    <button
-                                        onClick={() =>
-                                            handleDeleteComment(comment.id)
-                                        }
-                                        className="text-red-500 hover:text-red-600"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                        <p className="text-sm text-gray-700">
-                            {comment.content}
-                        </p>
-                    </div>
-                ))}
+                        <Heart
+                            className={`h-5 w-5 ${liked ? "fill-current" : ""}`}
+                        />
+                        <span>{localLikes.length}</span>
+                    </button>
 
-                {comments.length > 0 && comments.length > 3 && (
+                    <Link
+                        href={`/posts/${postId}`}
+                        className="flex items-center space-x-1.5 text-gray-500 hover:text-blue-500"
+                    >
+                        <MessageSquare className="h-5 w-5" />
+                        <span>{comments.length}</span>
+                    </Link>
+
                     <Dialog>
                         <DialogTrigger asChild>
-                            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                                Show more comments
+                            <button className="flex items-center space-x-1.5 text-gray-500 hover:text-blue-500">
+                                <Share2 className="h-5 w-5" />
+                                <span>Share</span>
                             </button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+                        <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Comments</DialogTitle>
+                                <DialogTitle>Share this post</DialogTitle>
                             </DialogHeader>
-                            <div className="space-y-4 pt-4">
-                                {comments.map((comment) => (
-                                    <div
-                                        key={comment.id}
-                                        className="flex flex-col space-y-1 p-3 rounded-lg bg-gray-50"
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-semibold text-sm">
-                                                {comment.author.firstName +
-                                                    " " +
-                                                    comment.author.lastName}
-                                            </span>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xs text-gray-500">
-                                                    {new Date(
-                                                        comment.createdAt
-                                                    ).toLocaleDateString()}
-                                                </span>
-                                                {comment.author.id ===
-                                                    currentUserId && (
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDeleteComment(
-                                                                comment.id
-                                                            )
-                                                        }
-                                                        className="text-red-500 hover:text-red-600"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <p className="text-sm text-gray-700">
-                                            {comment.content}
-                                        </p>
-                                    </div>
-                                ))}
+                            <div className="flex flex-col space-y-4 p-4">
+                                <Input
+                                    value={`${window.location.origin}/posts/${postId}`}
+                                    readOnly
+                                />
+                                <Button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(
+                                            `${window.location.origin}/posts/${postId}`
+                                        );
+                                    }}
+                                >
+                                    Copy Link
+                                </Button>
                             </div>
                         </DialogContent>
                     </Dialog>
-                )}
+                </div>
+
+                {/* Comments Section */}
+                <div className="mt-4 space-y-4 w-full">
+                    {showComments && comments.slice(0, 3).map((comment) => (
+                        <div
+                            key={comment.id}
+                            className="flex flex-col space-y-1 p-2 rounded-lg bg-gray-50"
+                        >
+                            <div className="flex items-center justify-between">
+                                <span className="font-semibold text-sm">
+                                    {comment.author.firstName +
+                                        " " +
+                                        comment.author.lastName}
+                                </span>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs text-gray-500">
+                                        {new Date(
+                                            comment.createdAt
+                                        ).toLocaleDateString()}
+                                    </span>
+                                    {comment.author.id === currentUserId && (
+                                        <button
+                                            onClick={() =>
+                                                handleDeleteComment(comment.id)
+                                            }
+                                            className="text-red-500 hover:text-red-600"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                            <p className="text-sm text-gray-700">
+                                {comment.content}
+                            </p>
+                        </div>
+                    ))}
+
+                    {showComments && comments.length > 0 && comments.length > 3 && (
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                    Show more comments
+                                </button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+                                <DialogHeader>
+                                    <DialogTitle>Comments</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4 pt-4">
+                                    {comments.map((comment) => (
+                                        <div
+                                            key={comment.id}
+                                            className="flex flex-col space-y-1 p-3 rounded-lg bg-gray-50"
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-semibold text-sm">
+                                                    {comment.author.firstName +
+                                                        " " +
+                                                        comment.author.lastName}
+                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-gray-500">
+                                                        {new Date(
+                                                            comment.createdAt
+                                                        ).toLocaleDateString()}
+                                                    </span>
+                                                    {comment.author.id ===
+                                                        currentUserId && (
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDeleteComment(
+                                                                    comment.id
+                                                                )
+                                                            }
+                                                            className="text-red-500 hover:text-red-600"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <p className="text-sm text-gray-700">
+                                                {comment.content}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    )}
+                </div>
             </div>
 
-            {showCommentInput && (
-                <div className="space-y-2">
-                    <div className="relative">
-                        <Input
-                            placeholder="Write a comment..."
-                            value={commentInput}
-                            onChange={handleCommentChange}
-                            className="pr-16 w-full"
-                        />
-                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-500">
-                            {comment.length}/{MAX_COMMENT_LENGTH}
-                        </span>
-                    </div>
-                    <Button
-                        onClick={handleSubmitComment}
+            {/* Comment input */}
+            {showComments && <div className="mt-4">
+                <form onSubmit={handleComment} className="flex items-center space-x-2">
+                    <Input
+                        value={commentInput}
+                        onChange={handleCommentChange}
+                        placeholder="Add a comment..."
+                        className="flex-1"
+                        maxLength={MAX_COMMENT_LENGTH}
+                    />
+                    <Button 
+                        type="submit" 
                         disabled={!commentInput.trim()}
-                        className="w-full"
+                        size="sm"
                     >
-                        Submit Comment
+                        Post
                     </Button>
-                </div>
-            )}
+                </form>
+                {commentInput.length > 0 && (
+                    <div className="text-xs text-gray-500 text-right mt-1">
+                        {commentInput.length}/{MAX_COMMENT_LENGTH}
+                    </div>
+                )}
+            </div>}
         </div>
     );
 };

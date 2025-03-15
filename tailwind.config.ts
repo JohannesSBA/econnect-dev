@@ -33,6 +33,9 @@ const config: Config = {
                 ".overflow-wrap-anywhere": {
                     "overflow-wrap": "anywhere",
                 },
+                ".word-break-break-word": {
+                    "word-break": "break-word",
+                },
             };
 
             addUtilities(newUtilities, ["responsive", "hover"]);

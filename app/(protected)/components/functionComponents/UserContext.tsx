@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
-import { pusherClient } from "@/app/lib/pusher";
-import { toPusherKey, chatHrefConstructor } from "@/app/lib/utils";
+import { getSocketClient, initSocketClient, toPusherKey, safeEmit } from "@/app/lib/socket";
+import { chatHrefConstructor } from "@/app/lib/utils";
 import { toast } from "sonner";
 
 import { User } from "@/app/types/db";
@@ -47,8 +47,21 @@ export const UserProvider = ({ children }: any) => {
     useEffect(() => {
         if (!userInfo?.id) return;
 
-        pusherClient.subscribe(toPusherKey(`user:${userInfo.id}:chats`));
-
+        // First initialize the socket client if not already initialized
+        initSocketClient();
+        
+        // Get a reference to the socket client
+        const socket = getSocketClient();
+        if (!socket) {
+            console.error("Failed to get Socket.io client reference");
+            return;
+        }
+        
+        const userChannel = toPusherKey(`user:${userInfo.id}:chats`);
+        
+        // Use safeEmit for more reliable room joining
+        safeEmit('join-room', userChannel);
+        
         const chatHandler = (message: Message) => {
             const shouldNotify =
                 pathName !==
@@ -70,11 +83,15 @@ export const UserProvider = ({ children }: any) => {
             });
         };
 
-        pusherClient.bind("new_message", chatHandler);
+        // Bind to new message events
+        socket.on("new_message", chatHandler);
 
         return () => {
-            pusherClient.unsubscribe(toPusherKey(`user:${userInfo.id}:chats`));
-            pusherClient.unbind("new_message", chatHandler);
+            // Use safeEmit for leaving rooms as well
+            safeEmit('leave-room', userChannel);
+            
+            // Remove event listeners
+            socket.off("new_message", chatHandler);
         };
     }, [userInfo?.id, router, pathName]);
 

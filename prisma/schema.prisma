@@ -55,6 +55,8 @@ model User {
   JobHScreened JobListing[] @relation("jobHScreen")
   JobHired JobListing[] @relation("jobHired")
   applicant applicant[]
+  expoPushToken String?
+  UserActivityLogs UserActivityLogs[]
 }
 
 model applicant {
@@ -201,4 +203,18 @@ model Category {
   id         Int       @id @default(autoincrement())
   name       String
   posts      Post[]
+}
+
+model UserActivityLogs {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  endpoint     String
+  method       String
+  timestamp    DateTime  @default(now())
+  requestData  String?
+  ipAddress    String?
+  activityType String    // New column for tracking activity type
+
+  @@map(name: "user_activity_logs")
 }

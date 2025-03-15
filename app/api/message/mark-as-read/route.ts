@@ -1,9 +1,8 @@
 import { getServerSession } from "next-auth";
 import prisma from "@/app/lib/prisma";
-import { pusherServer } from "@/app/lib/pusher";
+import { socketIO, toPusherKey } from "@/app/lib/socket";
 import { options } from "../../auth/[...nextauth]/options";
-import { Console } from "console";
-import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
+import { chatHrefConstructor } from "@/app/lib/utils";
 
 export async function POST(req: Request, res: Response) {
   const session = await getServerSession(options);
@@ -32,12 +31,15 @@ export async function POST(req: Request, res: Response) {
         updatedMessage.recipientId,
         updatedMessage.senderId
       );
-      // Broadcast a "message-read" event so both users see the update
-      await pusherServer.trigger(
-        toPusherKey(`chat:${chatRoom}`),
-        "message-read",
-        updatedMessage
-      );
+      
+      // Use Socket.io instead of Pusher for real-time updates
+      const io = socketIO.getIO();
+      if (io) {
+        // Broadcast a "message-read" event so both users see the update
+        io.to(toPusherKey(`chat:${chatRoom}`)).emit('message-read', updatedMessage);
+      } else {
+        console.warn("Socket.io server not initialized. Make sure to initialize it before sending updates.");
+      }
     });
 
     // Wait for all updates to complete

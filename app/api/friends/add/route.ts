@@ -6,6 +6,10 @@ export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
 
+    const session = (await getServerSession(options)) as Session;
+
+    const currUser = body.device === "mobile" ? body.userId : session.user.id;
+
     const idToAdd = await prisma.user.findUnique({
       where: {
         id: body.id,
@@ -22,22 +26,20 @@ export async function POST(req: Request, res: Response) {
       return new Response("This person does not exist.", { status: 400 });
     }
 
-    const session = (await getServerSession(options)) as Session;
-
-    if (!session) {
+    if (!currUser) {
       return new Response("Unathorized", {
         status: 401,
       });
     }
 
-    if (idToAdd.id === session.user.id) {
+    if (idToAdd.id === currUser) {
       return new Response("You cannot add yourself as a friend.", {
         status: 400,
       });
     }
 
     const isAlreadyFriend = idToAdd.friends.some(
-      (friend) => friend.id === session.user.id
+      (friend) => friend.id === currUser
     );
     if (isAlreadyFriend) {
       return new Response("Already added this user", {
@@ -46,7 +48,7 @@ export async function POST(req: Request, res: Response) {
     }
 
     const isPending = idToAdd.sentFriendRequest.some(
-      (friend) => friend.id === session.user.id
+      (friend) => friend.id === currUser
     );
 
     if (isPending) {
@@ -62,7 +64,7 @@ export async function POST(req: Request, res: Response) {
       data: {
         pendingFriendRequest: {
           connect: {
-            id: session.user.id,
+            id: currUser,
           },
         },
       },
@@ -70,7 +72,7 @@ export async function POST(req: Request, res: Response) {
 
     await prisma.user.update({
       where: {
-        id: session.user.id,
+        id: currUser,
       },
       data: {
         sentFriendRequest: {

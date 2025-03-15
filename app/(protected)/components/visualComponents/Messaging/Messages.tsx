@@ -9,8 +9,8 @@ import {
     Spinner,
 } from "@nextui-org/react";
 import { FaSearch } from "react-icons/fa";
-import { pusherClient } from "@/app/lib/pusher";
-import { chatHrefConstructor, toPusherKey } from "@/app/lib/utils";
+import { getSocketClient, initSocketClient, toPusherKey, safeEmit } from "@/app/lib/socket";
+import { chatHrefConstructor } from "@/app/lib/utils";
 import { Message } from "@/app/lib/validation";
 import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
@@ -35,15 +35,48 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     useEffect(() => {
         // Filter friends based on the search term
         if (!friends) return;
-        const filtered = friends.filter((friend) =>
+        
+        // Use a Map to track unique friends by ID
+        const uniqueFriendsMap = new Map();
+        
+        friends.filter((friend) =>
             `${friend.firstName} ${friend.lastName}`
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase())
-        );
+        ).forEach(friend => {
+            // Only add the friend if it's not already in the map
+            if (!uniqueFriendsMap.has(friend.id)) {
+                uniqueFriendsMap.set(friend.id, friend);
+            }
+        });
+        
+        // Convert the Map values back to an array
+        const filtered = Array.from(uniqueFriendsMap.values());
         setFilteredFriends(filtered);
     }, [friends, searchTerm]);
+    
     useEffect(() => {
-        pusherClient.subscribe(toPusherKey(`user:${userId}:chats`));
+        if (!userId) return;
+        
+        // First initialize the socket client if not already initialized
+        initSocketClient();
+        
+        // Get a reference to the socket client
+        const socket = getSocketClient();
+        if (!socket) {
+            console.error("Failed to get Socket.io client reference");
+            return;
+        }
+        
+        const userChannel = toPusherKey(`user:${userId}:chats`);
+        
+        // Use safeEmit for more reliable room joining
+        safeEmit('join-room', userChannel, (response) => {
+            if (response?.success) {
+                console.log(`Successfully joined user channel from Messages component: ${userChannel}`);
+            }
+        });
+        
         const chatHandler = (message: Message) => {
             const shouldNotify =
                 pathName !==
@@ -64,10 +97,16 @@ export default function Messages({ userId, friends, role }: MessageProps) {
                 );
             });
         };
-        pusherClient.bind("new_message", chatHandler);
+        
+        // Bind to new message events
+        socket.on("new_message", chatHandler);
+        
         return () => {
-            pusherClient.unsubscribe(toPusherKey(`user:${userId}:chats`));
-            pusherClient.unbind("new_message", chatHandler);
+            // Use safeEmit for leaving rooms as well
+            safeEmit('leave-room', userChannel);
+            
+            // Remove event listeners
+            socket.off("new_message", chatHandler);
         };
     }, [pathName, userId]);
     let requestElement;
@@ -110,6 +149,7 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     };
     if (
         isLoading &&
+        pathName &&
         !pathName.includes("profile") &&
         !pathName.includes("ec") &&
         !pathName.includes("employer-dashboard")
@@ -124,9 +164,9 @@ export default function Messages({ userId, friends, role }: MessageProps) {
     return (
         <div
             className={
-                pathName.includes("profile") ||
-                pathName.includes("ec") ||
-                pathName.includes("employer-dashboard")
+                pathName?.includes("profile") ||
+                pathName?.includes("ec") ||
+                pathName?.includes("employer-dashboard")
                     ? `hidden`
                     : `h-full flex flex-col bg-white rounded-lg overflow-hidden`
             }

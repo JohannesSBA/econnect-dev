@@ -6,38 +6,28 @@ import {
     Avatar,
     Button,
     Link,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
     Tooltip,
-    user,
 } from "@nextui-org/react";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import React from "react";
-import { GiWaterDrop } from "react-icons/gi";
-import Search from "../../components/SearchComponents/Search";
-import SignOutButton from "../../components/functionComponents/SignOutButton";
 import { Friend } from "@/app/types/db";
 import ProtectedNav from "../../components/visualComponents/ProtectedNav";
 import Messages from "../../components/visualComponents/Messaging/Messages";
 import SideInfo from "../../components/visualComponents/SideInfo";
 import { FaRegUserCircle } from "react-icons/fa";
-import { IoIosInformationCircleOutline } from "react-icons/io";
 import InfoDrawer from "../InfoDrawer";
 import EmployerSideNav from "../../components/visualComponents/EmployerSideNav";
 
 interface PageProps {
     params: {
-        chatId: string;
+        chatid: string;
     };
 }
 
 export async function generateMetadata({
     params,
-}: {
-    params: { chatid: string };
-}) {
+}: PageProps) {
     const { chatid } = params;
     const session = await getServerSession(options);
     if (!session) notFound();
@@ -48,7 +38,6 @@ export async function generateMetadata({
     const userId = id1 === session.user.id ? id1 : id2;
 
     const friendContent = await getUserContent(friendId);
-    const userContent = await getUserContent(session.user.id);
 
     if (session.user.id !== userId) {
         notFound();
@@ -57,13 +46,7 @@ export async function generateMetadata({
     return { title: `Connected | ${friendContent.fullName} chat` };
 }
 
-interface PageProps {
-    params: {
-        chatId: string;
-    };
-}
-
-const page = async ({ params }: { params: { chatid: string } }) => {
+const page = async ({ params }: PageProps) => {
     const { chatid } = params;
     const session = await getServerSession(options);
     if (!session) notFound();
@@ -95,7 +78,7 @@ const page = async ({ params }: { params: { chatid: string } }) => {
     );
 
     return (
-        <div className="h-screen w-screen overflow-clip font-PlusJakartaSans flex flex-col">
+        <div className="h-screen w-screen overflow-hidden font-PlusJakartaSans flex flex-col">
             {userInfo.role === "EMPLOYEE" && (
                 <ProtectedNav
                     userInfoId={userInfo.id as string}
@@ -103,8 +86,9 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                     userEmail={userInfo.email as string}
                 />
             )}
-            <div className="w-screen h-full overflow-clip flex bg-white">
-                <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+            <div className="flex flex-1 overflow-hidden bg-white">
+                {/* Sidebar */}
+                <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 flex-shrink-0">
                     {userInfo.role === "EMPLOYEE" ? (
                         <Messages
                             userId={session?.user.id as string}
@@ -118,34 +102,38 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                         />
                     )}
                 </div>
-                <div className="w-full md:w-4/5 h-full md:border border-white flex">
-                    <div className="w-full h-full md:w-2/3 flex flex-col border border-white shadow-md m-1 p-1 pb-10">
-                        <div className="flex justify-between gap-4 p-4 rounded-2xl shadow-sm bg-white backdrop-blur-lg">
-                            <div className="flex gap-4">
-                                <div className="flex items-center">
+                
+                {/* Main content */}
+                <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+                    {/* Chat area */}
+                    <div className="flex-1 flex flex-col border border-gray-100 shadow-md m-1 relative">
+                        {/* Chat header */}
+                        <div className="flex justify-between gap-4 p-4 rounded-2xl shadow-sm bg-white sticky top-0 z-10">
+                            <div className="flex gap-4 items-center">
+                                <div>
                                     {exists ? (
                                         <Avatar
                                             radius="lg"
                                             size="lg"
                                             src={`https://econnectbucket.s3.amazonaws.com/image/${friendContent.id}`}
-                                            className="flex items-center border-2"
+                                            className="border-2"
                                         />
                                     ) : (
                                         <Avatar
                                             radius="lg"
                                             size="lg"
                                             src="/user-avatar.png"
-                                            className="flex items-center border-2"
+                                            className="border-2"
                                         />
                                     )}
                                 </div>
-                                <h1 className="text-black flex flex-col justify-center font-bold">
+                                <h1 className="text-black font-bold truncate">
                                     {friendContent.firstName}{" "}
                                     {friendContent.lastName}
                                 </h1>
                             </div>
 
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 flex-shrink-0">
                                 <Tooltip content="Go to User Profile">
                                     <Button
                                         as={Link}
@@ -166,12 +154,18 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                                 />
                             </div>
                         </div>
-                        <Conversations
-                            chatPartner={friendId as string}
-                            chatId={userId as string}
-                            chatRoom={chatid}
-                        />
-                        <div className="absolute bottom-0 w-full md:w-2/4 bg-white">
+                        
+                        {/* Conversation area */}
+                        <div className="flex-1 overflow-y-auto mb-16">
+                            <Conversations
+                                chatPartner={friendId as string}
+                                chatId={userId as string}
+                                chatRoom={chatid}
+                            />
+                        </div>
+                        
+                        {/* Chat input */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-2">
                             <ChatInput
                                 chatPartner={friendId}
                                 chatId={userId}
@@ -179,7 +173,9 @@ const page = async ({ params }: { params: { chatid: string } }) => {
                             />
                         </div>
                     </div>
-                    <div className="bg-white rounded-lg shadow-lg h-full transition-all duration-300 hover:shadow-xl">
+                    
+                    {/* Side panel - only visible on larger screens */}
+                    <div className="hidden md:block md:w-1/3 lg:w-1/4 bg-white rounded-lg shadow-lg transition-all duration-300 overflow-auto">
                         {userInfo.role === "EMPLOYEE" ? (
                             <SideInfo
                                 user={userInfo}

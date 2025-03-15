@@ -2,13 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { pusherClient } from "@/app/lib/pusher";
-import { toPusherKey } from "@/app/lib/utils";
 import { toast } from "sonner";
 import parse from "html-react-parser";
-import { Spinner } from "@nextui-org/react";
-import WaterDropLoader from "@/app/components/WaterDropLoader";
 import WaterDropletLoader from "@/app/components/WaterDropLoader";
+import { getSocketClient, initSocketClient, safeEmit } from "@/app/lib/socket";
+import { toPusherKey } from "@/app/lib/utils";
 
 interface Message {
     id: string;
@@ -75,27 +73,65 @@ export default function Conversations({
         getMessage();
     }, [chatId, chatPartner]);
 
+    // Set up Socket.IO connection for real-time messaging
     useEffect(() => {
-        pusherClient.subscribe(toPusherKey(`chat:${chatRoom}`));
+        // Initialize socket connection
+        initSocketClient().catch(error => {
+            console.error('Failed to initialize socket connection:', error);
+            toast.error('Connection error. Messages may be delayed.');
+        });
+        
+        const socket = getSocketClient();
+        
+        if (!socket) {
+            console.error('Socket connection not available');
+            toast.error('Connection error. Real-time messaging unavailable.');
+            return () => {
+                // Empty cleanup if no socket
+            };
+        }
+        
+        // Join the chat room
+        const roomKey = toPusherKey(`chat:${chatRoom}`);
+        // Use safeEmit to handle connection state properly
+        safeEmit('join-room', roomKey)
 
+        // Handle incoming messages
         const messageHandler = (message: Message) => {
             setMessages((prev) => [...prev, message]);
             setUserReadStatus((prev) => ({ ...prev, [message.id]: false }));
         };
-
+        
+        // Handle message read notifications
         const messageReadHandler = (message: Message) => {
             setUserReadStatus((prev) => ({ ...prev, [message.id]: true }));
         };
-
-        pusherClient.bind("incoming-message", messageHandler);
-        pusherClient.bind("message-read", messageReadHandler);
-
+        
+        // Subscribe to events
+        socket.on('incoming-message', messageHandler);
+        socket.on('message-read', messageReadHandler);
+        
+        // Cleanup function
         return () => {
-            pusherClient.unsubscribe(toPusherKey(`chat:${chatRoom}`));
-            pusherClient.unbind("incoming-message", messageHandler);
-            pusherClient.unbind("message-read", messageReadHandler);
+            // Safely leave the room
+            if (socket && socket.connected) {
+                safeEmit('leave-room', roomKey);
+            }
+            // Remove event listeners
+            if (socket) {
+                socket.off('incoming-message', messageHandler);
+                socket.off('message-read', messageReadHandler);
+            }
         };
     }, [chatRoom]);
+
+    // Clean up socket connection when component unmounts
+    useEffect(() => {
+        return () => {
+            // This will only run when the entire conversation component unmounts
+            // cleanupSocketConnection(); // Don't fully cleanup on unmount as other components may use sockets
+        };
+    }, []);
 
     useEffect(() => {
         if (scrollDownRef.current) {

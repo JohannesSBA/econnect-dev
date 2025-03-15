@@ -10,6 +10,14 @@ const nextConfig = {
   images: {
     domains: ["econnectbucket.s3.amazonaws.com"],
   },
+  // Add specific support for WebSockets
+  webSocketDebuggerUrl: true,
+  experimental: {
+    // This improves WebSocket support
+    esmExternals: true,
+    // This helps with socket.io
+    outputFileTracingIgnores: ["**socket.io-client**"]
+  },
   webpack: (config) => {
     config.resolve.fallback = {
       fs: false,
@@ -30,6 +38,24 @@ const nextConfig = {
 
     return config;
   },
+  // Explicitly allow WebSocket connections on the server
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Connection',
+            value: 'keep-alive'
+          },
+          {
+            key: 'Upgrade',
+            value: 'websocket'
+          }
+        ]
+      }
+    ]
+  }
 };
 
 module.exports = nextConfig;

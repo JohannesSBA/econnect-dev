@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "kill-port": "lsof -ti:3000 | xargs kill -9 || true",
+    "dev": "npm run kill-port && node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -56,6 +57,8 @@
     "react-query": "^3.39.3",
     "resend": "^4.0.1",
     "sharp": "^0.33.5",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "sonner": "^1.0.3",
     "universal-cookie": "^6.1.1",
     "uploadthing": "^6.0.1",
@@ -82,5 +85,9 @@
   "description": "# Problem ### Background - Creating a social platform, that enables job seekers to look for employment, and for companies to hire employees. ### The Problem - Currently, Ethiopian businesses still use newspapers and word-of-mouth to look for employees, which is inefficient. Simultaneously, many recent university graduates in Ethiopia haven't been able to find employment, because of a lack of experience and lack of access to proper implementation of Resumes and Cover Letters, which are integral to the employment process. - The Goal of Econnect is to create a medium in which employers and employees can have a unified way of checking applications and enabling them to submit required documentation online, as well as enabling companies to advertise on the website.  - \"A new report by the Ministry of Education reveals only 58 percent of university graduates get jobs in Ethiopia. As many as **42 percent** of university grads are unemployed after graduating.\" ### Our Approach - Econnect will provide a system where people can look for jobs and apply for them directly through the website. Companies can make job listings and also advertise for special events that they are possibly hosting (i.e. conventions, exhibitions, networking events) # Goals & Success - The goal of this project is to create a mobile and web platform that will help remedy the aforementioned problems.  - Apart from the business and corporate components of the project, success is defined by the completion of the working product, with possible improvements added later on.  # Solution ### Features - The features are broken down into two categories for the two types of users, being \"Employees\" and \"Employers\". - Employers     - Creating and Logging in to Business accounts      - Creating a job listing          - Modifying details          - Deleting the job listing after enough employees are ascertained      - Attaining applications of different possible employees.     - Dashboard to handle application volume     - Directly communicating with employee account without needing friend verification - Employees     - Creating and Logging in to accounts     - Creating posts about employee stories and achievements     - Applying to jobs     - Adding friends to network and communicate     - A chat feature that enables communication between possible employers or other employees in companies where they are looking to attain employment. ### User Flows & Mocks ![UserFlow](https://github.com/JohannesSBA/econnect-dev/assets/76441090/fa1aa595-bc9b-42f1-9e76-583e7c7b836c)",
   "main": "next.config.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "optionalDependencies": {
+    "bufferutil": "^4.0.9",
+    "utf-8-validate": "^6.0.5"
+  }
 }

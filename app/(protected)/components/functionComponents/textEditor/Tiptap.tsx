@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from 'react';
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
@@ -11,10 +12,10 @@ interface TiptapProps {
 const Tiptap = ({ onChange, content, onSendMessage }: TiptapProps) => {
     const editor = useEditor({
         extensions: [StarterKit],
-        content, // Set the initial content
+        content,
         editorProps: {
             attributes: {
-                class: "prose prose-sm focus:outline-none max-w-none",
+                class: "prose prose-sm focus:outline-none max-w-none min-h-[100px] px-3 py-2",
             },
         },
         onUpdate: ({ editor }) => {
@@ -22,27 +23,30 @@ const Tiptap = ({ onChange, content, onSendMessage }: TiptapProps) => {
         },
     });
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Update editor when content changes from parent component
+    useEffect(() => {
+        // Only update if content is empty (after message sent) and editor exists
+        if (editor && content === '' && editor.getHTML() !== '') {
+            editor.commands.clearContent();
+        }
+    }, [content, editor]);
+
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault(); // Prevent newline on Enter key
             onSendMessage(); // Trigger send message
-            clearEditorContent(); // Clear the editor content after sending
+            // Don't clear here, parent will handle it
         }
-    };
-
-    const clearEditorContent = () => {
-        // Clear the editor's content after sending the message
-        if (editor) {
-            editor.commands.clearContent();
-        }
-    };
+    }, [onSendMessage]);
 
     return (
-        <div className="w-full border rounded-md">
+        <div className="w-full border rounded-lg shadow-sm overflow-hidden transition-all duration-200 ease-in-out focus-within:shadow-md focus-within:border-indigo-300">
             <Toolbar editor={editor} content={content} />
             <EditorContent
                 editor={editor}
-                onKeyDown={handleKeyDown} // Attach onKeyDown to handle keypress events
+                onKeyDown={handleKeyDown}
+                className="text-base"
+                aria-label="Message text editor"
             />
         </div>
     );

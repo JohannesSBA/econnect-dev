@@ -2,6 +2,7 @@ import { MessageSquare, Heart, Share2 } from "lucide-react";
 import PostImages from "./PostImages";
 import PostActions from "./PostActions";
 import parse from "html-react-parser";
+import Link from "next/link";
 
 interface PostProps {
     id: string;
@@ -73,8 +74,12 @@ const Post = ({
                 </div>
             </div>
 
-            <h1 className="font-semibold">{title}</h1>
-            <p className="text-gray-800 mb-4">{parse(content || "")}</p>
+            <Link href={`/posts/${id}`} className="block">
+                <h1 className="font-semibold hover:text-blue-600 transition-colors">{title}</h1>
+            </Link>
+            <div className="text-gray-800 mb-4 mt-2 line-clamp-3">
+                {parse(content || "")}
+            </div>
 
             {imagesArray.length > 0 && (
                 <PostImages images={imagesArray} authorId={author?.id || ""} />
@@ -86,8 +91,7 @@ const Post = ({
                     likes={likes}
                     comments={comments}
                     currentUserId={userId} // This should come from your auth context
-                    currentUserName={currentUserName}
-                />
+                    currentUserName={currentUserName} showComments={true}                />
             </div>
         </div>
     );

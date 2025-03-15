@@ -46,7 +46,16 @@ body {
 }
 
 .message-bubble {
-    @apply px-4 py-2 max-w-[70%] h-full break-words rounded-2xl;
+    @apply px-4 py-2 max-w-[65%] h-full break-words rounded-2xl;
+    overflow-wrap: anywhere !important;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    hyphens: auto;
+    max-width: 100%;
+    display: inline-block;
 }
 
 .message-bubble-sent {
