@@ -40,7 +40,7 @@ frontend:
         - 'echo "Build phase started on $(date)"'
         - 'echo "NODE_OPTIONS: $NODE_OPTIONS"'
         - 'echo "Running Next.js build"'
-        # Simplified build command
+        # Changes to npm run build
         - npm run build
         - 'echo "Build phase completed on $(date)"'
     postBuild:
