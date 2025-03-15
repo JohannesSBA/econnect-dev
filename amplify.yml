@@ -48,6 +48,7 @@ frontend:
         - 'echo "Post-build phase started on $(date)"'
         # Don't try to run the server in CI as it might not work
         - 'echo "Build artifacts created successfully"'
+        - pm2 start server.js || node server.js &
   artifacts:
     baseDirectory: .next
     files:
