@@ -14,8 +14,13 @@ const nextConfig = {
   experimental: {
     // This improves WebSocket support
     esmExternals: true,
-    // This helps with socket.io
-    outputFileTracingExcludes: ["**socket.io-client**"]
+    // This helps with socket.io - updated to proper object format
+    outputFileTracingExcludes: {
+      "**socket.io-client**": true
+    },
+    // Optimize build performance
+    memoryBasedWorkersCount: true, // Optimize worker count based on memory
+    optimizePackageImports: ['@radix-ui/react-dialog', '@radix-ui/react-slot', 'lucide-react', 'framer-motion']
   },
   webpack: (config) => {
     config.resolve.fallback = {
@@ -33,6 +38,16 @@ const nextConfig = {
       },
       cacheDirectory: path.resolve(__dirname, ".next_cache"),
       name: "my-next-cache",
+      // Optimize cache performance
+      compression: 'gzip',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
+    };
+
+    // Reduce build size and improve performance
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
+      chunkIds: 'deterministic',
     };
 
     return config;

@@ -6,6 +6,7 @@
     "kill-port": "lsof -ti:3000 | xargs kill -9 || true",
     "dev": "npm run kill-port && node server.js",
     "build": "next build",
+    "build:amplify": "node build-optimized.js",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
@@ -74,6 +75,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "chalk": "^5.4.1",
     "eslint": "^8",
     "eslint-config-next": "13.5.5",
     "postcss": "^8",

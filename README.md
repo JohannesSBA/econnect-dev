@@ -124,4 +124,80 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## AWS Amplify Deployment
+
+### Build Optimizations
+
+To address build timeout issues in AWS Amplify, the application includes several optimizations:
+
+#### 1. Custom Amplify Configuration (`amplify.yml`)
+
+The project includes a custom `amplify.yml` configuration file that:
+- Increases the build timeout to 60 minutes (default is 15 minutes)
+- Sets up efficient caching for faster builds
+- Handles environment variables properly
+- Includes a build monitoring system to prevent timeouts
+
+#### 2. Next.js Build Optimizations
+
+Several Next.js-specific optimizations have been implemented:
+- Memory allocation increased to 4GB for Node.js processes
+- Webpack cache optimizations to speed up repeated builds
+- Package import optimizations for common libraries
+- Improved WebSocket support for the custom server
+- Properly formatted `outputFileTracingExcludes` as an object (not an array) to avoid Next.js configuration errors
+
+#### 3. Build Monitoring
+
+The project includes a build monitoring system (`build-monitor.js`) that:
+- Provides real-time feedback on build progress
+- Creates heartbeat signals to prevent idle timeouts
+- Detects potential hanging builds
+- Reports detailed timing information
+
+#### 4. Optimized Build Script
+
+A custom build script (`build-optimized.js`) is used to:
+- Set optimal environment variables for production builds
+- Improve logging and error reporting
+- Provide more detailed build analytics
+- Ensure consistent build environments
+
+### Common Build Issues and Solutions
+
+1. **Configuration Format Errors**:
+   - Next.js expects certain configuration properties to be in specific formats
+   - `outputFileTracingExcludes` must be an object mapping glob patterns to boolean values (not an array)
+   - If you see "Expected object, received array" errors, check your Next.js configuration format
+
+2. **Build Timeouts**:
+   - Default Amplify build timeout is 15 minutes, which might not be enough for large applications
+   - Ensure your `amplify.yml` includes `buildSpec.timeout: 60` to increase the limit
+   - The build monitoring system helps detect and prevent silent timeouts
+
+3. **Memory Issues**:
+   - Node.js default memory limit may be too low for large builds
+   - The configuration sets `NODE_OPTIONS="--max_old_space_size=4096"` to allocate 4GB of memory
+
+### Deployment Instructions
+
+1. **Commit your changes to Git**:
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   git push
+   ```
+
+2. **Configure AWS Amplify**:
+   - In the AWS Amplify Console, navigate to your app
+   - Under "App settings" > "Build settings", ensure the build timeout is set to at least 60 minutes
+   - Verify all required environment variables are set
+
+3. **Monitor the Build**:
+   - During deployment, you can monitor the build process in the AWS Amplify Console
+   - Check for any timeout or memory-related errors
+   - Verify all build phases complete successfully
+
+For more information on troubleshooting build issues, see the [AWS Amplify documentation](https://docs.aws.amazon.com/amplify/latest/userguide/build-settings.html).
+
 

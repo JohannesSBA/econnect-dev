@@ -1,0 +1,53 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - echo "No backend build needed"
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+        - export NODE_OPTIONS="--max_old_space_size=4096" # Increase Node.js memory limit
+        # Create the .env.production file and append environment variables
+        - touch .env.production
+        # Add necessary environment variables to the .env.production file
+        - env | grep -e CALLBACK_URL -e DATABASE_URL -e JWT_SECRET -e NEXTAUTH_SECRET -e NEXT_PUBLIC_NEXTAUTH_URL -e NODDEMAILER_EMAIL -e RESEND_KEY -e S3SECRET_ACCESS_KEY -e S3ACCESS_KEY_ID -e BUCKET_NAME -e PUSHER_APP_SECRET -e PUSHER_APP_ID -e PUSHER_APP_KEY -e PUSHER_CLUSTER -e NODEMAILER_PASS >> .env.production
+        # Generate Prisma client for the correct environment
+        - npx prisma generate
+        - node build-monitor.js & # Start build monitor in background
+    build:
+      commands:
+        - echo "Build started on $(date)"
+        - npm run build:amplify || { echo "Build failed, checking for timeout"; if [ -f .build-heartbeat ]; then echo "Build was still active but may have timed out"; exit 1; fi; }
+        - echo "Build completed on $(date)"
+    postBuild:
+      commands:
+        - echo "Post-build phase completed on $(date)"
+        - echo "Starting server for final checks..."
+        - node server.js & # Run server in background to verify it works
+        - sleep 10 # Give it a moment to start
+        - kill %1 # Kill the background server process
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*
+      - .npm/**/*
+  customHeaders:
+    - pattern: '**/*.html'
+      headers:
+        - key: 'Cache-Control'
+          value: 'max-age=0, no-cache, no-store, must-revalidate'
+    - pattern: '/api/socketio'
+      headers:
+        - key: 'Connection'
+          value: 'keep-alive'
+        - key: 'Upgrade'
+          value: 'websocket'
+  buildSpec:
+    timeout: 60 # Increase build timeout to 60 minutes (default is 15) 
