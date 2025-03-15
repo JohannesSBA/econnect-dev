@@ -43,10 +43,10 @@ frontend:
         - 'echo "Build phase started on $(date)"'
         - 'echo "NODE_OPTIONS: $NODE_OPTIONS"'
         - 'echo "Checking .env.production file:"'
-        - 'cat .env.production | grep -v "KEY\|SECRET\|PASS" | grep "=" || echo "Warning: .env.production might be empty or invalid"'
+        - 'cat .env.production | grep -v "KEY\\|SECRET\\|PASS" | grep "=" || echo "Warning: .env.production might be empty or invalid"'
         - 'echo "Running Next.js build"'
         # Add error handling for Next.js build
-        - npm run build || (echo "NEXT.JS BUILD FAILED" && exit 1)
+        - 'npm run build || (echo "NEXT.JS BUILD FAILED" && exit 1)'
         - 'echo "Build phase completed on $(date)"'
     postBuild:
       commands:
@@ -55,7 +55,7 @@ frontend:
         # Verify server.js exists before trying to run it
         - 'if [ -f "server.js" ]; then echo "server.js exists"; else echo "WARNING: server.js not found"; fi'
         # Don't exit on error if server.js fails
-        - node -c server.js || echo "WARNING: server.js has syntax errors"
+        - 'node -c server.js || echo "WARNING: server.js has syntax errors"'
   artifacts:
     baseDirectory: .next
     files:
