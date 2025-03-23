@@ -11,13 +11,12 @@ frontend:
         - 'echo "Starting preBuild phase at $(date)"'
         - 'echo "Node version: $(node -v)"'
         - 'echo "NPM version: $(npm -v)"'
-        # Add better error handling for npm install
         - npm ci --cache .npm --prefer-offline || (echo "NPM CI FAILED" && exit 1)
-        - 'export NODE_OPTIONS="--max_old_space_size=4096"' # Increase Node.js memory limit
-        # Create the .env.production file with error checking
+        - 'export NODE_OPTIONS="--max_old_space_size=4096"'
         - 'echo "Creating environment variables file"'
         - touch .env.production
-        # Simplify the environment variable setup to avoid YAML parsing issues
+        - 'echo "NEXT_PUBLIC_WEBSOCKET_URL=ws://your-production-url/api/socketio" >> .env.production'
+        - 'echo "PORT=3000" >> .env.production'
         - 'env | grep -e DATABASE_URL >> .env.production || echo "Warning: DATABASE_URL not found"'
         - 'env | grep -e JWT_SECRET >> .env.production || echo "Warning: JWT_SECRET not found"'
         - 'env | grep -e NEXTAUTH_SECRET >> .env.production || echo "Warning: NEXTAUTH_SECRET not found"'
@@ -33,7 +32,6 @@ frontend:
         - 'env | grep -e PUSHER_CLUSTER >> .env.production || echo "Warning: PUSHER_CLUSTER not found"'
         - 'env | grep -e NODEMAILER_PASS >> .env.production || echo "Warning: NODEMAILER_PASS not found"'
         - 'env | grep -e NODDEMAILER_EMAIL >> .env.production || echo "Warning: NODDEMAILER_EMAIL not found"'
-        # Add error handling for Prisma commands
         - 'echo "Generating Prisma client"'
         - npx prisma db push --accept-data-loss || (echo "PRISMA DB PUSH FAILED" && exit 1)
         - npx prisma generate || (echo "PRISMA GENERATE FAILED" && exit 1)
@@ -45,29 +43,24 @@ frontend:
         - 'echo "Checking .env.production file:"'
         - 'cat .env.production | grep -v "KEY\\|SECRET\\|PASS" | grep "=" || echo "Warning: .env.production might be empty or invalid"'
         - 'echo "Running Next.js build"'
-        # Add error handling for Next.js build
         - 'npm run build || (echo "NEXT.JS BUILD FAILED" && exit 1)'
         - 'echo "Build phase completed on $(date)"'
     postBuild:
       commands:
         - 'echo "Post-build phase started on $(date)"'
         - 'echo "Build artifacts created successfully"'
-        # Verify server.js exists before trying to run it
         - 'if [ -f "server.js" ]; then echo "server.js exists"; else echo "WARNING: server.js not found"; fi'
-        # Don't exit on error if server.js fails
         - 'node -c server.js || echo "WARNING: server.js has syntax errors"'
   artifacts:
     baseDirectory: .next
     files:
       - '**/*'
-    # Also include important config files and server.js
     discard-paths: no
     secondary-artifacts:
       config:
         files:
           - server.js
           - package.json
-          - prisma/**/*
           - next.config.js
           - .env.production
   cache:
@@ -77,10 +70,6 @@ frontend:
       - .npm/**/*
       - .prisma/**/*
   customHeaders:
-    - pattern: '**/*.html'
-      headers:
-        - key: 'Cache-Control'
-          value: 'max-age=0, no-cache, no-store, must-revalidate'
     - pattern: '/api/socketio'
       headers:
         - key: 'Connection'
@@ -88,4 +77,4 @@ frontend:
         - key: 'Upgrade'
           value: 'websocket'
   buildSpec:
-    timeout: 60 # Increase build timeout to 60 minutes (default is 15) 
+    timeout: 60
