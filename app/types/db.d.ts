@@ -34,6 +34,10 @@ interface Jobs {
   postedById: string;
   Expired: boolean;
   expirationDate: string;
+  applicant: User[];
+  hired: User[];
+  HumanScreened: User[];
+  ComputerScreened: User[];
 }
 
 interface userProps {

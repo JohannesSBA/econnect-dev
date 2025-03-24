@@ -1,24 +1,20 @@
 import React from "react";
-import EditContent from "../../components/functionComponents/EditContent";
-import { getUserContent } from "@/app/helpers/getUser";
-import { Button, Card, Link } from "@nextui-org/react";
-import ProfileImage from "../../components/functionComponents/ProfileImage";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import UploadResume from "../../components/functionComponents/UploadResume";
-import { FiExternalLink, FiMessageSquare, FiUserPlus } from "react-icons/fi";
-import NewEducation from "../../components/functionComponents/NewEducation";
+import { getUserContent } from "@/app/helpers/getUser";
 import { getEducation } from "@/app/helpers/getEducation";
-import NewExperience from "../../components/functionComponents/NewExperience";
 import { getExperience } from "@/app/helpers/getExperience";
-import Posts from "../../components/visualComponents/Posts/Post";
 import ClientComponent from "./ClientComponent";
 
-const page = async () => {
+const Page = async () => {
     const session = await getServerSession(options);
-    const userInfo = await getUserContent(session?.user.id as string);
-    const pageName = "profile";
+    
+    if (!session?.user.id) {
+        redirect("/auth/signin");
+    }
+
+    const userInfo = await getUserContent(session.user.id);
 
     if (userInfo.role === "EMPLOYER") {
         redirect("/employer-dashboard/profile");
@@ -34,50 +30,41 @@ const page = async () => {
         endDate: Date;
         description: string | null;
     }[];
-
     const experienceList = await getExperience(userInfo.id as string);
-    const parsedExperience = experienceList as unknown as {
+    const parsedExperience = experienceList as {
         title: string;
-        EmploymentType: string;
-        CompanyName: string;
-        LocationName: string;
-        LocationType: string;
-        currently: Boolean;
+        employmentType: string;
+        companyName: string;
+        locationName: string;
+        locationType: string;
+        currently: boolean;
         startDate: Date;
         endDate: Date | null;
-        Description: string | null;
+        description: string | null;
     }[];
 
-    const numOfConnection = userInfo.friends?.length ?? 0;
-
-    const dateJoined = userInfo.emailVerified;
-
-    function formatDate(dateString: string | number | Date) {
-        const date = new Date(dateString);
-        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-    }
-
     return (
-        <div className="w-screen  flex flex-col md:flex-row md:overflow-clip bg-gradient-to-br from-white to-blue-100">
-            <ClientComponent
-                user={{
-                    name: userInfo.firstName + " " + userInfo.lastName,
-                    id: session?.user.id as string,
-                    title: userInfo.title,
-                    location: userInfo.location,
-                    about: userInfo.bio,
-                }}
-                experiences={parsedExperience}
-                education={parsedEducation}
-                skills={[]}
-                contact={{
-                    email: userInfo.email as string,
-                    phone: userInfo.phoneNumber as string,
-                }}
-                languages={[]}
-            />
+        <div className="w-full min-h-screen bg-gradient-to-br from-white to-blue-100">
+            <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
+                <ClientComponent
+                    user={{
+                        name: `${userInfo.firstName} ${userInfo.lastName}`,
+                        id: session.user.id,
+                        title: userInfo.title || "No title set",
+                        location: userInfo.location || "No location set",
+                        about: userInfo.bio || "No bio available",
+                    }}
+                    experiences={parsedExperience}
+                    education={parsedEducation}
+                    skills={[]} // userInfo type doesn't include skills property
+                    contact={{
+                        email: userInfo.email || "",
+                        phone: userInfo.phoneNumber || "No phone number set",
+                    }} languages={[]}                    // skills={[]} // userInfo type doesn't include skills property
+                />
+            </div>
         </div>
     );
 };
 
-export default page;
+export default Page;

@@ -68,7 +68,7 @@ export default function App({ userInfo, userId }: pageProps) {
             current: path === "/employer-dashboard/archived",
         },
 
-        { name: "Reports", href: "#", icon: FaChartBar, current: false },
+        { name: "Reports", href: "/employer-dashboard/reports", icon: FaChartBar, current: false },
     ];
 
     // Function to fetch unread messages count
@@ -109,68 +109,7 @@ export default function App({ userInfo, userId }: pageProps) {
         return () => clearInterval(interval); // Cleanup the interval on unmount
     }, []);
     return (
-        // <div className="flex sticky flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white p-6 h-screen w-[22rem]">
-        //   <div className="flex h-16 shrink-0 items-center">
-        //     <GiWaterDrop className="text-blue-800 text-2xl" />
-        //     <h1 className="font-bold">Econnect</h1>
-        //   </div>
-        //   <nav className="flex flex-1 flex-col">
-        //     <ul role="list" className="flex flex-1 flex-col gap-y-7">
-        //       <li>
-        //         <ul role="list" className="-mx-2 space-y-1">
-        //           {navigation.map((item) => (
-        //             <li key={item.name}>
-        //               <a
-        //                 href={item.href}
-        //                 className={classNames(
-        //                   item.current
-        //                     ? "bg-gray-50 text-indigo-600"
-        //                     : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600",
-        //                   "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
-        //                 )}
-        //               >
-        //                 <item.icon
-        //                   aria-hidden="true"
-        //                   className={classNames(
-        //                     item.current
-        //                       ? "text-indigo-600"
-        //                       : "text-gray-400 group-hover:text-indigo-600",
-        //                     "h-6 w-6 shrink-0"
-        //                   )}
-        //                 />
-        //                 {item.name}
-        //                 {/* {item.count ? (
-        //                                         <span
-        //                                             aria-hidden="true"
-        //                                             className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs/5 font-medium text-gray-600 ring-1 ring-inset ring-gray-200"
-        //                                         >
-        //                                             {item.count}
-        //                                         </span>
-        //                                     ) : null} */}
-        //               </a>
-        //             </li>
-        //           ))}
-        //         </ul>
-        //       </li>
-        //       <li className="-mx-6 mt-auto">
-        //         <a
-        //           href="#"
-        //           className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-50"
-        //         >
-        //           <Image
-        //             alt="Your Company"
-        //             src={`https://econnectbucket.s3.amazonaws.com/image/${userId}`}
-        //             className="h-8 w-8 border-2 rounded-full"
-        //             width={2}
-        //             height={2}
-        //           />
-        //           <span className="sr-only">Your profile</span>
-        //           <span aria-hidden="true">{userInfo.firstName}</span>
-        //         </a>
-        //       </li>
-        //     </ul>
-        //   </nav>
-        // </div>
+      
         <div className="flex sticky flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white p-2 md:p-6 h-screen md:w-[20rem]">
             <div className="flex items-center h-16 px-4 bg-white border-b">
                 <div className="flex items-center gap-2">

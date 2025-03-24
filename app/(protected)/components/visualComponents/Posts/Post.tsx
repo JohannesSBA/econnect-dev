@@ -53,7 +53,7 @@ const Post = ({
     const commentsCount = comments.length;
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-4 mb-4 max-w-2xl w-full animate-fade-in">
+        <div className=" bg-white rounded-lg shadow-md p-4 mb-4 max-w-2xl w-full animate-fade-in">
             <div className="flex items-center mb-4">
                 <img
                     src={

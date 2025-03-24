@@ -32,32 +32,33 @@ const Page = async () => {
     const applications = user.applicant;
 
     return (
-        <div className="flex h-[calc(100vh-4rem)] min-h-screen flex-col overflow-scroll bg-gradient-to-br from-white to-blue-100 ">
-            <div className="flex w-full mx-auto md:mx-0 items-start gap-x-8 pr-4  sm:pr-6 lg:pr-8">
-                <main className="flex-1 flex-col p-2 max-w-full">
-                    <div className="flex pt-2 justify-between w-full bg-red-400">
-                        <div className="flex bg-red-400">
+        <div className="flex h-[calc(100vh-4rem)] min-h-screen flex-col overflow-y-auto bg-gradient-to-br from-white to-blue-100">
+            <div className="flex w-full max-w-screen-xl mx-auto items-start gap-x-8 px-4 sm:px-6 lg:px-8">
+                <main className="flex-1 flex-col p-4 max-w-full">
+                    <div className="flex pt-2 justify-between w-full border-b pb-4 mb-4">
+                        <div className="flex items-center">
                             <User
-                                name={""} // Add the 'name' property with a value
+                                name={`${user.firstName} ${user.lastName}`}
                                 avatarProps={{
                                     isBordered: true,
                                     src: `https://econnectbucket.s3.amazonaws.com/image/${user.id}`,
                                 }}
-                                className="transition-transform ml-4 translate-x-4"
+                                className="transition-transform"
                             />
                             <NewPost />
                         </div>
-                        <h1 className="font-semibold w-full text-end p-2  text-2xl text-slate-900 hidden md:flex">
+                        <h1 className="font-semibold text-end p-2 text-2xl text-slate-900 hidden md:block">
                             Your Activity
                         </h1>
                     </div>
                     <Link
                         href="/dashboard/my-posts"
-                        className="text-blue-400 font-light text-center"
+                        className="text-blue-500 hover:text-blue-700 font-medium text-sm flex items-center justify-center mb-4"
                     >
-                        Your Posts
+                        <span>View Your Posts</span>
+                        <FiExternalLink className="ml-1" size={14} />
                     </Link>
-                    <div className="h-full bg-white rounded-md text-black">
+                    <div className=" rounded-lg shadow-sm p-4 text-black">
                         <Posts
                             userId={session.user.id}
                             fromPage={"default"}
@@ -68,7 +69,7 @@ const Page = async () => {
                     </div>
                 </main>
 
-                <aside className="sticky top-8 hidden w-96 shrink-0 xl:flex">
+                <aside className="sticky top-8 hidden w-96 shrink-0 xl:block">
                     <SideInfo
                         user={user}
                         posts={posts}

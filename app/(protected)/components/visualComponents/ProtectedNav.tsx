@@ -106,10 +106,7 @@ export default function App({ userInfoId, userName, userEmail }: appProps) {
                                 variant="light"
                                 className="h-8 w-autho md:flex items-center md:-translate-x-10 text-blue-800 hidden "
                             >
-                                <GiWaterDrop />
-                                <p className=" font-bold text-inherit flex">
-                                    Econnect
-                                </p>
+                                <Image src={"/logoWName.png"} alt={""} width={150} height={150} />
                             </Button>
                             <div className="h-8 w-auto"> </div>
                         </div>

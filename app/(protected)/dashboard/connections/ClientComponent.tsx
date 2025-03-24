@@ -1,14 +1,14 @@
-"use client"; // Mark this as a client component
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Friend, User } from "@/app/types/db"; // Adjust the import path as necessary
+import { Friend, User } from "@/app/types/db";
 import { chatHrefConstructor } from "@/app/lib/utils";
 import {
     Button,
     Modal,
-    ModalContent,
+    ModalContent, 
     ModalHeader,
     ModalBody,
     ModalFooter,
@@ -90,7 +90,6 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
     useEffect(() => {
         const friendRequestCounter = async () => {
             const getPending = await axios.post("/api/friends/requests", {});
-
             setRequestCounter(getPending.data[0].pendingFriendRequest.length);
             setIsLoading(false);
         };
@@ -98,202 +97,178 @@ const ClientComponent: React.FC<ClientComponentProps> = ({
         friendRequestCounter();
     }, [user.id]);
 
-    let requestElement;
-
-    requestCounter > 0
-        ? (requestElement = (
-              <Badge content={requestCounter} color="primary">
-                  <Link
-                      href="/chat/friend-requests"
-                      className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
-                  >
-                      <FaUserFriends />
-                      <p className=" text-md">Requests</p>
-                  </Link>
-              </Badge>
-          ))
-        : (requestElement = (
-              <Link
-                  href="/chat/friend-requests"
-                  className="flex text-slate-800 rounded-md p-2 gap-2 items-center"
-              >
-                  <FaUserFriends />
-                  <p className=" text-md">Requests</p>
-              </Link>
-          ));
+    const requestElement = requestCounter > 0 ? (
+        <Badge content={requestCounter} color="primary">
+            <Link
+                href="/chat/friend-requests"
+                className="flex text-slate-800 rounded-md p-2 gap-2 items-center hover:bg-slate-100 transition-colors"
+            >
+                <FaUserFriends className="text-xl" />
+                <span className="text-sm font-medium">Requests</span>
+            </Link>
+        </Badge>
+    ) : (
+        <Link
+            href="/chat/friend-requests"
+            className="flex text-slate-800 rounded-md p-2 gap-2 items-center hover:bg-slate-100 transition-colors"
+        >
+            <FaUserFriends className="text-xl" />
+            <span className="text-sm font-medium">Requests</span>
+        </Link>
+    );
 
     return (
-        <div className="w-screen md:min-h-screen overflow-scroll bg-slate-100 flex flex-col md:flex-row justify-between font-PlusJakartSans p-4 gap-2">
-            <div className="h-[90%] md:w-3/4 flex flex-col p-5 pl-12 bg-white">
-                <div className=" text-black ">
-                    <div className="w-full flex justify-between">
-                        <h1 className="text-bold text-2xl text-slate-700">
+        <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row gap-6 p-4 lg:p-6">
+            <div className="w-full lg:w-3/4 space-y-6">
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h1 className="text-2xl font-bold text-slate-800">
                             {connections.length} Connections
                         </h1>
-                        <div className="group hover:bg-slate-200 p-4 bottom-0 rounded-md">
-                            {requestElement}
+                        <div>{requestElement}</div>
+                    </div>
+
+                    <div className="space-y-4">
+                        <input
+                            type="text"
+                            placeholder="Search connections..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full p-3 rounded-lg border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+
+                        <div className="flex items-center gap-4">
+                            <span className="text-sm text-slate-500">Sort by:</span>
+                            <button
+                                className={`px-4 py-2 rounded-lg transition-colors ${
+                                    sortOption === "recent"
+                                        ? "bg-blue-100 text-blue-700 font-medium"
+                                        : "hover:bg-slate-100"
+                                }`}
+                                onClick={() => setSortOption("recent")}
+                            >
+                                Recent
+                            </button>
+                            <button
+                                className={`px-4 py-2 rounded-lg transition-colors ${
+                                    sortOption === "lastName"
+                                        ? "bg-blue-100 text-blue-700 font-medium"
+                                        : "hover:bg-slate-100"
+                                }`}
+                                onClick={() => setSortOption("lastName")}
+                            >
+                                Last Name
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    {/* Search Input */}
-                    <input
-                        type="text"
-                        placeholder="Search by name"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="p-2 mt-2 mb-4 border rounded bg-slate-100 shadow-sm"
-                    />
-
-                    {/* Sort Options */}
-                    <div className="flex gap-4 mb-4">
-                        <h1 className="text-slate-400 text-sm p-4">
-                            Sorted by
-                        </h1>
-                        <button
-                            className={`p-2 ${
-                                sortOption === "recent" ? "font-bold" : ""
-                            }`}
-                            onClick={() => setSortOption("recent")}
+                <div className="space-y-4">
+                    {sortedConnections.map((connection: any) => (
+                        <div
+                            key={connection.id}
+                            className="bg-white rounded-xl shadow-sm p-6 transition-transform hover:scale-[1.02]"
                         >
-                            Recent
-                        </button>
-                        <button
-                            className={`p-2 ${
-                                sortOption === "lastName" ? "font-bold" : ""
-                            }`}
-                            onClick={() => setSortOption("lastName")}
-                        >
-                            Last Name
-                        </button>
-                    </div>
-
-                    {/* Render sorted connections */}
-                    {sortedConnections.map(
-                        (connection: {
-                            id: React.Key | null | undefined;
-                            firstName: string;
-                            lastName: string;
-                            email: string;
-                        }) => (
-                            <div
-                                className="flex p-6 flex-col md:flex-row gap-2 justify-between border shadow-sm mb-4"
-                                key={connection.id}
-                            >
-                                <div className="flex flex-col md:flex-col">
-                                    <div className="">
-                                        <Image
-                                            src={`https://econnectbucket.s3.amazonaws.com/image/${connection.id}`}
-                                            alt="Application Image"
-                                            width={50}
-                                            height={50}
-                                            className="rounded-full"
-                                        />
-
-                                        <div className="flex flex-col">
-                                            <p className="text-sm md:text-lg font-semibold">
-                                                {connection.firstName +
-                                                    " " +
-                                                    connection.lastName}
-                                            </p>
-                                            <p className="text-xs md:text-sm text-slate-400">
-                                                {connection.email}
-                                            </p>
-                                        </div>
+                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <div className="flex items-center gap-4">
+                                    <Image
+                                        src={`https://econnectbucket.s3.amazonaws.com/image/${connection.id}`}
+                                        alt="Profile"
+                                        width={56}
+                                        height={56}
+                                        className="rounded-full object-cover w-14 h-14 aspect-square"
+                                    />
+                                    <div>
+                                        <h3 className="font-semibold text-slate-900">
+                                            {connection.firstName} {connection.lastName}
+                                        </h3>
+                                        <p className="text-sm text-slate-500">{connection.email}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-row gap-2 justify-center items-center scale-75 md:scale-100">
+
+                                <div className="flex flex-wrap justify-center gap-2">
                                     <Button
-                                        color="primary"
                                         as={Link}
-                                        href={`/chat/${chatHrefConstructor(
-                                            connection.id as string,
-                                            sessionId
-                                        )}`}
+                                        href={`/chat/${chatHrefConstructor(connection.id, sessionId)}`}
+                                        color="primary"
+                                        className="min-w-[100px]"
                                     >
                                         Message
                                     </Button>
                                     <Button
-                                        color="default"
-                                        href={`/ec/${connection.id}`}
                                         as={Link}
+                                        href={`/ec/${connection.id}`}
+                                        color="default"
+                                        className="min-w-[100px]"
                                     >
                                         Profile
                                     </Button>
                                     <Button
-                                        onPress={() =>
-                                            handleOpenModal(connection)
-                                        }
                                         color="danger"
+                                        onPress={() => handleOpenModal(connection)}
+                                        className="min-w-[100px]"
                                     >
                                         Unfriend
                                     </Button>
-                                    <Modal
-                                        isOpen={isOpen}
-                                        onOpenChange={onOpenChange}
-                                        backdrop="blur"
-                                        className="light"
-                                    >
-                                        <ModalContent>
-                                            {(onClose) => (
-                                                <>
-                                                    <ModalHeader className="flex flex-col gap-1 text-black ">
-                                                        Are You Sure?
-                                                    </ModalHeader>
-                                                    <ModalBody>
-                                                        <p className="text-black">
-                                                            This action cannot
-                                                            be undone! Are you
-                                                            sure you want to
-                                                            remove{" "}
-                                                            {
-                                                                selectedFriend?.firstName
-                                                            }{" "}
-                                                            from your friends
-                                                            list?
-                                                        </p>
-                                                    </ModalBody>
-                                                    <ModalFooter>
-                                                        <Button
-                                                            color="default"
-                                                            variant="light"
-                                                            className="z-50"
-                                                            onPress={onClose}
-                                                        >
-                                                            Close
-                                                        </Button>
-                                                        <Button
-                                                            color="danger"
-                                                            className="z-50"
-                                                            onPress={() =>
-                                                                removeFriend(
-                                                                    selectedFriend?.id as string,
-                                                                    selectedFriend?.email
-                                                                )
-                                                            }
-                                                        >
-                                                            Confirm
-                                                        </Button>
-                                                    </ModalFooter>
-                                                </>
-                                            )}
-                                        </ModalContent>
-                                    </Modal>
                                 </div>
                             </div>
-                        )
-                    )}
+                        </div>
+                    ))}
                 </div>
-                <div id="findPeople">
+
+                <div className="bg-white rounded-xl shadow-sm p-6">
                     <FindPeople />
                 </div>
             </div>
-            <div className="w-1/4 h-[90%] md:flex hidden">
-                <SideInfo
-                    user={user}
-                    posts={user.posts}
-                    applications={user.applications}
-                ></SideInfo>
+
+            <div className="hidden lg:block lg:w-1/4">
+                <div className="sticky top-6">
+                    <SideInfo
+                        user={user}
+                        posts={user.posts}
+                        applications={user.applications}
+                    />
+                </div>
             </div>
+
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                backdrop="blur"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="text-xl font-bold">
+                                Remove Connection
+                            </ModalHeader>
+                            <ModalBody>
+                                <p>
+                                    Are you sure you want to remove {selectedFriend?.firstName} from your connections? This action cannot be undone.
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button
+                                    color="default"
+                                    variant="light"
+                                    onPress={onClose}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color="danger"
+                                    onPress={() => removeFriend(
+                                        selectedFriend?.id as string,
+                                        selectedFriend?.email
+                                    )}
+                                >
+                                    Remove
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 };

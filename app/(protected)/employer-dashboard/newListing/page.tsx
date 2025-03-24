@@ -32,9 +32,13 @@ const NewJobListing = () => {
     e.preventDefault();
     const location = `${city}, ${country}, ${stateP}`;
 
-    // Convert screening questions to a formatted string with delimiters
+    // Convert the structured screening question objects to properly formatted strings
     const formattedScreeningQuestions = Object.entries(screeningQuestions)
-      .map(([key, value]) => `!question_start!${key}: ${value}!question_end!`)
+      .map(([key, value]) => {
+        // Extract the data from the object
+        const questionData = value as unknown as { question: string; answer: string; type: string };
+        return `!question_start!${key}: !questionContent!${questionData.question}!answerContent!${questionData.answer}!question_end!`;
+      })
       .join(" ");
 
     // Combine the job description with screening questions

@@ -9,302 +9,212 @@ import {
     ModalFooter,
     Button,
     useDisclosure,
-    Checkbox,
     Input,
 } from "@nextui-org/react";
 import Image from "next/image";
-import TextStyle from "@tiptap/extension-text";
-import ListItem from "@tiptap/extension-list-item";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { toast } from "sonner";
 import { FiImage } from "react-icons/fi";
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Placeholder from '@tiptap/extension-placeholder';
+import Tiptap from "./textEditor/Tiptap";
+import { MdCancel, MdOutlineCancel } from "react-icons/md";
 
 export default function CreatePost() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [post, setPost] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [previewImages, setPreviewImages] = useState<string[]>([]);
     const [newImages, setNewImages] = useState<File[]>([]);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+    const editor = useEditor({
+        extensions: [
+            StarterKit,
+            Placeholder.configure({
+                placeholder: 'Write something amazing...',
+            }),
+        ],
+    });
 
     const handleSubmit = async (e: FormEvent<HTMLElement>) => {
-        toast.loading("Creating Post");
         e.preventDefault();
+        
+        const postContent = editor?.getHTML() || "";
+        
+        if (!title.trim() || !postContent.trim()) {
+            toast.error("Please fill in both title and post content");
+            return;
+        }
+
+        toast.loading("Creating Post");
         const formData = new FormData();
-        const imageId = Math.floor(Math.random() * 0xfffff * 1000000).toString(
-            16
-        );
+        const imageId = Math.floor(Math.random() * 0xfffff * 1000000).toString(16);
         formData.append("Imageid", imageId);
 
         if (newImages && newImages.length > 0) {
             newImages.forEach((image, index) => {
-                formData.append(`newPostImage${index}`, image, image.name);
+                formData.append(`newPostImage${index}`, image);
             });
-            setPreviewImages(
-                newImages.map((image) => URL.createObjectURL(image))
-            );
         }
 
         try {
             await axios.post("/api/user/post/create", {
                 title: title,
-                post: post,
+                post: postContent,
                 imageId: imageId,
             });
-            await axios.post("/api/s3-upload", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            toast.dismiss();
-        } catch (error) {
-            if (error instanceof SyntaxError) {
-                toast.error("Received invalid JSON from server");
-            } else {
-                toast.error("Error");
+
+            if (newImages.length > 0) {
+                await axios.post("/api/s3-upload", formData, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                });
             }
-        } finally {
+
             toast.dismiss();
             toast.success("Post Created");
             onOpenChange();
             window.location.reload();
+        } catch (error) {
+            toast.dismiss();
+            toast.error("Error creating post");
+            console.error(error);
         }
     };
 
-    const MenuBar = () => {
-        const { editor } = useCurrentEditor();
-        if (!editor) {
-            return null;
-        }
-        setPost(editor.getHTML());
-        return (
-            <div className="text-black shadow-md p-2 bg-white flex gap-2">
-                <button
-                    onClick={() => editor.chain().focus().toggleBold().run()}
-                    disabled={!editor.can().chain().focus().toggleBold().run()}
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("bold") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    B
-                </button>
-                <button
-                    onClick={() => editor.chain().focus().toggleItalic().run()}
-                    disabled={
-                        !editor.can().chain().focus().toggleItalic().run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("italic") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    <em>I</em>
-                </button>
-                <button
-                    onClick={() => editor.chain().focus().toggleStrike().run()}
-                    disabled={
-                        !editor.can().chain().focus().toggleStrike().run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("strike") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    <s>strike</s>
-                </button>
-                <button
-                    onClick={() => editor.chain().focus().setParagraph().run()}
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("paragraph") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    p
-                </button>
-                <button
-                    onClick={() =>
-                        editor.chain().focus().toggleHeading({ level: 1 }).run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("heading", { level: 1 })
-                            ? "bg-gray-300"
-                            : ""
-                    }`}
-                >
-                    h1
-                </button>
-                <button
-                    onClick={() =>
-                        editor.chain().focus().toggleHeading({ level: 2 }).run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("heading", { level: 2 })
-                            ? "bg-gray-300"
-                            : ""
-                    }`}
-                >
-                    h2
-                </button>
+    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files) return;
 
-                <button
-                    onClick={() =>
-                        editor.chain().focus().toggleBulletList().run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("bulletList") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    bullet list
-                </button>
-                <button
-                    onClick={() =>
-                        editor.chain().focus().toggleOrderedList().run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("orderedList") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    ordered list
-                </button>
-                <button
-                    onClick={() =>
-                        editor.chain().focus().toggleBlockquote().run()
-                    }
-                    className={`px-3 py-1 rounded ${
-                        editor.isActive("blockquote") ? "bg-gray-300" : ""
-                    }`}
-                >
-                    blockquote
-                </button>
-                <button
-                    onClick={() => editor.chain().focus().undo().run()}
-                    disabled={!editor.can().chain().focus().undo().run()}
-                >
-                    undo
-                </button>
-                <button
-                    onClick={() => editor.chain().focus().redo().run()}
-                    disabled={!editor.can().chain().focus().redo().run()}
-                >
-                    redo
-                </button>
-            </div>
-        );
+        if (files.length > 3) {
+            toast.error("Maximum 3 images allowed");
+            return;
+        }
+
+        const filesArray = Array.from(files);
+        setNewImages(filesArray);
+
+        // Create preview URLs
+        const previews = filesArray.map(file => URL.createObjectURL(file));
+        setPreviewImages(previews);
     };
 
-    const extensions = [
-        TextStyle.configure({ types: [ListItem.name] }),
-        StarterKit.configure({
-            bulletList: {
-                keepMarks: true,
-                keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-            },
-            orderedList: {
-                keepMarks: true,
-                keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-            },
-        }),
-    ];
+    const removeImage = (index: number) => {
+        setPreviewImages(prev => prev.filter((_, i) => i !== index));
+        setNewImages(prev => prev.filter((_, i) => i !== index));
+    };
 
     return (
         <>
             <Button
                 onPress={onOpen}
-                disableAnimation
-                className="w-full md:w-96 h-16 mx-8 border rounded-full bg-transparent flex gap-4 py-6 justify-between"
+                className="w-full md:w-96 h-12 mx-8 rounded-full bg-white hover:bg-gray-100 border-2 border-gray-200 shadow-sm transition-all flex items-center justify-between px-4"
             >
-                <h1 className="font-PlusJakartaSans ml-2 font-semibold text-gray-900">
-                    Create new Post
-                </h1>
-                <FiImage />
+                <span className="font-medium text-gray-700">Create new post</span>
+                <FiImage className="text-gray-500" size={20} />
             </Button>
+            
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                placement="top"
-                size="5xl"
-                className="light scale-75"
+                placement="center"
+                size="4xl"
+                className="light"
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-black">
-                                Create New Post
+                            <ModalHeader className="border-b">
+                                <h2 className="text-xl font-semibold text-gray-800">Create New Post</h2>
                             </ModalHeader>
-                            <form
-                                onSubmit={handleSubmit}
-                                className="text-black"
-                            >
-                                <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <ModalBody className="py-6 flex flex-col gap-4">
                                     <Input
                                         isRequired
                                         label="Title"
                                         labelPlacement="outside"
-                                        placeholder="Enter Title"
-                                        defaultValue={title as string}
-                                        className="w-full text-black h-full m-2"
-                                        onChange={(e) => {
-                                            setTitle(e.target.value);
-                                        }}
+                                        placeholder="Enter an Engaging title"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
                                     />
-                                    <h1 className="text-sm">
-                                        Write your Post here
-                                    </h1>
-                                    <div className="bg-[#f4f4f5] m-2 h-72 overflow-visible rounded-md">
-                                        <EditorProvider
-                                            slotBefore={<MenuBar />}
-                                            extensions={extensions}
-                                        ></EditorProvider>
+                                    
+                                    <div className="prose max-w-none">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Post Content
+                                        </label>
+                                        
+
+                                        <Tiptap 
+                                            onChange={(content) => editor?.commands.setContent(content)}
+                                            content={editor?.getHTML() || ""}
+                                            onSendMessage={() => {}}
+                                        />
+
                                     </div>
-                                    <div className="flex py-2 px-1 justify-between"></div>
-                                    <Input
-                                        type="file"
-                                        accept="image/*"
-                                        multiple // Allow multiple files to be selected
-                                        max={3}
-                                        onChange={(e) => {
-                                            if (e.target.files) {
-                                                const fileArray = Array.from(
-                                                    e.target.files
-                                                );
-                                                if (fileArray.length > 3) {
-                                                    toast.error(
-                                                        "You can only upload 3 images at a time"
-                                                    );
-                                                    return;
-                                                }
-                                                setNewImages(fileArray); // Update state with an array of files
-                                                setPreviewImages(
-                                                    fileArray.map((file) =>
-                                                        URL.createObjectURL(
-                                                            file
-                                                        )
-                                                    )
-                                                ); // Create URLs for preview
-                                            }
-                                        }}
-                                    />
-                                    <div className="flex gap-4">
-                                        {previewImages.map((image, index) => (
-                                            <Image
-                                                key={index}
-                                                src={image}
-                                                alt="preview"
-                                                width={200}
-                                                height={200}
-                                            />
-                                        ))}
+
+                                    <div className="mt-4">
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            className="hidden"
+                                            onChange={handleImageSelect}
+                                        />
+
+                                        
+                                        
+                                        <Button
+                                            color="primary"
+                                            variant="flat"
+                                            className="w-full"
+                                            onClick={() => fileInputRef.current?.click()}
+                                        >
+                                            <FiImage className="mr-2" />
+                                            Upload Images (Max 3)
+                                        </Button>
+                                        
+                                        <div className="flex gap-4 mt-4 flex-wrap">
+                                            {previewImages.map((image, index) => (
+                                                <div key={index} className="relative">
+                                                    <Image
+                                                        src={image}
+                                                        alt={`Preview ${index + 1}`}
+                                                        width={200}
+                                                        height={200}
+                                                        className="rounded-lg object-cover"
+                                                    />
+                                                    <Button
+                                                        size="sm"
+                                                        // color=""
+                                                        variant="light"
+                                                        className="absolute top-2 right-2"
+                                                        onClick={() => removeImage(index)}
+                                                    >
+                                                        <MdCancel size={20} />
+
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </ModalBody>
-                                <ModalFooter>
+                                
+                                <ModalFooter className="border-t">
                                     <Button
                                         color="danger"
-                                        variant="flat"
+                                        variant="light"
                                         onPress={onClose}
+                                        className="mr-2"
                                     >
                                         Cancel
                                     </Button>
-                                    <Button color="primary" type="submit">
-                                        Submit
+                                    <Button
+                                        color="primary"
+                                        type="submit"
+                                        className="bg-blue-600 text-white"
+                                    >
+                                        Create Post
                                     </Button>
                                 </ModalFooter>
                             </form>

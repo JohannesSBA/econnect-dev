@@ -69,83 +69,113 @@ const Page = async () => {
   ];
 
   return (
-    <div className="bg-slate-100 w-full h-full flex justify-center">
-      <div className="bg-slate-100 w-full h-full flex flex-col p-8 gap-8">
-        <div className=" text-slate-800 text-2xl md:text-6xl font-bold ">
-          Welcome, {user.firstName}
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            Welcome, {user.firstName}
+          </h1>
+          <p className="mt-2 text-gray-600">Manage your job listings and applicants</p>
         </div>
-        <div className="flex flex-col md:flex-row md:justify-evenly">
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
           <Link
-            className="rounded-lg bg-blue-600 p-8 m-2 w-1/2 h-32 shadow-md flex items-center text-slate-100 group"
+            className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 p-6 shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl group"
             href={`/employer-dashboard/jobs_active`}
           >
-            <span className="rounded-full h-12 w-12 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
-              <FaBriefcase />
-            </span>
-            Active Listings
+            <div className="flex items-center">
+              <span className="flex-shrink-0 rounded-full h-12 w-12 bg-white/20 text-white flex items-center justify-center mr-4 transition-colors group-hover:bg-white group-hover:text-blue-600">
+                <FaBriefcase className="h-5 w-5" />
+              </span>
+              <div>
+                <h2 className="font-semibold text-white text-lg">Active Listings</h2>
+                <p className="text-blue-100 text-sm mt-1">Manage current job postings</p>
+              </div>
+            </div>
+            <div className="absolute bottom-0 right-0 opacity-10 transform translate-x-4 translate-y-4">
+              <FaBriefcase className="h-24 w-24" />
+            </div>
           </Link>
+          
           <Link
-            className="rounded-lg bg-blue-400 p-8 m-2 w-1/2 h-32 shadow-md flex items-center text-slate-100 group"
+            className="relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 p-6 shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl group"
             href={"/employer-dashboard/archived"}
           >
-            <span className="rounded-full h-12 w-12 bg-blue-400 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
-              <FaArchive />
-            </span>
-            Archived Jobs
+            <div className="flex items-center">
+              <span className="flex-shrink-0 rounded-full h-12 w-12 bg-white/20 text-white flex items-center justify-center mr-4 transition-colors group-hover:bg-white group-hover:text-indigo-600">
+                <FaArchive className="h-5 w-5" />
+              </span>
+              <div>
+                <h2 className="font-semibold text-white text-lg">Archived Jobs</h2>
+                <p className="text-indigo-100 text-sm mt-1">View past job listings</p>
+              </div>
+            </div>
+            <div className="absolute bottom-0 right-0 opacity-10 transform translate-x-4 translate-y-4">
+              <FaArchive className="h-24 w-24" />
+            </div>
           </Link>
+          
           <Link
+            className="relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl group"
             href={"/employer-dashboard/newListing"}
-            className="rounded-lg bg-green-500 p-8 m-2 w-64 h-32 shadow-md flex items-center text-slate-100 group"
           >
-            <span className="rounded-full h-12 w-12 group-hover:bg-white text-white group-hover:text-black flex items-center justify-center mx-3">
-              <IoIosAdd />
-            </span>
-            New Listing
+            <div className="flex items-center">
+              <span className="flex-shrink-0 rounded-full h-12 w-12 bg-white/20 text-white flex items-center justify-center mr-4 transition-colors group-hover:bg-white group-hover:text-emerald-600">
+                <IoIosAdd className="h-6 w-6" />
+              </span>
+              <div>
+                <h2 className="font-semibold text-white text-lg">New Listing</h2>
+                <p className="text-emerald-100 text-sm mt-1">Create a job posting</p>
+              </div>
+            </div>
+            <div className="absolute bottom-0 right-0 opacity-10 transform translate-x-4 translate-y-4">
+              <IoIosAdd className="h-24 w-24" />
+            </div>
           </Link>
         </div>
-        <div className=" rounded-md w-full h-full shadow-md flex flex-col">
-          <h1 className="w-full h-12 p-4 border-b-2 shadow-md text-slate-900 font-semibold">
-            Facts & Figures
-          </h1>
-          <div className="w-full p-4 text-slate-900">
-            <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="px-6 py-5 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">Dashboard Overview</h2>
+          </div>
+          
+          <div className="p-6">
+            <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {stats.map((item) => (
                 <div
                   key={item.id}
-                  className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6"
+                  className="relative overflow-hidden rounded-lg bg-white border border-gray-100 px-6 py-5 shadow-sm hover:shadow transition duration-300"
                 >
-                  <dt>
-                    <div className="absolute rounded-md bg-indigo-500 p-3">
+                  <dt className="flex items-center">
+                    <div className="flex-shrink-0 rounded-md bg-indigo-600 p-3 shadow-sm">
                       <item.icon
-                        aria-hidden="true"
                         className="h-6 w-6 text-white"
+                        aria-hidden="true"
                       />
                     </div>
-                    <p className="ml-16 truncate text-sm font-medium text-gray-500">
+                    <p className="ml-4 truncate text-sm font-medium text-gray-600">
                       {item.name}
                     </p>
                   </dt>
-                  <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {item.stat}
-                    </p>
-
-                    <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
-                      <div className="text-sm">
-                        <a
-                          href="#"
-                          className="font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                          View all
-                          <span className="sr-only"> {item.name} stats</span>
-                        </a>
-                      </div>
+                  <dd className="mt-4">
+                    <p className="text-3xl font-semibold text-gray-900">{item.stat}</p>
+                    
+                    <div className="mt-4">
+                      <Link
+                        href="#"
+                        className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                      >
+                        View details
+                        <svg className="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </Link>
                     </div>
                   </dd>
                 </div>
               ))}
             </dl>
-            <div></div>
+            
           </div>
         </div>
       </div>

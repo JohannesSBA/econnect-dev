@@ -79,14 +79,14 @@ const Posts = ({ userId, currentUserName, fromPage }: PProps) => {
 
     if (posts.length <= 0) {
         return (
-            <div className="w-full h-full flex justify-center items-center flex-col md:pt-8">
+            <div className="w-full h-full bg-transparent flex justify-center items-center flex-col md:pt-8">
                 <h1>You have No Friends Yet! Add some to see their Posts</h1>
                 <FindPeople />
             </div>
         );
     } else {
         return (
-            <div className="h-full flex  flex-col items-center rounded-md text-black">
+            <div className="h-full flex bg-transparent flex-col items-center rounded-md text-black">
                 {Array.isArray(posts) ? (
                     posts.map((post: any) => (
                         <Post
