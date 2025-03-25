@@ -15,7 +15,7 @@ frontend:
         - 'export NODE_OPTIONS="--max_old_space_size=4096"'
         - 'echo "Creating environment variables file"'
         - touch .env.production
-        - 'echo "NEXT_PUBLIC_WEBSOCKET_URL=ws://your-production-url/api/socketio" >> .env.production'
+        - 'echo "NEXT_PUBLIC_WEBSOCKET_URL=wss://econnectpilot.com/api/socketio" >> .env.production'
         - 'echo "PORT=3000" >> .env.production'
         - 'env | grep -e DATABASE_URL >> .env.production || echo "Warning: DATABASE_URL not found"'
         - 'env | grep -e JWT_SECRET >> .env.production || echo "Warning: JWT_SECRET not found"'
