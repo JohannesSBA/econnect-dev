@@ -1,16 +1,16 @@
-import { Server as NetServer } from 'http';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Server as SocketIOServer } from 'socket.io';
-import io, { Socket } from 'socket.io-client';
+import { Server as NetServer } from "http";
+import { NextApiRequest, NextApiResponse } from "next";
+import { Server as SocketIOServer } from "socket.io";
+import io, { Socket } from "socket.io-client";
 
 // Utility function to transform keys for Pusher
-export const toPusherKey = (key: string) => key.replace(/:/g, '__');
+export const toPusherKey = (key: string) => key.replace(/:/g, "__");
 
 // Socket.IO server access (server-side only)
 export const socketIO = {
   getIO: () => {
-    if (typeof window !== 'undefined') {
-      console.warn('Socket.io server access attempted on client-side');
+    if (typeof window !== "undefined") {
+      console.warn("Socket.io server access attempted on client-side");
       return null;
     }
     return (global as any)?.io || null;
@@ -31,12 +31,27 @@ let messageQueue: Array<{
   retries: number;
 }> = [];
 let pendingOperations: Array<() => void> = [];
-let pendingRoomOperations: Map<string, { action: 'join' | 'leave'; room: string }> = new Map();
-let connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'error' | 'failed' = 'connecting';
+let pendingRoomOperations: Map<
+  string,
+  { action: "join" | "leave"; room: string }
+> = new Map();
+let connectionStatus:
+  | "connecting"
+  | "connected"
+  | "disconnected"
+  | "error"
+  | "failed" = "connecting";
 let reconnectTimer: NodeJS.Timeout | undefined;
 let initializing = false;
 let initPromise: Promise<Socket | null> | null = null;
-const pendingMessages = new Map<string, { timeoutId: NodeJS.Timeout; resolve: (value: any) => void; reject: (reason?: any) => void }>();
+const pendingMessages = new Map<
+  string,
+  {
+    timeoutId: NodeJS.Timeout;
+    resolve: (value: any) => void;
+    reject: (reason?: any) => void;
+  }
+>();
 const MESSAGE_TIMEOUT = 15000;
 
 // Execute all pending operations when connected
@@ -50,7 +65,7 @@ const executePendingOperations = () => {
       try {
         operation();
       } catch (error) {
-        console.error('Error executing pending operation:', error);
+        console.error("Error executing pending operation:", error);
       }
     }
   }
@@ -58,19 +73,28 @@ const executePendingOperations = () => {
   // Execute room operations (join/leave)
   pendingRoomOperations.forEach((opInfo, id) => {
     try {
-      console.log(`Executing pending room operation: ${opInfo.action} for room ${opInfo.room}`);
+      console.log(
+        `Executing pending room operation: ${opInfo.action} for room ${opInfo.room}`
+      );
       if (!socketClient) {
-        throw new Error('Socket client is not initialized');
+        throw new Error("Socket client is not initialized");
       }
-      socketClient.emit(`${opInfo.action}-room`, opInfo.room, (response: any) => {
-        if (response?.success) {
-          console.log(`Successfully ${opInfo.action}ed room: ${opInfo.room}`);
-        } else {
-          console.warn(`Failed to ${opInfo.action} room: ${opInfo.room}`);
+      socketClient.emit(
+        `${opInfo.action}-room`,
+        opInfo.room,
+        (response: any) => {
+          if (response?.success) {
+            console.log(`Successfully ${opInfo.action}ed room: ${opInfo.room}`);
+          } else {
+            console.warn(`Failed to ${opInfo.action} room: ${opInfo.room}`);
+          }
         }
-      });
+      );
     } catch (error) {
-      console.error(`Error executing ${opInfo.action} for room ${opInfo.room}:`, error);
+      console.error(
+        `Error executing ${opInfo.action} for room ${opInfo.room}:`,
+        error
+      );
     }
   });
   pendingRoomOperations.clear();
@@ -84,12 +108,13 @@ const cleanupSocketListeners = (socket: Socket) => {
 
 // Process queued messages
 const processMessageQueue = () => {
-  if (!socketClient || !socketClient.connected || messageQueue.length === 0) return;
+  if (!socketClient || !socketClient.connected || messageQueue.length === 0)
+    return;
   console.log(`Processing ${messageQueue.length} queued messages`);
   while (messageQueue.length > 0) {
     const { event, data, resolve, reject, timestamp } = messageQueue.shift()!;
     if (Date.now() - timestamp > 5 * 60 * 1000) {
-      reject(new Error('Message expired'));
+      reject(new Error("Message expired"));
       continue;
     }
     try {
@@ -97,32 +122,38 @@ const processMessageQueue = () => {
         if (response?.success) {
           resolve(response);
         } else {
-          reject(new Error(response?.error || 'Failed to send message'));
+          reject(new Error(response?.error || "Failed to send message"));
         }
       });
     } catch (error) {
       reject(error);
-      console.error('Error sending queued message:', error);
+      console.error("Error sending queued message:", error);
     }
   }
 };
 
 // Enhanced emit function
-export const safeEmit = (event: string, data: any, callback?: (response: any) => void) => {
+export const safeEmit = (
+  event: string,
+  data: any,
+  callback?: (response: any) => void
+) => {
   const socket = getSocketClient();
   if (!socket) {
     console.error(`Failed to get socket reference for emit: ${event}`);
-    if (callback) callback({ success: false, error: 'Socket not available' });
+    if (callback) callback({ success: false, error: "Socket not available" });
     return;
   }
 
   // Handle join/leave room operations
-  if (event === 'join-room' || event === 'leave-room') {
+  if (event === "join-room" || event === "leave-room") {
     const opId = crypto.randomUUID();
-    const action = event === 'join-room' ? 'join' : 'leave';
+    const action = event === "join-room" ? "join" : "leave";
 
     if (!socket.connected) {
-      console.log(`Socket not connected, queueing ${action} room operation for ${data}`);
+      console.log(
+        `Socket not connected, queueing ${action} room operation for ${data}`
+      );
       pendingRoomOperations.set(opId, { action, room: data });
       return;
     }
@@ -152,7 +183,14 @@ export const safeEmit = (event: string, data: any, callback?: (response: any) =>
 // Send a message with retries and timeout
 export const sendSocketMessage = (event: string, data: any): Promise<any> => {
   return new Promise((resolve, reject) => {
-    const messageObj = { event, data, resolve, reject, timestamp: Date.now(), retries: 0 };
+    const messageObj = {
+      event,
+      data,
+      resolve,
+      reject,
+      timestamp: Date.now(),
+      retries: 0,
+    };
     if (!socketClient || !socketClient.connected) {
       console.log(`Socket not connected, queuing ${event} message`);
       messageQueue.push(messageObj);
@@ -166,10 +204,12 @@ export const sendSocketMessage = (event: string, data: any): Promise<any> => {
           pendingMessages.delete(messageId);
           if (messageObj.retries < 3) {
             messageObj.retries++;
-            console.log(`Message timed out, queuing for retry (${messageObj.retries}/3)`);
+            console.log(
+              `Message timed out, queuing for retry (${messageObj.retries}/3)`
+            );
             messageQueue.push(messageObj);
           } else {
-            reject(new Error('Message failed after multiple retries'));
+            reject(new Error("Message failed after multiple retries"));
           }
         }
       }, MESSAGE_TIMEOUT);
@@ -177,7 +217,9 @@ export const sendSocketMessage = (event: string, data: any): Promise<any> => {
       socketClient.emit(event, data, (response: any) => {
         clearTimeout(timeoutId);
         pendingMessages.delete(messageId);
-        response?.success ? resolve(response) : reject(new Error(response?.error || 'Failed to send message'));
+        response?.success
+          ? resolve(response)
+          : reject(new Error(response?.error || "Failed to send message"));
       });
     } catch (error) {
       reject(error);
@@ -188,7 +230,7 @@ export const sendSocketMessage = (event: string, data: any): Promise<any> => {
 
 // Get the socket client instance
 export const getSocketClient = (): Socket | null => {
-  if (!socketClient && typeof window !== 'undefined' && !initializing) {
+  if (!socketClient && typeof window !== "undefined" && !initializing) {
     initSocketClient();
   }
   return socketClient;
@@ -199,12 +241,12 @@ export const initSocketClient = (): Promise<Socket | null> => {
   if (initPromise) return initPromise;
 
   initPromise = new Promise((resolve, reject) => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       if (initializing) return resolve(socketClient);
       initializing = true;
 
-      console.log('Initializing socket.io client');
-      connectionStatus = 'connecting';
+      console.log("Initializing socket.io client");
+      connectionStatus = "connecting";
 
       try {
         // Clean up any existing socket
@@ -223,53 +265,54 @@ export const initSocketClient = (): Promise<Socket | null> => {
         }
 
         // Create a new socket with optimized settings
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+        const appUrl =
+          process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
         if (!appUrl) {
-          throw new Error('NEXT_PUBLIC_APP_URL is not defined');
+          throw new Error("NEXT_PUBLIC_APP_URL is not defined");
         }
-        
+
         // Use the most reliable configuration possible
         socketClient = io(appUrl, {
-          path: '/api/socketio',
+          path: "/api/socketio",
           reconnection: true,
           reconnectionAttempts: Infinity, // Never stop trying to reconnect
-          reconnectionDelay: 1000,        // Start with a 1 second delay
-          reconnectionDelayMax: 5000,     // Maximum 5 second delay between reconnections
-          timeout: 20000,                 // Connection timeout
-          autoConnect: true,              // Connect automatically
-          transports: ['polling'],        // Only use polling
-          upgrade: false,                 // Never upgrade to websocket
-          forceNew: false,                // Reuse existing connections
-          rejectUnauthorized: false,      // Accept self-signed certificates
+          reconnectionDelay: 1000, // Start with a 1 second delay
+          reconnectionDelayMax: 5000, // Maximum 5 second delay between reconnections
+          timeout: 20000, // Connection timeout
+          autoConnect: true, // Connect automatically
+          transports: ["polling"], // Only use polling
+          upgrade: false, // Never upgrade to websocket
+          forceNew: false, // Reuse existing connections
+          rejectUnauthorized: false, // Accept self-signed certificates
           query: {
-            t: Date.now(),                // Prevent caching
-            EIO: '4',                     // Force Engine.IO v4
-            transport: 'polling'          // Explicitly state transport
+            t: Date.now(), // Prevent caching
+            EIO: "4", // Force Engine.IO v4
+            transport: "polling", // Explicitly state transport
           },
-          extraHeaders: {}
+          extraHeaders: {},
         });
 
         // Remember this socket client
         (window as any).__socketClient = socketClient;
 
         // Connection established
-        socketClient.on('connect', () => {
-          console.log('Socket connected successfully!', socketClient!.id);
+        socketClient.on("connect", () => {
+          console.log("Socket connected successfully!", socketClient!.id);
           initializing = false;
-          connectionStatus = 'connected';
+          connectionStatus = "connected";
           reconnectionAttempts = 0;
 
           // Start a client-side ping to keep the connection alive
           const pingTimer = setInterval(() => {
             if (socketClient && socketClient.connected) {
-              socketClient.emit('client-ping', { timestamp: Date.now() });
+              socketClient.emit("client-ping", { timestamp: Date.now() });
             } else {
               clearInterval(pingTimer);
             }
           }, 15000); // Every 15 seconds
-          
+
           // Clear interval on disconnect
-          socketClient?.once('disconnect', () => {
+          socketClient?.once("disconnect", () => {
             clearInterval(pingTimer);
           });
 
@@ -280,35 +323,40 @@ export const initSocketClient = (): Promise<Socket | null> => {
 
         // Remove the server-ping handler to avoid duplication
         if (socketClient) {
-          socketClient.off('server-ping');
+          socketClient.off("server-ping");
         }
 
         // Connection errors
-        socketClient.on('connect_error', (err: any) => {
+        socketClient.on("connect_error", (err: any) => {
           console.warn(`Socket connection error: ${err.message}`);
           initializing = false;
-          connectionStatus = 'error';
-          
+          connectionStatus = "error";
+
           // Don't count reconnection attempts - keep trying forever
           console.log(`Reconnecting after error...`);
         });
 
+        // Check if the server is running on port 3000
+        socketClient.listeners("connect_error").forEach((listener) => {
+          console.log("Listener:", listener.toString());
+        });
+
         // Disconnection handler
-        socketClient.on('disconnect', (reason: string) => {
+        socketClient.on("disconnect", (reason: string) => {
           console.log(`Socket disconnected: ${reason}`);
-          connectionStatus = 'disconnected';
+          connectionStatus = "disconnected";
 
           // Clear pending messages on disconnect
           pendingMessages.forEach(({ timeoutId }) => clearTimeout(timeoutId));
           pendingMessages.clear();
-          
+
           // Don't manually reconnect - let Socket.IO handle it
-          console.log('Socket.IO will automatically attempt to reconnect');
+          console.log("Socket.IO will automatically attempt to reconnect");
         });
       } catch (error) {
-        console.error('Failed to initialize socket client:', error);
+        console.error("Failed to initialize socket client:", error);
         initializing = false;
-        connectionStatus = 'failed';
+        connectionStatus = "failed";
         reject(error);
       }
     } else {
@@ -325,13 +373,13 @@ export const getConnectionStatus = () => connectionStatus;
 
 // Manually reconnect the socket
 export const reconnectSocket = () => {
-  if (socketClient && connectionStatus !== 'connecting') {
-    console.log('Manually reconnecting socket...');
-    connectionStatus = 'connecting';
+  if (socketClient && connectionStatus !== "connecting") {
+    console.log("Manually reconnecting socket...");
+    connectionStatus = "connecting";
     socketClient.disconnect();
     setTimeout(() => {
       if (socketClient!.io?.opts) {
-        socketClient!.io.opts.transports = ['websocket', 'polling'];
+        socketClient!.io.opts.transports = ["websocket", "polling"];
       }
       socketClient!.connect();
     }, 1000);

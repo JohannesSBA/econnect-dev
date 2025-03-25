@@ -37,3 +37,4 @@ next-env.d.ts
 #next cache
 /.next_cache
 node_modules
+.qodo

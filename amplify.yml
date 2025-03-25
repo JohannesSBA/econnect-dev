@@ -72,9 +72,15 @@ frontend:
   customHeaders:
     - pattern: '/api/socketio'
       headers:
-        - key: 'Connection'
-          value: 'keep-alive'
-        - key: 'Upgrade'
-          value: 'websocket'
+      - key: 'Access-Control-Allow-Origin'
+        value: '*'
+      - key: 'Access-Control-Allow-Methods'
+        value: 'GET,POST,OPTIONS'
+      - key: 'Access-Control-Allow-Headers'
+        value: 'Content-Type'
+      - key: 'Connection'
+      value: 'Upgrade'
+      - key: 'Upgrade'
+      value: 'websocket'
   buildSpec:
     timeout: 60
