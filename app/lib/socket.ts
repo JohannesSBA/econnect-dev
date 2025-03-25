@@ -339,6 +339,7 @@ export const initSocketClient = (): Promise<Socket | null> => {
         // Check if the server is running on port 3000
         socketClient.listeners("connect_error").forEach((listener) => {
           console.log("Listener:", listener.toString());
+          console.log("Listener name:", listener.name);
         });
 
         // Disconnection handler
