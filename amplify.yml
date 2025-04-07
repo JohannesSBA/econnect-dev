@@ -79,8 +79,8 @@ frontend:
       - key: 'Access-Control-Allow-Headers'
         value: 'Content-Type'
       - key: 'Connection'
-      value: 'Upgrade'
+        value: 'Upgrade'
       - key: 'Upgrade'
-      value: 'websocket'
+        value: 'websocket'
   buildSpec:
     timeout: 60
