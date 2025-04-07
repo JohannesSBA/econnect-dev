@@ -115,36 +115,31 @@ export default function App() {
                       <DropdownItem
                         onClick={() => {
                           setEmploymentType("Full-time");
-                        }}
-                      >
+                        } } key={""}                      >
                         Full-Time
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => {
                           setEmploymentType("Part-time");
-                        }}
-                      >
+                        } } key={""}                      >
                         Part-Time
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => {
                           setEmploymentType("Self-Employed");
-                        }}
-                      >
+                        } } key={""}                      >
                         Self-Employed
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => {
                           setEmploymentType("Freelance");
-                        }}
-                      >
+                        } } key={""}                      >
                         Freelance
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => {
                           setEmploymentType("Internship");
-                        }}
-                      >
+                        } } key={""}                      >
                         Internship
                       </DropdownItem>
                     </DropdownMenu>
@@ -187,22 +182,19 @@ export default function App() {
                       <DropdownItem
                         onClick={() => {
                           setLocationType("On-Site");
-                        }}
-                      >
+                        } } key={""}                      >
                         On-Site
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => {
                           setLocationType("Hybrid");
-                        }}
-                      >
+                        } } key={""}                      >
                         Hybrid
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => {
                           setLocationType("Remote");
-                        }}
-                      >
+                        } } key={""}                      >
                         Remote
                       </DropdownItem>
                     </DropdownMenu>

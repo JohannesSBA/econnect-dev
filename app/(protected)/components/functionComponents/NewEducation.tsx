@@ -10,16 +10,9 @@ import {
   useDisclosure,
   Textarea,
   Input,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
 } from "@nextui-org/react";
-import { BiPencil } from "react-icons/bi";
-import { userProps } from "@/app/types/db";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import { FaPlus } from "react-icons/fa";
 
 export default function App() {

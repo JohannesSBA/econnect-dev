@@ -280,8 +280,8 @@ export const initSocketClient = (): Promise<Socket | null> => {
           reconnectionDelayMax: 5000, // Maximum 5 second delay between reconnections
           timeout: 20000, // Connection timeout
           autoConnect: true, // Connect automatically
-          transports: ["polling"], // Only use polling
-          upgrade: false, // Never upgrade to websocket
+          transports: ["polling", "websocket"], // Only use polling
+          upgrade: true, // Never upgrade to websocket
           forceNew: false, // Reuse existing connections
           rejectUnauthorized: false, // Accept self-signed certificates
           query: {

@@ -131,22 +131,19 @@ export default function App({
                                             <DropdownItem
                                                 onClick={() => {
                                                     setPronouns("He/Him");
-                                                }}
-                                            >
+                                                } } key={""}                                            >
                                                 He/Him
                                             </DropdownItem>
                                             <DropdownItem
                                                 onClick={() => {
                                                     setPronouns("She/Her");
-                                                }}
-                                            >
+                                                } } key={""}                                            >
                                                 She/Her
                                             </DropdownItem>
                                             <DropdownItem
                                                 onClick={() => {
                                                     setPronouns("Other");
-                                                }}
-                                            >
+                                                } } key={""}                                            >
                                                 Other
                                             </DropdownItem>
                                         </DropdownMenu>
