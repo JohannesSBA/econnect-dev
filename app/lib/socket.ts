@@ -266,7 +266,7 @@ export const initSocketClient = (): Promise<Socket | null> => {
 
         // Create a new socket with optimized settings
         const appUrl =
-          "http://100.26.203.210:3000" 
+          "https://100.26.203.210:3000" 
         //   || window.location.origin;
         // if (!appUrl) {
         //   throw new Error("NEXT_PUBLIC_APP_URL is not defined");
